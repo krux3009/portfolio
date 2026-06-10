@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Li Xuan — Portfolio</title>
+<meta name="description" content="Li Xuan — Information Systems student at SMU building interactive side projects. Portfolio and project showcase.">
+<meta property="og:title" content="Li Xuan — Portfolio">
+<meta property="og:description" content="I turn “how does that work?” into things you can click. Side projects from my studies and career.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kruxqlyz.com/">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">Li Xuan<span class="dot">.</span></a>
+  <span class="links">
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </span>
+</nav>
+
+<header class="hero">
+  <span class="kicker">SMU IS · AI PRODUCT OPS @ STEPFUN</span>
+  <h1>Hi, I'm Li Xuan —<br>I turn “how does that work?”<br>into <span class="hl">things you can click</span>.</h1>
+  <p class="tag">IS student @ SMU · AI product ops intern @ StepFun.
+     I build interactive explainers and tools that satisfy my own curiosity first — maybe yours too.</p>
+  <a class="btn" href="#projects">See my projects ↓</a>
+</header>
+
+<div class="squiggle" aria-hidden="true">
+  <svg viewBox="0 0 700 14" preserveAspectRatio="none">
+    <path d="M0 7 Q 17.5 0, 35 7 T 70 7 T 105 7 T 140 7 T 175 7 T 210 7 T 245 7 T 280 7 T 315 7 T 350 7 T 385 7 T 420 7 T 455 7 T 490 7 T 525 7 T 560 7 T 595 7 T 630 7 T 665 7 T 700 7"/>
+  </svg>
+</div>
+
+<h2 class="label" id="projects">Projects<span class="count" id="project-count"></span></h2>
+<div class="card-wrap" id="project-grid">
+  <noscript>
+    <a class="card" href="projects/llm-journey/">
+      <h3>Journey of a Token</h3>
+      <p>Interactive explainer of how an LLM reads and writes. (Enable JavaScript to see the full project list.)</p>
+      <span class="go">Take a look →</span>
+    </a>
+  </noscript>
+</div>
+
+<h2 class="label" id="about">About</h2>
+<div class="about">
+  <div>
+    <!-- TODO(lixuan): tune the wording to your voice. -->
+    <p>I'm a Year 1 Information Systems student at Singapore Management University,
+       learning Java, React and SQL. Outside class, I worked through Andrew Ng's
+       machine learning course on Coursera — enough to know my supervised from my
+       unsupervised (and my reinforcement).</p>
+    <p>Right now I'm interning at <a href="https://www.stepfun.com" target="_blank" rel="noopener">StepFun（阶跃星辰）</a>,
+       an AI company in China, on the AI Product Operations team.
+       I like building small things that make complicated ideas feel obvious —
+       interactive explainers, dashboards, tools. This site collects them as I go.</p>
+  </div>
+  <aside class="now">
+    <h4>Now</h4>
+    <!-- TODO(lixuan): keep this honest + current. -->
+    <ul>
+      <li>Studying: Year 1 IS @ SMU — Java, React, SQL</li>
+      <li>Self-taught: Andrew Ng's ML course — supervised · unsupervised · reinforcement</li>
+      <li>Interning: AI Product Operations @ StepFun</li>
+      <li>Building: this site + an investment dashboard</li>
+    </ul>
+  </aside>
+</div>
+
+<h2 class="label" id="contact">Contact</h2>
+<div class="contact">
+  <p>Open to internships, projects, and interesting conversations.</p>
+  <div class="row">
+    <a class="btn rust" href="mailto:tanlixuan2005@gmail.com">Email me</a>
+    <a class="plain" href="https://github.com/krux3009" target="_blank" rel="noopener">GitHub</a>
+    <!-- TODO(lixuan): re-add LinkedIn when ready:
+    <a class="plain" href="https://www.linkedin.com/in/YOUR-HANDLE" target="_blank" rel="noopener">LinkedIn</a> -->
+  </div>
+</div>
+
+<footer>
+  <div class="inner">
+    <span>© 2026 Li Xuan</span>
+    <span>Built by hand<span class="heart"> ♥</span> no framework, no build step</span>
+  </div>
+</footer>
+
+<script src="js/projects-data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
