@@ -36,6 +36,9 @@ input[type=range]{accent-color:var(--rust);width:100%}
 @keyframes popIn{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes flashBox{0%{background:var(--hl)}100%{background:#fff}}
 @keyframes drawLine{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
+@keyframes growUp{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.grow-anim{transform-box:fill-box;transform-origin:bottom;
+  animation:growUp .7s cubic-bezier(.2,.8,.2,1) both}
 .stamp-anim{animation:stampIn .5s ease-out both}
 .pop-anim{animation:popIn .35s ease-out both}
 .flash{animation:flashBox .7s ease-out}

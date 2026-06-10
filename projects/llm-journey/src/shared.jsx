@@ -46,7 +46,10 @@ en:{
   s4YouAsk:(winner,last)=>`This time you, “${last}”, are the one asking. “${winner}” matches your question best — its note of information flows into you.`,
   s4OtherWins:(winner,last)=>`“${winner}” matches the question best — its note of information is handed to “${last}”.`,
   s4Mask:'words after the reader are covered up — no peeking at the future',
-  s4Weights:'match scores become shares of attention that add up to 100%:',
+  s4B1Head:'1 · Who talks to whom',
+  s4B2Head:'2 · What the reader receives',
+  s4MixLead:'Every earlier word pours its note into the reader — more attention, bigger pour. The reader’s new meaning is the blend in the cup:',
+  s4Mix:(last)=>`“${last}”’s new understanding =`,
   s4KV:'Memory-saver: the factory files every name-tag and note in a cabinet, so it never has to re-read the whole sentence from scratch. Modern factories even let 4 question-askers share 1 cabinet. (Papers call this the KV cache and GQA — Llama 3 8B: 32 askers, 8 cabinets.)',
   s4ClickPrompt:'… click the words above',
   s5Title:'Station 5 · The private workshop — the factory’s memory',
@@ -121,7 +124,10 @@ zh:{
   s4YouAsk:(winner,last)=>`这一次提问的是你（「${last}」）。「${winner}」和你的提问最匹配——它的信息便条流进了你这里。`,
   s4OtherWins:(winner,last)=>`「${winner}」和提问最匹配——它的信息便条被递给了「${last}」。`,
   s4Mask:'读者之后的词被盖住——禁止偷看未来',
-  s4Weights:'匹配分变成总和为 100% 的注意力份额：',
+  s4B1Head:'1 · 谁在和谁说话',
+  s4B2Head:'2 · 读者收到了什么',
+  s4MixLead:'每个更早的词把自己的便条倒进读者的杯子——注意力越多，倒得越多。读者的新含义，就是杯中的混合：',
+  s4Mix:(last)=>`「${last}」的新含义 =`,
   s4KV:'省力机制：工厂把每张名牌和便条都存进文件柜，不必每次从头重读整句话。现代工厂还让 4 个提问者共用 1 个柜子。（论文里叫 KV 缓存和 GQA——Llama 3 8B：32 个提问者、8 个柜子。）',
   s4ClickPrompt:'…点击上方的词',
   s5Title:'第五站 · 私人车间——工厂的记忆',
@@ -446,45 +452,177 @@ function Scene3({L,prompt,progress}){
     </SceneFrame>);
 }
 
-function Scene4({L,prompt}){
-  const [revealed,setRevealed]=useState([]);
-  const last=prompt.tokens[prompt.reader];
-  const hero=prompt.tokens[prompt.hero];
+const MIX_COLORS=[BLUE,GREEN,'#8B5CF6','#C7791B'];
+function tokBoxW(t){return t.length*10.5+26;}
+
+// Beat 1 of the meeting room: arc diagram — who talks to whom.
+function AttnArcs({L,prompt,revealed,onReveal}){
   const scores=prompt.att;
   const exp=scores.map(a=>revealed.includes(a.i)?Math.exp(a.s):0);
   const sum=exp.reduce((a,b)=>a+b,0)||1;
-  const allIn=revealed.length===scores.length;
+  const widths=prompt.tokens.map((t,i)=>tokBoxW(t)+(i===prompt.reader?24:0));
+  const xs=[]; let x=10;
+  widths.forEach(w=>{xs.push(x); x+=w+10;});
+  const W=x+4, TOPY=150;
+  const cx=(i)=>xs[i]+widths[i]/2;
   return (
-    <SceneFrame title={L.s4Title} lead={L.s4Lead(last,hero)} aside={L.s4KV} nerd={L.s4Nerd}>
-      <SentenceRow prompt={prompt} maskFrom={prompt.reader}
-        onTok={(i)=>setRevealed(r=>r.includes(i)?r:[...r,i])} active={revealed}/>
-      <div style={{fontSize:12.5,color:'var(--faint)',marginBottom:14}}>🚫 {L.s4Mask}</div>
-      <div className="wb-card" style={{padding:'14px 18px',maxWidth:560}}>
-        <div style={{fontSize:14,fontWeight:800,marginBottom:8}}>{L.s4Weights}</div>
-        {scores.map(a=>{
-          const w=revealed.includes(a.i)?exp[scores.indexOf(a)]/sum:0;
-          const isHero=a.i===prompt.hero;
+    <svg viewBox={`0 0 ${W} 196`} style={{width:'100%',maxWidth:W,display:'block'}}>
+      {scores.map(a=>{
+        const on=revealed.includes(a.i);
+        const w=on?exp[scores.indexOf(a)]/sum:0;
+        const h=34+(prompt.reader-a.i)*24;
+        const midX=(cx(a.i)+cx(prompt.reader))/2;
+        const isHero=a.i===prompt.hero;
+        return (
+          <path key={a.i} d={`M ${cx(a.i)} ${TOPY-6} Q ${midX} ${TOPY-6-h*2} ${cx(prompt.reader)} ${TOPY-6}`}
+            fill="none" stroke={on?(isHero?RUST:BLUE):'rgba(43,43,43,.25)'}
+            strokeWidth={on?2+w*16:1.5} strokeDasharray={on?'none':'5 5'}
+            strokeLinecap="round" opacity={on?.85:1} style={{transition:'stroke-width .45s'}}/>);
+      })}
+      {/* labels after arcs so the white halo sits on top of every stroke */}
+      {scores.map(a=>{
+        const on=revealed.includes(a.i);
+        if(!on) return null;
+        const w=exp[scores.indexOf(a)]/sum;
+        const h=34+(prompt.reader-a.i)*24;
+        const midX=(cx(a.i)+cx(prompt.reader))/2;
+        const isHero=a.i===prompt.hero;
+        return (
+          <text key={a.i} x={midX} y={TOPY-10-h} textAnchor="middle" fontSize="13" fontWeight="800"
+            fill={isHero?RUST:BLUE} stroke="#fff" strokeWidth="5" paintOrder="stroke"
+            fontFamily="Nunito,sans-serif">{(w*100).toFixed(0)}%</text>);
+      })}
+      {prompt.tokens.map((t,i)=>{
+        const w=widths[i], clickable=i<prompt.reader, isHero=i===prompt.hero;
+        return (
+          <g key={i} onClick={clickable?()=>onReveal(i):undefined}
+            style={{cursor:clickable?'pointer':'default'}}>
+            <rect x={xs[i]} y={TOPY} width={w} height={36} rx="9"
+              fill={isHero?HL:i===prompt.reader?'#E8F1FF':'#fff'} stroke={INK} strokeWidth="2"/>
+            <text x={xs[i]+w/2} y={TOPY+24} textAnchor="middle" fontSize="15.5" fontWeight="700"
+              fontFamily="Nunito,sans-serif">{t}{i===prompt.reader?' ❓':''}</text>
+          </g>);
+      })}
+    </svg>);
+}
+
+// Beat 2: every earlier word pours its note into the reader's cup — weighted blend.
+function AttnCup({L,prompt,lang}){
+  const scores=prompt.att;
+  const exp=scores.map(a=>Math.exp(a.s));
+  const sum=exp.reduce((a,b)=>a+b,0);
+  const shares=scores.map((a,k)=>({i:a.i,w:exp[k]/sum}));
+  const last=prompt.tokens[prompt.reader];
+  const W=380, CUPX=130, CUPW=120, CUPY=150, CUPH=84;
+  const n=shares.length, span=W-40;
+  let yAcc=CUPY+CUPH-3;
+  const bands=shares.map((s,k)=>{
+    const h=Math.max(3,s.w*(CUPH-8));
+    yAcc-=h;
+    return {y:yAcc,h,color:MIX_COLORS[k%MIX_COLORS.length],...s};
+  });
+  return (
+    <div>
+      <svg viewBox={`0 0 ${W} 275`} style={{width:'100%',maxWidth:W,display:'block'}}>
+        {shares.map((s,k)=>{
+          const chipW=tokBoxW(prompt.tokens[s.i]);
+          const chipX=20+span*(k+0.5)/n-chipW/2;
+          const sw=6+s.w*30;
+          const tipX=CUPX+CUPW*(k+0.5)/n;
           return (
-            <div key={a.i} style={{display:'flex',alignItems:'center',gap:8,margin:'5px 0'}}>
-              <span style={{width:90,fontWeight:isHero?800:600,
-                background:isHero&&w>0?HL:'transparent',borderRadius:6,padding:'0 4px'}}>{prompt.tokens[a.i]}</span>
-              <div style={{flex:1,height:18,border:`1.5px solid ${INK}`,borderRadius:6,overflow:'hidden',background:'#fff'}}>
-                <div className="barfill" style={{width:(w*100)+'%',height:'100%',
-                  background:isHero?RUST:BLUE,opacity:isHero?1:.65}}/>
-              </div>
-              <span style={{width:48,fontSize:13,fontWeight:800,textAlign:'right'}}>
-                {w>0?(w*100).toFixed(0)+'%':'·'}</span>
-            </div>);
+            <g key={s.i}>
+              <polygon points={`${chipX+chipW/2-sw/2},48 ${chipX+chipW/2+sw/2},48 ${tipX+3},${CUPY+4} ${tipX-3},${CUPY+4}`}
+                fill={MIX_COLORS[k%MIX_COLORS.length]} opacity=".5" className="pop-anim"
+                style={{animationDelay:(k*0.18)+'s'}}/>
+              <rect x={chipX} y={14} width={chipW} height={34} rx="9"
+                fill={MIX_COLORS[k%MIX_COLORS.length]} stroke={INK} strokeWidth="2"/>
+              <text x={chipX+chipW/2} y={36} textAnchor="middle" fontSize="15" fontWeight="800"
+                fill="#fff" fontFamily="Nunito,sans-serif">{prompt.tokens[s.i]}</text>
+              <text x={chipX+chipW/2} y={62} textAnchor="middle" fontSize="12.5" fontWeight="800"
+                fill={INK}>{(s.w*100).toFixed(0)}%</text>
+            </g>);
         })}
-        <div style={{marginTop:10,fontSize:14.5,minHeight:22}}>
-          {allIn? <span className="pop-anim" style={{color:GREEN,fontWeight:800}}>✓ {(()=>{
-                    const winner=prompt.tokens[scores.reduce((a,b)=>b.s>a.s?b:a).i];
-                    if(prompt.hero===prompt.reader) return L.s4YouAsk(winner,last);
-                    return winner===hero?L.s4YouGeneric(hero,last):L.s4OtherWins(winner,last);
-                  })()}</span>
-                : <span style={{color:'var(--faint)'}}>{L.s4ClickPrompt}</span>}
-        </div>
+        {bands.map((b,k)=>(
+          <rect key={k} x={CUPX+3} y={b.y} width={CUPW-6} height={b.h} fill={b.color}
+            opacity=".75" className="grow-anim" style={{animationDelay:(0.3+k*0.18)+'s'}}/>))}
+        <path d={`M ${CUPX} ${CUPY} L ${CUPX} ${CUPY+CUPH-10} Q ${CUPX} ${CUPY+CUPH} ${CUPX+10} ${CUPY+CUPH}
+                  L ${CUPX+CUPW-10} ${CUPY+CUPH} Q ${CUPX+CUPW} ${CUPY+CUPH} ${CUPX+CUPW} ${CUPY+CUPH-10}
+                  L ${CUPX+CUPW} ${CUPY}`}
+          fill="none" stroke={INK} strokeWidth="3"/>
+        <text x={CUPX+CUPW/2} y={CUPY+CUPH+28} textAnchor="middle" fontSize="20" fontWeight="700"
+          fontFamily="Caveat,cursive">☕ {last}</text>
+      </svg>
+      <div style={{fontSize:15,fontWeight:800,marginTop:8}}>
+        {L.s4Mix(last)}{' '}
+        {shares.map((s,k)=>(
+          <span key={s.i}>
+            <span style={{color:MIX_COLORS[k%MIX_COLORS.length]}}>
+              {(s.w*100).toFixed(0)}% {prompt.tokens[s.i]}</span>
+            {k<shares.length-1?' + ':''}
+          </span>))}
       </div>
+    </div>);
+}
+
+function Scene4({L,prompt,lang,progress}){
+  const [revealed,setRevealed]=useState([]);
+  const [beatSel,setBeatSel]=useState(0);
+  useEffect(()=>{setRevealed([]);setBeatSel(0);},[prompt.id]);
+  const beat=progress==null?beatSel:(progress<0.5?0:1);
+  // stepper: ←/→ move between beats first, then fall through to scene navigation
+  const beatRef=useRef(beat); beatRef.current=beat;
+  useEffect(()=>{
+    if(progress!=null) return;
+    window.__sceneKeyHandler=(key)=>{
+      if(key==='ArrowRight'&&beatRef.current<1){setBeatSel(1);return true;}
+      if(key==='ArrowLeft'&&beatRef.current>0){setBeatSel(0);return true;}
+      return false;
+    };
+    return ()=>{window.__sceneKeyHandler=null;};
+  },[progress]);
+  const last=prompt.tokens[prompt.reader];
+  const hero=prompt.tokens[prompt.hero];
+  const scores=prompt.att;
+  const allIn=revealed.length===scores.length;
+  const heads=[L.s4B1Head,L.s4B2Head];
+  return (
+    <SceneFrame title={L.s4Title} lead={L.s4Lead(last,hero)} aside={beat===1?L.s4KV:null} nerd={L.s4Nerd}>
+      <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:12,flexWrap:'wrap'}}>
+        {heads.map((h,i)=>(
+          <button key={i} onClick={progress==null?()=>setBeatSel(i):undefined}
+            style={{cursor:progress==null?'pointer':'default',border:`2px solid ${INK}`,borderRadius:16,
+              padding:'3px 12px',fontSize:12.5,fontWeight:800,fontFamily:'Nunito,sans-serif',
+              background:i===beat?RUST:i<beat?'#E6F0E9':'#fff',color:i===beat?'#fff':INK}}>{h}</button>))}
+      </div>
+      {beat===0&&(
+        <div className="pop-anim">
+          <div style={{fontSize:12.5,color:'var(--faint)',marginBottom:8}}>🚫 {L.s4Mask}</div>
+          <div className="wb-card" style={{padding:'12px 14px 6px',width:'fit-content',maxWidth:'100%',minWidth:300}}>
+            <AttnArcs L={L} prompt={prompt} revealed={revealed}
+              onReveal={(i)=>setRevealed(r=>r.includes(i)?r:[...r,i])}/>
+            <div style={{margin:'6px 4px 10px',fontSize:14.5,minHeight:40,maxWidth:540}}>
+              {allIn? <span className="pop-anim" style={{color:GREEN,fontWeight:800}}>✓ {(()=>{
+                        const winner=prompt.tokens[scores.reduce((a,b)=>b.s>a.s?b:a).i];
+                        if(prompt.hero===prompt.reader) return L.s4YouAsk(winner,last);
+                        return winner===hero?L.s4YouGeneric(hero,last):L.s4OtherWins(winner,last);
+                      })()}</span>
+                    : <span style={{color:'var(--faint)'}}>{L.s4ClickPrompt}</span>}
+            </div>
+          </div>
+        </div>)}
+      {beat===1&&(
+        <div className="pop-anim">
+          <p style={{fontSize:15.5,maxWidth:680,marginTop:0}}>{L.s4MixLead}</p>
+          <div className="wb-card" style={{padding:'14px 18px',maxWidth:520}}>
+            <AttnCup L={L} prompt={prompt} lang={lang}/>
+          </div>
+        </div>)}
+      {progress==null&&(
+        <div style={{display:'flex',gap:10,marginTop:16}}>
+          <button className="wb-btn" disabled={beat===0} onClick={()=>setBeatSel(0)}>{L.s5Prev}</button>
+          <button className="wb-btn primary" disabled={beat===1} onClick={()=>setBeatSel(1)}
+            data-testid="attn-next">{L.s5Next}</button>
+        </div>)}
     </SceneFrame>);
 }
 
