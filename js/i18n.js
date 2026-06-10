@@ -36,6 +36,17 @@ const I18N = (function () {
       hobby2Title: "Video games",
       hobby2Desc: "Strategy and story-driven worlds. Will absolutely lose track of time.",
       photoCap: "me.jpg — coming soon",
+      hobbyGo: "See the journey →",
+
+      // hobby timeline pages
+      bdTitle: "Badminton",
+      bdSub: "A love-hate story — age 6 to now.",
+      vgTitle: "Video games",
+      vgSub: "From first save file to squad nights.",
+      tlHint: "scroll ↓",
+      tlPhoto: "photo coming soon ✏︎",
+      tlEnd: "— to be continued —",
+      backHome: "← Back home",
 
       // projects page
       projectsLabel: "Projects",
@@ -79,6 +90,17 @@ const I18N = (function () {
       hobby2Title: "打游戏",
       hobby2Desc: "策略类和剧情向的世界，一玩就忘了时间。",
       photoCap: "me.jpg —— 快了快了",
+      hobbyGo: "看看这段故事 →",
+
+      // hobby timeline pages
+      bdTitle: "羽毛球",
+      bdSub: "一个又爱又恨的故事——6 岁到现在。",
+      vgTitle: "打游戏",
+      vgSub: "从第一个存档到开黑之夜。",
+      tlHint: "往下滑 ↓",
+      tlPhoto: "照片快来了 ✏︎",
+      tlEnd: "—— 未完待续 ——",
+      backHome: "← 回首页",
 
       // projects page
       projectsLabel: "项目",
