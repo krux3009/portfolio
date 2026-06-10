@@ -1,0 +1,59 @@
+/* Journey of a Token — shared styles for stepper.html + scrolly.html.
+   --hdr drives the scrolly fixed-header offset (spacer + sticky top) so the
+   mobile media query can grow the header without breaking the pinning. */
+:root{
+  --paper:#FAF8F3; --ink:#2B2B2B; --blue:#2563EB; --rust:#C04A1A;
+  --green:#1E7A4D; --hl:#F5D547; --faint:rgba(43,43,43,.45);
+  --hdr:64px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);
+  font-family:'Nunito',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;}
+.hand{font-family:'Caveat',cursive}
+.wb-card{background:#fff;border:2px solid var(--ink);border-radius:14px;
+  box-shadow:4px 4px 0 rgba(43,43,43,.12);}
+.wb-btn{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;cursor:pointer;
+  background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:10px;
+  padding:10px 22px;box-shadow:3px 3px 0 rgba(43,43,43,.18);transition:transform .08s;}
+.wb-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(43,43,43,.2)}
+.wb-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(43,43,43,.2)}
+.wb-btn.primary{background:var(--blue);color:#fff;border-color:var(--ink)}
+.wb-btn.rust{background:var(--rust);color:#fff}
+.wb-btn:disabled{opacity:.35;cursor:default;transform:none}
+.tok{display:inline-block;border:2px solid var(--ink);border-radius:8px;padding:4px 10px;
+  margin:3px;background:#fff;font-weight:600;position:relative}
+.tok.hero{background:var(--hl)}
+.tok.future{opacity:.32;border-style:dashed}
+.tok.gen{background:#E8F1FF;border-color:var(--blue)}
+.tok.clickable{cursor:pointer}
+.tok.clickable:hover{transform:translateY(-2px)}
+input[type=range]{accent-color:var(--rust);width:100%}
+.nerd-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--faint);
+  border:1.5px dashed rgba(43,43,43,.35);border-radius:10px;padding:2px 10px;margin:0 0 10px}
+.drawer-scroll{overflow-x:auto;padding-bottom:10px}
+@keyframes stampIn{0%{transform:scale(2.2) rotate(-14deg);opacity:0}
+  60%{transform:scale(.92) rotate(2deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+@keyframes popIn{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes flashBox{0%{background:var(--hl)}100%{background:#fff}}
+@keyframes drawLine{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
+.stamp-anim{animation:stampIn .5s ease-out both}
+.pop-anim{animation:popIn .35s ease-out both}
+.flash{animation:flashBox .7s ease-out}
+.barfill{transition:width .45s cubic-bezier(.2,.8,.2,1)}
+
+/* ---- mobile ---- */
+@media (max-width:640px){
+  :root{--hdr:94px}
+  /* scrolly fixed header: title row + scrollable rail row */
+  .lj-header{flex-wrap:wrap;gap:8px;padding:8px 12px}
+  .lj-header h1{font-size:22px !important}
+  /* !important: the rail carries an inline flexWrap:'wrap' for desktop */
+  .lj-rail{order:3;width:100%;flex-wrap:nowrap !important;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  .lj-rail::-webkit-scrollbar{display:none}
+  h2.hand{font-size:30px !important}
+  /* tall pinned scenes: start at the top and let the pinned box scroll internally
+     instead of clipping both ends (inline style centers it on desktop) */
+  .lj-sticky{align-items:flex-start !important;overflow-y:auto;
+    max-height:calc(100vh - var(--hdr))}
+}

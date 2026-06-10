@@ -28,7 +28,9 @@ After deploy, hard-refresh (Cmd+Shift+R). Still stale → hPanel → Cache Manag
 - `js/hobbies-data.js` (`HOBBY_TIMELINES`) → `js/timeline.js` renders scroll-driven timelines. A hobby page selects its dataset via `<body data-hobby="badminton|games">`; the center line grows with scroll progress, milestones reveal via IntersectionObserver.
 - `js/decor.js` — landing-page reveal-on-scroll + easter eggs (shuttlecock click, console message).
 
-**Showcased projects are self-contained.** Each lives in `projects/<kebab-name>/` with its own inline CSS and its own inline i18n — they do NOT load the site's `css/styles.css` or `js/i18n.js` (see `projects/llm-journey/`). Only the shared color tokens (`--paper/--ink/--blue/--rust/--green`) are duplicated to match the site's sketchbook look.
+**Showcased projects are self-contained.** Each lives in `projects/<kebab-name>/` with its own CSS and its own i18n — they do NOT load the site's `css/styles.css` or `js/i18n.js`. Only the shared color tokens (`--paper/--ink/--blue/--rust/--green`) are duplicated to match the site's sketchbook look.
+
+**llm-journey has a local build step** (the one exception to "no build"): source of truth is `projects/llm-journey/src/*.jsx` (shared.jsx = i18n + toy LM + scenes, used by both variants; stepper.jsx / scrolly.jsx = shells). After editing src/, run `projects/llm-journey/build.sh` (Babel via npx, cached in gitignored `.build-cache/`) and commit the compiled `dist/*.js` — the server has no build pipeline; dist/ is what the HTML loads. Never edit dist/ or the page HTML's script tags by hand. Copy rule for this project: metaphor-first body text; official terms only in the per-station "📄 in the papers" tag and the Station-8 decoder.
 
 **Styling.** All site styles in `css/styles.css`; design tokens are CSS custom properties at the top (`:root`). Fonts: Caveat (headings) + Nunito (body) from Google Fonts.
 
