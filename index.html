@@ -37,12 +37,44 @@
   </span>
 </nav>
 
-<header class="hero">
-  <span class="kicker" data-i18n="kicker">SMU IS · AI PRODUCT OPS @ STEPFUN</span>
-  <h1 data-i18n-html="heroH1">Hi, I’m Li Xuan —<br>I turn “how does that work?”<br>into <span class="hl">things you can click</span>.</h1>
-  <p class="tag" data-i18n="heroTag">IS student @ SMU · AI product ops intern @ StepFun.
-     I build interactive explainers and tools that satisfy my own curiosity first — maybe yours too.</p>
-  <a class="btn" href="/projects/" data-i18n="heroCta">See my projects →</a>
+<header class="hero hero-2col">
+  <div class="hero-text">
+    <span class="kicker rise r1" data-i18n="kicker">SMU IS · AI PRODUCT OPS @ STEPFUN</span>
+    <h1 class="rise r2" data-i18n-html="heroH1">Hi, I’m Li Xuan —<br>I turn “how does that work?”<br>into <span class="hl">things you can click</span>.</h1>
+    <p class="tag rise r3" data-i18n="heroTag">IS student @ SMU · AI product ops intern @ StepFun.
+       I build interactive explainers and tools that satisfy my own curiosity first — maybe yours too.</p>
+    <a class="btn rise r4" href="/projects/" data-i18n="heroCta">See my projects →</a>
+  </div>
+  <div class="hero-visual rise r3" aria-hidden="true">
+    <!-- polaroid: replace the placeholder div with <img src="/assets/me.jpg" alt=""> when photo exists -->
+    <figure class="polaroid">
+      <span class="tape"></span>
+      <div class="photo-slot">
+        <svg viewBox="0 0 80 80" class="photo-doodle">
+          <circle cx="40" cy="30" r="13" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M16 70 Q 40 44 64 70" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M33 27 q 3 -4 6 0 M42 27 q 3 -4 6 0" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M34 35 q 6 5 12 0" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <figcaption data-i18n="photoCap">me.jpg — coming soon</figcaption>
+    </figure>
+    <svg class="doodle d-arrow float-a" viewBox="0 0 120 90">
+      <path d="M8 12 C 50 6, 88 24, 102 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M88 56 L 103 66 L 107 49" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <svg class="doodle d-star s1 float-b" viewBox="0 0 40 40">
+      <path d="M20 4 L23 16 L36 20 L23 24 L20 36 L17 24 L4 20 L17 16 Z" fill="currentColor"/>
+    </svg>
+    <svg class="doodle d-star s2 float-c" viewBox="0 0 40 40">
+      <path d="M20 4 L23 16 L36 20 L23 24 L20 36 L17 24 L4 20 L17 16 Z" fill="currentColor"/>
+    </svg>
+    <svg class="doodle d-shuttle float-b" id="shuttle" viewBox="0 0 64 64">
+      <circle cx="22" cy="44" r="9" fill="currentColor"/>
+      <path d="M28 36 L52 8 M28 38 L56 16 M30 40 L58 26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M27 33 L46 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div>
 </header>
 
 <div class="squiggle" aria-hidden="true">
@@ -51,26 +83,32 @@
   </svg>
 </div>
 
-<!-- Landing = personal intro, NOT the resume. Decoration pass planned for a future session. -->
-<h2 class="label" data-i18n="introLabel">Who I am</h2>
+<!-- Landing = personal intro, NOT the resume. -->
+<h2 class="label reveal" data-i18n="introLabel">Who I am</h2>
 <div class="intro">
-  <p data-i18n="introP1">[WHO I AM — 2–3 sentences. The person, not the resume.]</p>
-  <p data-i18n="introP2">[ANOTHER ANGLE — what you care about outside work/school.]</p>
+  <p class="reveal" data-i18n="introP1">[WHO I AM — 2–3 sentences. The person, not the resume.]</p>
+  <p class="reveal" data-i18n="introP2">[ANOTHER ANGLE — what you care about outside work/school.]</p>
 </div>
 
-<h2 class="label" data-i18n="hobbiesLabel">Hobbies &amp; interests</h2>
+<h2 class="label reveal" data-i18n="hobbiesLabel">Hobbies &amp; interests</h2>
 <div class="hobby-grid">
-  <div class="hobby">
-    <h3 data-i18n="hobby1Title">[HOBBY 1]</h3>
-    <p data-i18n="hobby1Desc">[one line]</p>
+  <div class="hobby reveal">
+    <svg class="hobby-icon" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="22" cy="44" r="9" fill="var(--rust)"/>
+      <path d="M28 36 L52 8 M28 38 L56 16 M30 40 L58 26 M27 33 L46 10" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h3 data-i18n="hobby1Title">Badminton</h3>
+    <p data-i18n="hobby1Desc">Smashes on weekends. Still chasing the perfect cross-court drop shot.</p>
   </div>
-  <div class="hobby">
-    <h3 data-i18n="hobby2Title">[HOBBY 2]</h3>
-    <p data-i18n="hobby2Desc">[one line]</p>
-  </div>
-  <div class="hobby">
-    <h3 data-i18n="hobby3Title">[HOBBY 3]</h3>
-    <p data-i18n="hobby3Desc">[one line]</p>
+  <div class="hobby reveal">
+    <svg class="hobby-icon" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="6" y="20" width="52" height="26" rx="13" fill="none" stroke="var(--ink)" stroke-width="3"/>
+      <path d="M18 28 v10 M13 33 h10" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="44" cy="29" r="3" fill="var(--green)"/>
+      <circle cx="50" cy="37" r="3" fill="var(--blue)"/>
+    </svg>
+    <h3 data-i18n="hobby2Title">Video games</h3>
+    <p data-i18n="hobby2Desc">Strategy and story-driven worlds. Will absolutely lose track of time.</p>
   </div>
 </div>
 
@@ -82,5 +120,6 @@
 </footer>
 
 <script src="/js/i18n.js"></script>
+<script src="/js/decor.js"></script>
 </body>
 </html>

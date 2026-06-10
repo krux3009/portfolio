@@ -31,12 +31,11 @@ const I18N = (function () {
       introP2:
         "[ANOTHER ANGLE — what you care about outside work/school, what you're trying to get better at.]",
       hobbiesLabel: "Hobbies & interests",
-      hobby1Title: "[HOBBY 1]",
-      hobby1Desc: "[one line — what it is and why you love it]",
-      hobby2Title: "[HOBBY 2]",
-      hobby2Desc: "[one line]",
-      hobby3Title: "[HOBBY 3]",
-      hobby3Desc: "[one line]",
+      hobby1Title: "Badminton",
+      hobby1Desc: "Smashes on weekends. Still chasing the perfect cross-court drop shot.",
+      hobby2Title: "Video games",
+      hobby2Desc: "Strategy and story-driven worlds. Will absolutely lose track of time.",
+      photoCap: "me.jpg — coming soon",
 
       // projects page
       projectsLabel: "Projects",
@@ -75,12 +74,11 @@ const I18N = (function () {
       introP1: "[我是谁 —— 两三句话。写人，不是写简历：在哪长大、对什么好奇、怎么走上做东西这条路。]",
       introP2: "[换个角度 —— 工作学习之外在乎什么、正在练什么。]",
       hobbiesLabel: "爱好与兴趣",
-      hobby1Title: "[爱好 1]",
-      hobby1Desc: "[一句话 —— 是什么、为什么喜欢]",
-      hobby2Title: "[爱好 2]",
-      hobby2Desc: "[一句话]",
-      hobby3Title: "[爱好 3]",
-      hobby3Desc: "[一句话]",
+      hobby1Title: "羽毛球",
+      hobby1Desc: "周末杀球。还在练那一拍完美的劈吊对角。",
+      hobby2Title: "打游戏",
+      hobby2Desc: "策略类和剧情向的世界，一玩就忘了时间。",
+      photoCap: "me.jpg —— 快了快了",
 
       // projects page
       projectsLabel: "项目",
