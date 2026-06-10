@@ -27,9 +27,9 @@ const I18N = (function () {
       // landing — intro (placeholders until decoration session)
       introLabel: "Who I am",
       introP1:
-        "[WHO I AM — 2–3 sentences. The person, not the resume: where you grew up, what makes you curious, how you ended up building things.]",
+        "Born and raised in Singapore, I grew up on sports — football first, then badminton. Video games arrived in my teens and amazed me twice over: how are these worlds even built, and how do they bring together people from completely different walks of life? Chasing those questions led me to Information Systems at SMU.",
       introP2:
-        "[ANOTHER ANGLE — what you care about outside work/school, what you're trying to get better at.]",
+        "These days you'll still find me on a badminton court most weekends, or in a game with a story worth staying up for. I like building things that explain things — this site is where they live.",
       hobbiesLabel: "Hobbies & interests",
       hobby1Title: "Badminton",
       hobby1Desc: "Smashes on weekends. Still chasing the perfect cross-court drop shot.",
@@ -71,8 +71,8 @@ const I18N = (function () {
 
       // landing — intro
       introLabel: "我是谁",
-      introP1: "[我是谁 —— 两三句话。写人，不是写简历：在哪长大、对什么好奇、怎么走上做东西这条路。]",
-      introP2: "[换个角度 —— 工作学习之外在乎什么、正在练什么。]",
+      introP1: "土生土长的新加坡人，从小在运动场上长大——先是足球，后来是羽毛球。十几岁才接触电子游戏，它让我惊讶了两次：这样的世界到底是怎么做出来的？它又凭什么能把天南地北、各行各业的人聚到一起？追着这两个问题，我走进了 SMU 的信息系统专业。",
+      introP2: "如今周末多半还在羽毛球场上，或者泡在一个剧情值得熬夜的游戏里。我喜欢做能把事情讲明白的东西——这个网站就是它们的家。",
       hobbiesLabel: "爱好与兴趣",
       hobby1Title: "羽毛球",
       hobby1Desc: "周末杀球。还在练那一拍完美的劈吊对角。",
