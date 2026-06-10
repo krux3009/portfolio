@@ -13,7 +13,6 @@
 // Add new projects to the TOP of the array so the newest shows first.
 
 const PROJECTS = [
-  // TODO(lixuan): this description is Claude's draft — rewrite it in your own voice.
   {
     title: "Journey of a Token",
     description: "How an LLM reads your sentence and writes back — an interactive explainer you can step through or scroll like a factory tour.",
