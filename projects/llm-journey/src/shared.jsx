@@ -43,6 +43,8 @@ en:{
   s4Nerd:'in the papers: “attention” — Query · Key · Value',
   s4Lead:(last,hero)=>`The only place where words talk to each other. The last word “${last}” must guess what comes next — so it holds up a question card, and every earlier word holds up a name-tag. Click each earlier word to compare its name-tag with the question.`,
   s4YouGeneric:(hero,last)=>`You, “${hero}”, match the question best — your note of information is handed to “${last}”.`,
+  s4YouAsk:(winner,last)=>`This time you, “${last}”, are the one asking. “${winner}” matches your question best — its note of information flows into you.`,
+  s4OtherWins:(winner,last)=>`“${winner}” matches the question best — its note of information is handed to “${last}”.`,
   s4Mask:'words after the reader are covered up — no peeking at the future',
   s4Weights:'match scores become shares of attention that add up to 100%:',
   s4KV:'Memory-saver: the factory files every name-tag and note in a cabinet, so it never has to re-read the whole sentence from scratch. Modern factories even let 4 question-askers share 1 cabinet. (Papers call this the KV cache and GQA — Llama 3 8B: 32 askers, 8 cabinets.)',
@@ -116,6 +118,8 @@ zh:{
   s4Nerd:'论文里叫：注意力 attention——Query · Key · Value',
   s4Lead:(last,hero)=>`词与词唯一能交流的地方。最后一个词「${last}」要猜接下来是什么——于是它举起一张提问卡，每个更早的词举起自己的名牌。点击每个早先的词，看它的名牌和提问卡有多匹配。`,
   s4YouGeneric:(hero,last)=>`你（「${hero}」）和提问最匹配——你的信息便条被递给了「${last}」。`,
+  s4YouAsk:(winner,last)=>`这一次提问的是你（「${last}」）。「${winner}」和你的提问最匹配——它的信息便条流进了你这里。`,
+  s4OtherWins:(winner,last)=>`「${winner}」和提问最匹配——它的信息便条被递给了「${last}」。`,
   s4Mask:'读者之后的词被盖住——禁止偷看未来',
   s4Weights:'匹配分变成总和为 100% 的注意力份额：',
   s4KV:'省力机制：工厂把每张名牌和便条都存进文件柜，不必每次从头重读整句话。现代工厂还让 4 个提问者共用 1 个柜子。（论文里叫 KV 缓存和 GQA——Llama 3 8B：32 个提问者、8 个柜子。）',
@@ -473,7 +477,11 @@ function Scene4({L,prompt}){
             </div>);
         })}
         <div style={{marginTop:10,fontSize:14.5,minHeight:22}}>
-          {allIn? <span className="pop-anim" style={{color:GREEN,fontWeight:800}}>✓ {L.s4YouGeneric(hero,last)}</span>
+          {allIn? <span className="pop-anim" style={{color:GREEN,fontWeight:800}}>✓ {(()=>{
+                    const winner=prompt.tokens[scores.reduce((a,b)=>b.s>a.s?b:a).i];
+                    if(prompt.hero===prompt.reader) return L.s4YouAsk(winner,last);
+                    return winner===hero?L.s4YouGeneric(hero,last):L.s4OtherWins(winner,last);
+                  })()}</span>
                 : <span style={{color:'var(--faint)'}}>{L.s4ClickPrompt}</span>}
         </div>
       </div>
