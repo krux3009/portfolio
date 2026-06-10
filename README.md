@@ -28,19 +28,32 @@ cd "Coding Projects/portfolio" && python3 -m http.server 8000
 
 Open http://localhost:8000. Always preview via the server, not `file://`.
 
-## Deploy / re-deploy (Hostinger hPanel)
+## Deploy (git auto-deploy — primary)
 
-1. Edit files **here, locally** — never edit on the server. This folder is the source of truth.
-2. Preview locally (above), click through every changed link.
-3. Zip the **contents** of this folder (not the folder itself), excluding junk:
+This repo is connected to Hostinger via GitHub App (hPanel → Advanced → Git).
+**Every push to `main` goes live at kruxqlyz.com in ~10 seconds.**
+
+```bash
+cd "Coding Projects/portfolio"
+git add -A && git commit -m "describe the change" && git push
+```
+
+Then hard-refresh the live site (Cmd+Shift+R). Still stale → hPanel → Cache Manager → purge.
+Deploy history / manual redeploy: hPanel → Advanced → Git → Deployments.
+
+Repos: [krux3009/portfolio](https://github.com/krux3009/portfolio) (canonical, live site serves this) ·
+[krux3009/llm-journey](https://github.com/krux3009/llm-journey) (standalone showcase mirror — sync manually after editing llm-journey here).
+
+## Deploy fallback (zip via File Manager)
+
+Only if git deploy is broken:
+
+1. Zip the **contents** of this folder (not the folder itself):
    ```bash
-   cd "Coding Projects/portfolio" && zip -r ../portfolio-deploy.zip . -x "*.DS_Store" -x "__MACOSX/*" -x "variants/*"
+   cd "Coding Projects/portfolio" && zip -r ../portfolio-deploy.zip . -x "*.DS_Store" -x ".git/*"
    ```
-4. hpanel.hostinger.com → Websites → domain → Manage → Files → **File Manager** → `public_html`.
-5. Upload the zip → right-click → Extract here (overwrites) → delete the zip.
-6. Hard-refresh the live site (Cmd+Shift+R). Still stale → hPanel → Cache Manager → purge.
-
-**One-file shortcut:** if you only changed one file (e.g. added a project card = `js/projects-data.js`), upload just that file into its matching path in File Manager instead of re-zipping everything.
+2. hPanel → Files → File Manager → `public_html` → upload zip → Extract here → delete zip.
+3. Verify files sit directly in `public_html`, not in a nested subfolder.
 
 ## Conventions
 
