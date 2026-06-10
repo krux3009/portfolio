@@ -1,3 +1,8 @@
+# Repo docs (README.md, CLAUDE.md) deploy with the site but aren't pages — return 403.
+<FilesMatch "\.md$">
+  Require all denied
+</FilesMatch>
+
 # CSS/JS: always revalidate so visitors get fresh files right after a deploy.
 # (Files are tiny; the ETag/304 round-trip is negligible.)
 <IfModule mod_headers.c>
