@@ -5,14 +5,19 @@ Li Xuan's personal portfolio. **This folder is a 1:1 mirror of Hostinger `public
 ## Layout
 
 ```
-index.html              landing page (hero / about / projects / contact)
+index.html              landing page (hero + personal intro + hobbies — NOT the resume)
+projects/index.html     projects tab (card grid)
+resume.html             resume tab (stub until resume is done)
 css/styles.css          all styles; design tokens as CSS custom properties
-js/projects-data.js     project card data array — EDIT THIS to add a new project
+js/i18n.js              EN/中文 dictionary + system-language detection — ALL page copy lives here
+js/projects-data.js     project card data array (bilingual fields) — EDIT THIS to add a new project
 js/main.js              renders project cards from the array
 assets/                 favicon, photos, thumbnails
 projects/               one subfolder per showcased project (kebab-case names)
   llm-journey/          "Journey of a Token" interactive LLM explainer
 ```
+
+Editing page text: change BOTH `en:` and `zh:` entries in `js/i18n.js` (the HTML only holds English fallbacks for no-JS visitors). Contact links live in each page's nav dropdown.
 
 ## Adding a new project
 
