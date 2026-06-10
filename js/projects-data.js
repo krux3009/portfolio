@@ -21,7 +21,6 @@ const PROJECTS = [
     year: "2026",
     link: "projects/llm-journey/",
   },
-  // TODO(lixuan): your words here too.
   {
     title: "Investment Dashboard",
     description: "A dashboard for my moomoo stock portfolio — positions, performance, and daily market digests in one view. Python backend, Next.js front end.",
