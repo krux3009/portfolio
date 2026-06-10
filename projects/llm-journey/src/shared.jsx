@@ -27,17 +27,21 @@ en:{
   s1Title:'Station 1 · The front door — the chopping machine',
   s1Nerd:'in the papers: “tokenizer”',
   s1Lead:'The factory cannot read letters. A chopping machine splits your sentence into pieces and hands each piece a number — its place in a fixed catalogue of 128,256 pieces.',
-  s1Hover:'Hover any piece to see its catalogue number.',
+  s1Chop:'✂ Chop!', s1Undo:'↺ Put it back',
+  s1Tickets:'every piece collects a numbered catalogue ticket',
   s1Sub:'Rare words get chopped into smaller pieces:',
   s1Aside:'This is why these AIs once miscounted the R’s in “strawberry” — the factory sees catalogue numbers, never letters.',
   s2Title:'Station 2 · The meaning desk',
   s2Nerd:'in the papers: “embedding”',
-  s2Lead:(w)=>`Your number is traded for an arrow that points at your meaning. Words that mean similar things point in similar directions. You, “${w}”, get the arrow the factory learned from billions of sentences.`,
+  s2Lead:(w)=>`Your number is traded for an arrow that points at your meaning. Words that mean similar things live in the same neighbourhood of the map. You, “${w}”, get the spot the factory learned from billions of sentences.`,
   s2Hover:'Hover the dots — neighbours share meaning.',
+  s2Map:'the meaning map',
+  s2Groups:['royalty','places','pets','story words'],
   s2Real:'Drawn flat here. In the real factory your arrow is a list of 4,096 numbers.',
   s3Title:'Station 3 · The order stamp',
   s3Nerd:'in the papers: “positional encoding (RoPE)”',
   s3Lead:'Same word, different seat in the sentence → a different stamp. The stamp twists your arrow by an angle that depends on your seat number, so the factory can later feel which word came first and how far apart two words sit.',
+  s3SeatRow:'watch the same word change seats:',
   s3Drag:'Drag your seat position:', s3Pos:(p)=>`seat ${p}`, s3Ghost:'arrow before the twist',
   s4Title:'Station 4 · The meeting room',
   s4Nerd:'in the papers: “attention” — Query · Key · Value',
@@ -75,6 +79,7 @@ en:{
   s6Lead:'You repeat meeting-room → workshop 32 times. The golden rule: every station only ADDS a small correction onto your arrow — nothing is ever erased. Between stations, a gauge re-standardises your arrow’s length so the additions never blow up.',
   s6Scrub:'Scrub through the 32 blocks:', s6Block:(n)=>`block ${n} / 32`,
   s6Notes:(n)=>`${n} margin notes accumulated`,
+  s6StopA:'meeting', s6StopB:'workshop',
   s6Gauge:'length gauge', s6GaugeSub:'length → standard ✓',
   s7Title:'Final station · THE LOOP',
   s7Nerd:'in the papers: “next-token prediction” · “logits” · “sampling”',
@@ -85,7 +90,7 @@ en:{
   s7Sample:'🎲 Draw', s7Greedy:'Pick top', s7Auto:'▶ Auto-write', s7Stop:'■ Stop', s7Reset:'Reset',
   s7Loops:(n)=>`factory ran ${n} time${n===1?'':'s'}`,
   s7Done:(n)=>`Reply complete — the factory ran end-to-end ${n} times, once per piece.`,
-  s7Dist:'chance of being the next piece',
+  s7Wheel:'the draw wheel — bigger slice, bigger chance',
   s7Cut:'dropped by top-p',
   s7Pipe:['chop','look up meaning','32 blocks','score','draw'],
   s8Title:'Exit gift · the jargon decoder',
@@ -105,17 +110,21 @@ zh:{
   s1Title:'第一站 · 工厂大门——切片机',
   s1Nerd:'论文里叫：分词器 tokenizer',
   s1Lead:'工厂读不懂字母。一台切片机把句子切成词片，每片领到一个编号——它在一本固定目录（共 128,256 片）里的位置。',
-  s1Hover:'悬停任意词片，看它的目录编号。',
+  s1Chop:'✂ 切！', s1Undo:'↺ 拼回去',
+  s1Tickets:'每片领到一张目录号码票',
   s1Sub:'生僻词会被切成更小的片：',
   s1Aside:'这就是这类 AI 曾数错 strawberry 里有几个 R 的原因——工厂只看目录编号，从不看字母。',
   s2Title:'第二站 · 语义服务台',
   s2Nerd:'论文里叫：词嵌入 embedding',
-  s2Lead:(w)=>`你的编号被换成一支指向「你的意思」的箭头。意思相近的词，箭头方向也相近。你（「${w}」）领到的是工厂从几十亿个句子里学来的那支箭头。`,
+  s2Lead:(w)=>`你的编号被换成「语义地图」上的一个位置。意思相近的词，住在地图上同一个街区。你（「${w}」）的位置，是工厂从几十亿个句子里学来的。`,
   s2Hover:'悬停圆点——相邻的词意思相近。',
-  s2Real:'这里画成了平面。真实工厂里，你的箭头是一串 4,096 个数字。',
+  s2Map:'语义地图',
+  s2Groups:['王室','地名','宠物','故事词'],
+  s2Real:'这里画成了平面。真实工厂里，你的位置是一串 4,096 个数字。',
   s3Title:'第三站 · 顺序印章',
   s3Nerd:'论文里叫：位置编码 RoPE',
   s3Lead:'同一个词，坐在句子的不同位置 → 盖不同的章。印章按你的座位号把箭头转一个角度，让工厂之后能感觉到谁先谁后、隔了多远。',
+  s3SeatRow:'看同一个词换座位：',
   s3Drag:'拖动你的座位位置：', s3Pos:(p)=>`座位 ${p}`, s3Ghost:'旋转前的箭头',
   s4Title:'第四站 · 会议室',
   s4Nerd:'论文里叫：注意力 attention——Query · Key · Value',
@@ -153,6 +162,7 @@ zh:{
   s6Lead:'「会议室 → 车间」你要重复 32 次。黄金法则：每一站只往你的箭头上「加」一笔小修正——什么都不会被擦掉。站与站之间有一个校准仪，把箭头长度调回标准，防止越加越大。',
   s6Scrub:'拖动浏览 32 个厂块：', s6Block:(n)=>`第 ${n} / 32 块`,
   s6Notes:(n)=>`已累积 ${n} 条页边批注`,
+  s6StopA:'会议室', s6StopB:'车间',
   s6Gauge:'长度校准仪', s6GaugeSub:'长度 → 标准 ✓',
   s7Title:'终点站 · 循环',
   s7Nerd:'论文里叫：下一词预测 · logits · 抽样 sampling',
@@ -163,7 +173,7 @@ zh:{
   s7Sample:'🎲 抽一片', s7Greedy:'选最高', s7Auto:'▶ 自动写', s7Stop:'■ 停止', s7Reset:'重置',
   s7Loops:(n)=>`工厂已运转 ${n} 次`,
   s7Done:(n)=>`回复完成——工厂端到端运转了 ${n} 次，每个词片一次。`,
-  s7Dist:'成为下一个词片的机会',
+  s7Wheel:'抽签转盘——扇区越大，机会越大',
   s7Cut:'被 top-p 舍弃',
   s7Pipe:['切片','查语义','32 厂块','打分','抽签'],
   s8Title:'出口礼物 · 术语解码器',
@@ -374,19 +384,60 @@ function Scene0({L,prompt,setPromptId}){
     </SceneFrame>);
 }
 
+// The chopping machine: one continuous sentence ribbon → blade sweeps →
+// pieces drift apart → each collects a numbered catalogue ticket.
 function Scene1({L,prompt,progress}){
-  const n=prompt.tokens.length;
-  const shown=progress==null?n:Math.max(1,Math.round(progress*n));
+  const [chopSel,setChopSel]=useState(false);
+  useEffect(()=>{setChopSel(false);},[prompt.id]);
+  // t: 0 = intact ribbon, 1 = fully chopped (stepper animates via CSS, scrolly scrubs)
+  const t=progress==null?(chopSel?1:0):Math.max(0,Math.min(1,(progress-0.1)/0.55));
+  const ticketsOn=t>0.8;
+  const widths=prompt.tokens.map(tk=>tokBoxW(tk));
+  const xs=[]; let x=12;
+  widths.forEach(w=>{xs.push(x); x+=w;});
+  const GAP=20, ribbonW=x-12;
+  const W=x+12+(prompt.tokens.length-1)*GAP, TOPY=34;
+  const trans={transition:'all .7s cubic-bezier(.2,.8,.2,1)'};
   return (
     <SceneFrame title={L.s1Title} lead={L.s1Lead} aside={L.s1Aside} nerd={L.s1Nerd}>
-      <div style={{fontSize:13,color:'var(--faint)',marginBottom:4}}>{L.s1Hover}</div>
-      <div>
-        {prompt.tokens.slice(0,shown).map((t,i)=>(
-          <span key={i} className={'tok pop-anim'+(i===prompt.hero?' hero':'')}
-            title={'ID '+prompt.ids[i]} style={{animationDelay:(i*0.08)+'s'}}>
-            {t}<span style={{display:'block',fontSize:11,color:BLUE,fontWeight:800}}>#{prompt.ids[i]}</span>
-          </span>))}
+      <div className="wb-card" style={{padding:'10px 16px',width:'fit-content',maxWidth:'100%'}}>
+        <svg viewBox={`0 0 ${W} 128`} style={{width:'100%',maxWidth:W,display:'block'}}>
+          {/* intact ribbon outline, fades as the pieces take over */}
+          <rect x={12} y={TOPY} width={ribbonW} height={40} rx={10} fill="none"
+            stroke={INK} strokeWidth="2.5" opacity={1-t} style={trans}/>
+          {/* blade sweeps across as t goes 0→1 */}
+          <text x={12+t*ribbonW} y={TOPY-10} textAnchor="middle" fontSize="20"
+            opacity={t<=0?0:t>=1?0:1} style={trans}>✂️</text>
+          {prompt.tokens.map((tk,i)=>{
+            const isHero=i===prompt.hero;
+            return (
+              <g key={i} transform={`translate(${i*GAP*t},0)`} style={trans}>
+                <rect x={xs[i]} y={TOPY} width={widths[i]} height={40} rx={10}
+                  fill={isHero?HL:'#fff'} fillOpacity={isHero?1:t}
+                  stroke={INK} strokeWidth="2" strokeOpacity={t} style={trans}/>
+                {/* cut line at this piece's left edge while still a ribbon */}
+                {i>0&&<line x1={xs[i]} y1={TOPY+3} x2={xs[i]} y2={TOPY+37}
+                  stroke={RUST} strokeWidth="2" strokeDasharray="4 4"
+                  opacity={t<0.5?t*1.6:Math.max(0,(1-t)*1.6)} style={trans}/>}
+                <text x={xs[i]+widths[i]/2} y={TOPY+26} textAnchor="middle" fontSize="16"
+                  fontWeight="700" fontFamily="Nunito,sans-serif">{tk}</text>
+                {/* catalogue ticket */}
+                <g className={ticketsOn?'stamp-anim':''} opacity={ticketsOn?1:0}
+                  style={{animationDelay:(i*0.1)+'s'}}>
+                  <rect x={xs[i]+widths[i]/2-29} y={TOPY+52} width={58} height={24} rx={5}
+                    fill="#F0F5FF" stroke={BLUE} strokeWidth="1.5" strokeDasharray="4 3"/>
+                  <text x={xs[i]+widths[i]/2} y={TOPY+68} textAnchor="middle" fontSize="12.5"
+                    fontWeight="800" fill={BLUE} fontFamily="Nunito,sans-serif">#{prompt.ids[i]}</text>
+                </g>
+              </g>);
+          })}
+        </svg>
+        <div style={{fontSize:12.5,color:'var(--faint)',margin:'2px 2px 6px',minHeight:18}}>
+          {ticketsOn?'🎟 '+L.s1Tickets:''}</div>
       </div>
+      {progress==null&&(
+        <button className="wb-btn rust" data-testid="chop" style={{marginTop:14}}
+          onClick={()=>setChopSel(c=>!c)}>{chopSel?L.s1Undo:L.s1Chop}</button>)}
       <div style={{marginTop:20,fontSize:15}}>
         {L.s1Sub}{' '}
         <span className="tok">token<span style={{display:'block',fontSize:11,color:BLUE}}>#5963</span></span>
@@ -397,10 +448,10 @@ function Scene1({L,prompt,progress}){
 }
 
 const MEANING_DOTS=[
-  {w:'king',x:62,y:38,c:0},{w:'queen',x:78,y:50,c:0},{w:'prince',x:55,y:58,c:0},
-  {w:'Paris',x:198,y:36,c:1},{w:'France',x:214,y:52,c:1},{w:'London',x:182,y:55,c:1},
-  {w:'cat',x:120,y:128,c:2},{w:'dog',x:140,y:140,c:2},{w:'kitten',x:104,y:142,c:2},
-  {w:'time',x:226,y:120,c:3},{w:'once',x:243,y:135,c:3},{w:'story',x:212,y:140,c:3},
+  {w:'king',x:36,y:44,c:0},{w:'queen',x:78,y:36,c:0},{w:'prince',x:50,y:72,c:0},
+  {w:'Paris',x:186,y:40,c:1},{w:'France',x:232,y:62,c:1},{w:'London',x:178,y:68,c:1},
+  {w:'cat',x:88,y:142,c:2},{w:'dog',x:138,y:158,c:2},{w:'kitten',x:78,y:168,c:2},
+  {w:'time',x:212,y:132,c:3},{w:'once',x:252,y:152,c:3},{w:'story',x:202,y:160,c:3},
 ];
 const DOT_COLORS=[BLUE,GREEN,RUST,'#8B5CF6'];
 function Scene2({L,prompt}){
@@ -411,16 +462,25 @@ function Scene2({L,prompt}){
   return (
     <SceneFrame title={L.s2Title} lead={L.s2Lead(heroWord)} aside={L.s2Real} nerd={L.s2Nerd}>
       <div style={{fontSize:13,color:'var(--faint)',marginBottom:4}}>{L.s2Hover}</div>
-      <div className="wb-card" style={{padding:10,display:'inline-block'}}>
-        <svg width="300" height="190">
-          <line x1="20" y1="170" x2="290" y2="170" stroke={INK} strokeWidth="1.5"/>
-          <line x1="20" y1="170" x2="20" y2="10" stroke={INK} strokeWidth="1.5"/>
-          <line x1="20" y1="170" x2={heroDot.x} y2={heroDot.y} stroke={heroColor} strokeWidth="4"
-            strokeLinecap="round" strokeDasharray="300" style={{animation:'drawLine 1.1s ease-out both'}}/>
+      <div className="wb-card" style={{padding:10,display:'inline-block',maxWidth:'100%'}}>
+        <svg viewBox="0 0 330 212" style={{width:'100%',maxWidth:330,display:'block'}}>
+          <text x="322" y="206" textAnchor="end" fontSize="15" fontFamily="Caveat,cursive"
+            fill="rgba(43,43,43,.5)">🗺 {L.s2Map}</text>
+          {/* neighbourhoods: same-meaning words live together */}
+          {[{cx:64,cy:54,rx:52,ry:36},{cx:206,cy:54,rx:56,ry:34},
+            {cx:110,cy:154,rx:56,ry:32},{cx:230,cy:146,rx:54,ry:32}].map((e,c)=>(
+            <g key={c} opacity={hov!==null&&MEANING_DOTS[hov].c!==c?0.25:1} style={{transition:'opacity .25s'}}>
+              <ellipse cx={e.cx} cy={e.cy} rx={e.rx} ry={e.ry} fill={DOT_COLORS[c]} fillOpacity=".07"
+                stroke={DOT_COLORS[c]} strokeWidth="1.5" strokeDasharray="5 4" strokeOpacity=".5"/>
+              <text x={e.cx} y={e.cy-e.ry-4} textAnchor="middle" fontSize="11.5" fontWeight="800"
+                fill={DOT_COLORS[c]} fontFamily="Nunito,sans-serif">{L.s2Groups[c]}</text>
+            </g>))}
           {MEANING_DOTS.map((d,i)=>{
             const isHero=d===heroDot, dim=hov!==null&&MEANING_DOTS[hov].c!==d.c&&!isHero;
             return (<g key={i} onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)} style={{cursor:'pointer'}}>
               <circle cx={d.x} cy={d.y} r={isHero?8:6} fill={DOT_COLORS[d.c]} opacity={dim?0.18:1}/>
+              {isHero&&<circle cx={d.x} cy={d.y} r="13" fill="none" stroke={heroColor} strokeWidth="2"
+                strokeDasharray="4 3" className="pop-anim"/>}
               <text x={d.x+9} y={d.y+4} fontSize="12.5" fontWeight={isHero?800:600}
                 fill={isHero?heroColor:INK} opacity={dim?0.18:1}>{d.w}</text>
             </g>);})}
@@ -432,8 +492,28 @@ function Scene2({L,prompt}){
 function Scene3({L,prompt,progress}){
   const [pos,setPos]=useState(prompt.hero+1);
   const p=progress==null?pos:1+Math.round(progress*7);
+  const heroWord=prompt.tokens[prompt.hero];
   return (
     <SceneFrame title={L.s3Title} lead={L.s3Lead} nerd={L.s3Nerd}>
+      {/* the word physically changes seat; the stamp below twists with it */}
+      <div style={{fontSize:13,color:'var(--faint)',marginBottom:6}}>{L.s3SeatRow}</div>
+      <div style={{display:'flex',gap:6,marginBottom:18,alignItems:'flex-start',
+        overflowX:'auto',paddingBottom:4}}>
+        {Array.from({length:8},(_,k)=>{
+          const seat=k+1, isHere=seat===p;
+          return (
+            <div key={k} style={{minWidth:58,textAlign:'center'}}>
+              <div style={{height:36,display:'flex',alignItems:'center',justifyContent:'center',
+                border:isHere?`2px solid ${INK}`:'2px dashed rgba(43,43,43,.22)',
+                borderRadius:9,background:isHere?HL:'transparent',
+                fontWeight:800,fontSize:14.5,transition:'all .25s'}}>
+                {isHere?heroWord:''}
+              </div>
+              <div style={{fontSize:10.5,color:isHere?RUST:'var(--faint)',fontWeight:isHere?800:400,
+                marginTop:3}}>{isHere?L.s3Pos(seat):seat}</div>
+            </div>);
+        })}
+      </div>
       <div style={{display:'flex',gap:24,alignItems:'center',flexWrap:'wrap'}}>
         <div className="wb-card" style={{padding:8}}>
           <ArrowSvg angle={35} ghost w={240} h={180}/>
@@ -452,7 +532,7 @@ function Scene3({L,prompt,progress}){
     </SceneFrame>);
 }
 
-const MIX_COLORS=[BLUE,GREEN,'#8B5CF6','#C7791B'];
+const MIX_COLORS=[BLUE,GREEN,'#8B5CF6','#C7791B','#0E7490','#BE185D'];
 function tokBoxW(t){return t.length*10.5+26;}
 
 // Beat 1 of the meeting room: arc diagram — who talks to whom.
@@ -734,17 +814,59 @@ function Scene5({L,prompt,lang,progress}){
     </SceneFrame>);
 }
 
+// The conveyor belt: the word card rides past repeating meeting→workshop
+// stations; every block sticks one more margin note onto the card.
 function Scene6({L,prompt,progress}){
   const [layer,setLayer]=useState(1);
   const n=progress==null?layer:1+Math.round(progress*31);
+  const heroWord=prompt.tokens[prompt.hero];
+  const W=560, BELTY=140;
+  const cardX=26+(n-1)/31*(W-150);
+  const notes=Math.min(n,10);
+  const NOTE_COLORS=[BLUE,GREEN,'#8B5CF6',RUST];
   return (
     <SceneFrame title={L.s6Title} lead={L.s6Lead} nerd={L.s6Nerd}>
-      <div style={{display:'flex',gap:24,alignItems:'center',flexWrap:'wrap'}}>
-        <div className="wb-card" style={{padding:8}}>
-          <ArrowSvg angle={35+n*1.2} notes={Math.min(n,14)} len={108} w={280} h={200}/>
-          <div style={{textAlign:'center',fontSize:13,fontWeight:800,marginTop:-24}}>
-            {L.s6Block(n)} · <span style={{color:GREEN}}>{L.s6Notes(n)}</span></div>
-        </div>
+      <div className="wb-card" style={{padding:'12px 14px 8px',maxWidth:620}}>
+        <svg viewBox={`0 0 ${W} 185`} style={{width:'100%',maxWidth:W,display:'block'}}>
+          {/* repeating stations behind the belt */}
+          {Array.from({length:4},(_,k)=>{
+            const sx=24+k*130;
+            return (
+              <g key={k} opacity=".85">
+                <rect x={sx} y={14} width={56} height={24} rx={6} fill="#F0F5FF" stroke={BLUE} strokeWidth="1.5"/>
+                <text x={sx+28} y={30} textAnchor="middle" fontSize="10.5" fontWeight="800"
+                  fill={BLUE} fontFamily="Nunito,sans-serif">🗣 {L.s6StopA}</text>
+                <rect x={sx+62} y={14} width={56} height={24} rx={6} fill="#FFF7F2" stroke={RUST} strokeWidth="1.5"/>
+                <text x={sx+90} y={30} textAnchor="middle" fontSize="10.5" fontWeight="800"
+                  fill={RUST} fontFamily="Nunito,sans-serif">🔧 {L.s6StopB}</text>
+              </g>);
+          })}
+          <text x={W-10} y={30} textAnchor="end" fontSize="14" fontFamily="Caveat,cursive"
+            fill="rgba(43,43,43,.55)">… ×32</text>
+          {/* the belt */}
+          <rect x={8} y={BELTY} width={W-16} height={15} rx={7} fill="#EDE8DC" stroke={INK} strokeWidth="2"/>
+          {Array.from({length:14},(_,k)=>(
+            <line key={k} x1={20+k*40} y1={BELTY+2} x2={28+k*40} y2={BELTY+13}
+              stroke="rgba(43,43,43,.3)" strokeWidth="2"/>))}
+          {/* the word card, margin notes piling on top */}
+          <g style={{transform:`translateX(${cardX}px)`,transition:'transform .35s ease-out'}}>
+            {Array.from({length:notes},(_,k)=>(
+              <rect key={k} x={18+(k%3)*3} y={BELTY-52-k*5.5} width={62} height={4.5} rx={2}
+                fill={NOTE_COLORS[k%4]} opacity=".85"/>))}
+            <rect x={8} y={BELTY-44} width={86} height={40} rx={9} fill="#fff"
+              stroke={INK} strokeWidth="2.5"/>
+            <text x={51} y={BELTY-19} textAnchor="middle" fontSize="15" fontWeight="800"
+              fontFamily="Nunito,sans-serif">{heroWord}</text>
+          </g>
+        </svg>
+        <div style={{textAlign:'center',fontSize:13,fontWeight:800,marginTop:4}}>
+          {L.s6Block(n)} · <span style={{color:GREEN}}>{L.s6Notes(n)}</span></div>
+      </div>
+      <div style={{display:'flex',gap:24,alignItems:'center',flexWrap:'wrap',marginTop:16}}>
+        {progress==null&&<div style={{flex:'1 1 300px',maxWidth:460}}>
+          <div style={{fontSize:14,fontWeight:800,marginBottom:4}}>{L.s6Scrub}</div>
+          <input type="range" min="1" max="32" value={layer} onChange={e=>setLayer(+e.target.value)}/>
+        </div>}
         <div className="wb-card" style={{padding:'12px 16px',width:170}}>
           <div className="hand" style={{fontSize:22,marginBottom:4}}>{L.s6Gauge}</div>
           <div style={{height:10,border:`1.5px solid ${INK}`,borderRadius:5,overflow:'hidden'}}>
@@ -753,19 +875,19 @@ function Scene6({L,prompt,progress}){
           <div style={{fontSize:11.5,color:'var(--faint)',marginTop:4}}>{L.s6GaugeSub}</div>
         </div>
       </div>
-      {progress==null&&<div style={{maxWidth:460,marginTop:18}}>
-        <div style={{fontSize:14,fontWeight:800,marginBottom:4}}>{L.s6Scrub}</div>
-        <input type="range" min="1" max="32" value={layer} onChange={e=>setLayer(+e.target.value)}/>
-      </div>}
     </SceneFrame>);
 }
 
+// The draw wheel: slice size = chance of being the next piece. Sampling spins
+// the wheel so the pointer lands inside the drawn slice.
 function Scene7({L,prompt}){
   const [gen,setGen]=useState([]);
   const [temp,setTemp]=useState(1.0);
   const [topP,setTopP]=useState(0.95);
   const [auto,setAuto]=useState(false);
   const [flash,setFlash]=useState(0);
+  const [rot,setRot]=useState(0);
+  const [spin,setSpin]=useState(false);
   const done=gen.length>0&&gen[gen.length-1]==='.';
   const raw=nextCandidates(prompt,gen);
   const reweighted=useMemo(()=>{
@@ -773,48 +895,90 @@ function Scene7({L,prompt}){
     const kept=topPSet(c,topP).map(x=>x.t);
     return c.map(x=>({...x,kept:kept.includes(x.t)}));
   },[raw,temp,topP]);
+  const kept=reweighted.filter(c=>c.kept);
+  const keptSum=kept.reduce((a,c)=>a+c.q,0)||1;
+  let acc=0;
+  const slices=kept.map((c,k)=>{
+    const a0=acc/keptSum*360; acc+=c.q;
+    const a1=acc/keptSum*360;
+    return {...c,a0,a1,mid:(a0+a1)/2,color:MIX_COLORS[k%MIX_COLORS.length]};
+  });
+  const dropped=reweighted.filter(c=>!c.kept);
   const step=(greedy)=>{
-    if(done) return;
-    const pool=reweighted.filter(c=>c.kept);
+    if(done||spin) return;
     let pick;
-    if(greedy) pick=pool[0];
+    if(greedy) pick=kept[0];
     else{
-      const s=pool.reduce((a,c)=>a+c.q,0); let r=Math.random()*s;
-      pick=pool[0];
-      for(const c of pool){ r-=c.q; if(r<=0){pick=c;break;} }
+      let r=Math.random()*keptSum;
+      pick=kept[0];
+      for(const c of kept){ r-=c.q; if(r<=0){pick=c;break;} }
     }
-    setGen(g=>[...g,pick.t]); setFlash(f=>f+1);
+    const sl=slices.find(s=>s.t===pick.t);
+    // land the pointer (top) inside the picked slice: rot+mid ≡ 0 (mod 360), plus 2 spins
+    setRot(r=>r+720+((((-sl.mid)-r)%360)+360)%360);
+    setSpin(true);
+    setTimeout(()=>{ setGen(g=>[...g,pick.t]); setFlash(f=>f+1); setSpin(false); },950);
   };
   useEffect(()=>{
     if(!auto||done) {if(done) setAuto(false); return;}
-    const t=setTimeout(()=>step(false),950);
+    const t=setTimeout(()=>step(false),700);
     return ()=>clearTimeout(t);
-  },[auto,gen,done]);
-  useEffect(()=>{setGen([]);setAuto(false);},[prompt.id]);
-  const maxQ=Math.max(...reweighted.map(c=>c.q),0.01);
+  },[auto,gen,done,spin]);
+  useEffect(()=>{setGen([]);setAuto(false);setRot(0);},[prompt.id]);
+  const CX=115,CY=120,R=98;
+  const pt=(a)=>{const r2=(a-90)*Math.PI/180; return `${CX+R*Math.cos(r2)} ${CY+R*Math.sin(r2)}`;};
+  const lpt=(a,r)=>{const r2=(a-90)*Math.PI/180; return {x:CX+r*Math.cos(r2),y:CY+r*Math.sin(r2)};};
   return (
     <SceneFrame title={L.s7Title} lead={L.s7Lead} nerd={L.s7Nerd}>
       <div style={{fontSize:12.5,color:RUST,fontWeight:600,marginBottom:10}}>⚠ {L.s7Honest}</div>
       <SentenceRow prompt={prompt} heroOn={false} gen={gen}/>
       <div style={{display:'flex',gap:18,flexWrap:'wrap',alignItems:'flex-start'}}>
         <div className="wb-card" style={{padding:'14px 18px',flex:'1 1 340px',maxWidth:480}}>
-          <div style={{fontSize:14,fontWeight:800,marginBottom:8}}>{L.s7Dist}</div>
+          <div style={{fontSize:14,fontWeight:800,marginBottom:8}}>{L.s7Wheel}</div>
           {done
             ? <div className="pop-anim hand" style={{fontSize:26,color:GREEN}}>■ {L.s7Done(gen.length)}</div>
-            : reweighted.map((c,i)=>(
-              <div key={c.t} style={{display:'flex',alignItems:'center',gap:8,margin:'4px 0',
-                opacity:c.kept?1:.3}}>
-                <span style={{width:96,fontWeight:700,fontFamily:'monospace'}}>{c.t==='.'?'⟨.⟩':c.t}</span>
-                <div style={{flex:1,height:17,border:`1.5px solid ${INK}`,borderRadius:6,overflow:'hidden'}}>
-                  <div className="barfill" style={{width:(c.q/maxQ*100)+'%',height:'100%',
-                    background:c.kept?(i===0?RUST:BLUE):'#bbb'}}/>
+            : <div style={{display:'flex',gap:14,alignItems:'center',flexWrap:'wrap'}}>
+                <svg viewBox="0 0 230 240" style={{width:230,maxWidth:'100%'}}>
+                  <g style={{transform:`rotate(${rot}deg)`,transformOrigin:`${CX}px ${CY}px`,
+                    transition:spin?'transform .9s cubic-bezier(.15,.65,.25,1)':'none'}}>
+                    {slices.map(s=>(
+                      s.a1-s.a0>=359.9
+                        ? <circle key={s.t} cx={CX} cy={CY} r={R} fill={s.color} opacity=".85"
+                            stroke={INK} strokeWidth="2"/>
+                        : <path key={s.t}
+                            d={`M ${CX} ${CY} L ${pt(s.a0)} A ${R} ${R} 0 ${s.a1-s.a0>180?1:0} 1 ${pt(s.a1)} Z`}
+                            fill={s.color} opacity=".85" stroke={INK} strokeWidth="2"/>))}
+                    {slices.map(s=>{
+                      if(s.a1-s.a0<26) return null;
+                      const p=lpt(s.mid,R*0.62);
+                      // keep labels upright: flip the ones whose FINAL visual angle
+                      // (slice mid + current wheel rotation) lands in the lower half
+                      const v=(((s.mid+rot)%360)+360)%360;
+                      const a=v>90&&v<270?s.mid+180:s.mid;
+                      return <text key={s.t} x={p.x} y={p.y} textAnchor="middle" fontSize="13.5"
+                        fontWeight="800" fill="#fff" stroke="rgba(0,0,0,.25)" strokeWidth="2"
+                        paintOrder="stroke" fontFamily="Nunito,sans-serif"
+                        transform={`rotate(${a} ${p.x} ${p.y})`}>{s.t==='.'?'⟨.⟩':s.t}</text>;
+                    })}
+                  </g>
+                  <circle cx={CX} cy={CY} r="13" fill="#fff" stroke={INK} strokeWidth="2.5"/>
+                  <polygon points={`${CX-9},6 ${CX+9},6 ${CX},24`} fill={RUST} stroke={INK} strokeWidth="1.5"/>
+                </svg>
+                <div style={{flex:'1 1 130px',minWidth:130}}>
+                  {slices.map(s=>(
+                    <div key={s.t} style={{display:'flex',alignItems:'center',gap:7,margin:'3px 0',fontSize:13.5}}>
+                      <span style={{width:12,height:12,borderRadius:3,background:s.color,
+                        border:`1.5px solid ${INK}`,flex:'0 0 12px'}}/>
+                      <span style={{fontWeight:700,fontFamily:'monospace'}}>{s.t==='.'?'⟨.⟩':s.t}</span>
+                      <span style={{marginLeft:'auto',fontWeight:800}}>{(s.q/keptSum*100).toFixed(0)}%</span>
+                    </div>))}
+                  {dropped.length>0&&<div style={{marginTop:8,fontSize:11.5,color:'var(--faint)'}}>
+                    🚫 {L.s7Cut}: {dropped.map(c=>c.t==='.'?'⟨.⟩':c.t).join(' · ')}</div>}
                 </div>
-                <span style={{width:52,fontSize:13,fontWeight:800,textAlign:'right'}}>{(c.q*100).toFixed(1)}%</span>
-                {!c.kept&&<span style={{fontSize:10.5,color:'var(--faint)'}}>{L.s7Cut}</span>}
-              </div>))}
+              </div>}
           <div style={{display:'flex',gap:10,marginTop:14,flexWrap:'wrap'}}>
-            <button className="wb-btn rust" onClick={()=>step(false)} disabled={done}>{L.s7Sample}</button>
-            <button className="wb-btn" onClick={()=>step(true)} disabled={done}>{L.s7Greedy}</button>
+            <button className="wb-btn rust" onClick={()=>step(false)} disabled={done||spin}>{L.s7Sample}</button>
+            <button className="wb-btn" onClick={()=>step(true)} disabled={done||spin}>{L.s7Greedy}</button>
             <button className="wb-btn primary" onClick={()=>setAuto(a=>!a)} disabled={done}>
               {auto?L.s7Stop:L.s7Auto}</button>
             <button className="wb-btn" onClick={()=>{setGen([]);setAuto(false);}}>{L.s7Reset}</button>
