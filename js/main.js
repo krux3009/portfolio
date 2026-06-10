@@ -1,4 +1,5 @@
-// Renders project cards from PROJECTS (projects-data.js) into #project-grid.
+// Renders project cards from PROJECTS (projects-data.js) into #project-grid,
+// in the current language (js/i18n.js). Re-renders on language toggle.
 // Future React migration: this function body becomes
 //   PROJECTS.map(p => <ProjectCard {...p} />)
 
@@ -6,7 +7,11 @@ function renderProjects() {
   const grid = document.getElementById("project-grid");
   if (!grid || typeof PROJECTS === "undefined") return;
 
+  const zh = typeof I18N !== "undefined" && I18N.lang === "zh";
+
   grid.innerHTML = PROJECTS.map(function (p) {
+    const title = zh && p.titleZh ? p.titleZh : p.title;
+    const desc = zh && p.descriptionZh ? p.descriptionZh : p.description;
     const pills = p.tags
       .slice(0, 3)
       .map(function (t, i) {
@@ -16,12 +21,12 @@ function renderProjects() {
     const ongoing = p.status === "ongoing";
     const inner =
       '<span class="tags">' + pills + "</span>" +
-      "<h3>" + p.title + '<span class="year">' + p.year +
+      "<h3>" + title + '<span class="year">' + p.year +
       (ongoing ? " · ongoing" : "") + "</span></h3>" +
-      "<p>" + p.description + "</p>" +
+      "<p>" + desc + "</p>" +
       (p.link
-        ? '<span class="go">Take a look →</span>'
-        : '<span class="go wip">Work in progress ✏︎</span>');
+        ? '<span class="go">' + I18N.t("cardGo") + "</span>"
+        : '<span class="go wip">' + I18N.t("cardWip") + "</span>");
     return p.link
       ? '<a class="card" href="' + p.link + '">' + inner + "</a>"
       : '<div class="card nolink">' + inner + "</div>";
@@ -29,8 +34,9 @@ function renderProjects() {
 
   const count = document.getElementById("project-count");
   if (count) {
-    count.textContent = "(" + PROJECTS.length + " so far)";
+    count.textContent = I18N.t("projectsSoFar")(PROJECTS.length);
   }
 }
 
 document.addEventListener("DOMContentLoaded", renderProjects);
+document.addEventListener("langchange", renderProjects);

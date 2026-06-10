@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects — Li Xuan</title>
+<meta name="description" content="Side projects by Li Xuan — interactive explainers, dashboards, tools.">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">Li Xuan<span class="dot">.</span></a>
+  <span class="right">
+    <span class="links">
+      <a href="/" data-i18n="navHome">Home</a>
+      <a href="/projects/" data-i18n="navProjects" aria-current="page">Projects</a>
+      <a href="/resume.html" data-i18n="navResume">Resume</a>
+      <details class="dd">
+        <summary data-i18n="navContact">Contact</summary>
+        <div class="dd-menu">
+          <a href="mailto:tanlixuan2005@gmail.com" data-i18n="contactEmail">Email</a>
+          <a href="https://github.com/krux3009" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/li-xuan-tan-7a4929229" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </details>
+    </span>
+    <button id="langBtn">中文</button>
+  </span>
+</nav>
+
+<h1 class="label"><span data-i18n="projectsLabel">Projects</span><span class="count" id="project-count"></span></h1>
+<div class="card-wrap" id="project-grid">
+  <noscript>
+    <a class="card" href="/projects/llm-journey/">
+      <h3>Journey of a Token</h3>
+      <p>Interactive explainer of how an LLM reads and writes. (Enable JavaScript to see the full project list.)</p>
+      <span class="go">Take a look →</span>
+    </a>
+  </noscript>
+</div>
+
+<footer>
+  <div class="inner">
+    <span>© 2026 Li Xuan</span>
+    <span data-i18n-html="footBuilt">Built by hand<span class="heart"> ♥</span> no framework, no build step · auto-deployed from <a href="https://github.com/krux3009/portfolio" style="color:inherit">GitHub</a></span>
+  </div>
+</footer>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/projects-data.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

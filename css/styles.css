@@ -51,6 +51,66 @@ nav .links a {
   padding-bottom: 1px;
 }
 nav .links a:hover { color: var(--ink); border-bottom-color: var(--rust); }
+nav .links a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--rust); }
+nav .right { display: flex; align-items: center; gap: 18px; }
+nav .links { display: flex; align-items: center; gap: 22px; }
+nav .links a { margin-left: 0; }
+
+/* contact dropdown */
+.dd { position: relative; display: inline-block; }
+.dd summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 1px;
+}
+.dd summary::-webkit-details-marker { display: none; }
+.dd summary::after { content: " ▾"; font-size: 11px; }
+.dd:hover summary, .dd[open] summary { color: var(--ink); border-bottom-color: var(--rust); }
+.dd-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(43, 43, 43, .15);
+  min-width: 150px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+}
+.dd-menu a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 0 !important;
+  border-bottom: none !important;
+}
+.dd-menu a:hover { background: var(--paper); color: var(--rust); }
+
+/* language toggle */
+#langBtn {
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 6px 14px;
+  box-shadow: 3px 3px 0 rgba(43, 43, 43, .18);
+  transition: transform .1s;
+}
+#langBtn:hover { transform: translate(-1px, -1px); }
 
 /* ---- hero ---- */
 .hero {
@@ -249,6 +309,43 @@ footer .inner {
   color: var(--muted);
 }
 footer .inner .heart { color: var(--rust); }
+
+/* ---- hobbies grid (landing) ---- */
+.hobby-grid {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--pad-x) 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+.hobby {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: 4px 4px 0 rgba(43, 43, 43, .12);
+}
+.hobby h3 { font-family: 'Caveat', cursive; font-size: 28px; margin: 0 0 6px; }
+.hobby p { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 0; }
+
+/* ---- intro section (landing) ---- */
+.intro {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--pad-x) 50px;
+}
+.intro p { font-size: 15.5px; line-height: 1.75; color: var(--ink); margin: 0 0 14px; max-width: 640px; }
+
+/* ---- resume stub ---- */
+.stub {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 120px var(--pad-x) 140px;
+  text-align: center;
+}
+.stub h1 { font-family: 'Caveat', cursive; font-size: clamp(44px, 6vw, 64px); margin: 0 0 10px; }
+.stub p { font-size: 16px; color: var(--muted); margin: 0; }
 
 /* ---- responsive ---- */
 @media (max-width: 760px) {
