@@ -27,9 +27,9 @@ const I18N = (function () {
       // landing — intro (placeholders until decoration session)
       introLabel: "Who I am",
       introP1:
-        "Born and raised in Singapore, I grew up on sports — football first, then badminton. Video games arrived in my teens and amazed me twice over: how are these worlds even built, and how do they bring together people from completely different walks of life? Chasing those questions led me to Information Systems at SMU.",
+        "Born and raised in Singapore, I grew up on sports — my dad got me into badminton first, and years of serious training left me with a love-hate bond with the game; football came later. Video games only arrived in my teens, and they amazed me twice over: how are these worlds even built, and how do they pull together people from completely different walks of life? Chasing those two questions led me to Information Systems at SMU.",
       introP2:
-        "These days you'll still find me on a badminton court most weekends, or in a game with a story worth staying up for. I like building things that explain things — this site is where they live.",
+        "These days my weekends are still mostly on a badminton court, or in voice chat squadding up with good friends. I want to get better at sharing what I learn — and to make sure I don't fall behind in this AI era. This site is that platform.",
       hobbiesLabel: "Hobbies & interests",
       hobby1Title: "Badminton",
       hobby1Desc: "Smashes on weekends. Still chasing the perfect cross-court drop shot.",
@@ -72,7 +72,7 @@ const I18N = (function () {
       // landing — intro
       introLabel: "我是谁",
       introP1: "土生土长的新加坡人，从小在运动场上长大——先是父亲带我接触了羽毛球，在专业的训练与折磨中对这项运动又爱又恨，后面又踢上了足球。十几岁才接触电子游戏，它让我惊讶了两次：这样的世界到底是怎么做出来的？它又凭什么能把天南地北、各行各业的人聚到一起？追着这两个问题，我走进了 SMU 的信息系统专业。",
-      introP2: "如今周末多半还在羽毛球场上，或者在和一群好朋友一起开黑打游戏。我希望更好的把自己学到的知识分享给大家，同时也能确保我在这个AI的时代里不会落后——这个网站就是这样一个平台。",
+      introP2: "如今周末多半还在羽毛球场上，或者在和一群好朋友一起开黑打游戏。我希望更好地把自己学到的知识分享给大家，同时也能确保我在这个AI的时代里不会落后——这个网站就是这样一个平台。",
       hobbiesLabel: "爱好与兴趣",
       hobby1Title: "羽毛球",
       hobby1Desc: "周末杀球。还在练那一拍完美的劈吊对角。",
