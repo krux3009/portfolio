@@ -2,6 +2,7 @@
 function StepperApp() {
   const [lang, setLang] = useState(localStorage.getItem('lj-lang') || 'en');
   const [idx, setIdx] = useState(+(localStorage.getItem('lj-scene') || 0));
+  const [nerd, setNerd] = useState(localStorage.getItem('lj-nerd') === '1');
   const L = STRINGS[lang];
   const prompt = PROMPTS[lang] || PROMPTS.en;
   useEffect(() => {
@@ -10,6 +11,10 @@ function StepperApp() {
   useEffect(() => {
     localStorage.setItem('lj-scene', String(idx));
   }, [idx]);
+  useEffect(() => {
+    localStorage.setItem('lj-nerd', nerd ? '1' : '0');
+    document.body.classList.toggle('nerd-off', !nerd);
+  }, [nerd]);
   useEffect(() => {
     const h = e => {
       if (window.__sceneKeyHandler && window.__sceneKeyHandler(e.key)) return;
@@ -64,7 +69,16 @@ function StepperApp() {
     },
     onClick: () => setLang(l => l === 'en' ? 'zh' : 'en'),
     "data-testid": "lang-toggle"
-  }, L.langBtn)), /*#__PURE__*/React.createElement("nav", {
+  }, L.langBtn), /*#__PURE__*/React.createElement("button", {
+    className: "wb-btn",
+    style: {
+      padding: '5px 14px',
+      fontSize: 13,
+      opacity: nerd ? 1 : .6
+    },
+    onClick: () => setNerd(n => !n),
+    "data-testid": "nerd-toggle"
+  }, nerd ? L.nerdOn : L.nerdOff)), /*#__PURE__*/React.createElement("nav", {
     style: {
       display: 'flex',
       gap: 0,
@@ -93,7 +107,22 @@ function StepperApp() {
       margin: '0 3px',
       color: 'var(--faint)'
     }
-  }, "\u2014")))), /*#__PURE__*/React.createElement("main", {
+  }, "\u2014")))), /*#__PURE__*/React.createElement("div", {
+    "data-testid": "quest",
+    style: {
+      padding: '0 26px 12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hand",
+    style: {
+      fontSize: 23,
+      color: RUST,
+      marginBottom: 5
+    }
+  }, L.quest(prompt.label)), /*#__PURE__*/React.createElement(StepChips, {
+    steps: L.journeySteps,
+    idx: idx
+  })), /*#__PURE__*/React.createElement("main", {
     style: {
       flex: 1,
       padding: '4px 26px'

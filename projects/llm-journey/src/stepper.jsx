@@ -2,10 +2,15 @@
 function StepperApp(){
   const [lang,setLang]=useState(localStorage.getItem('lj-lang')||'en');
   const [idx,setIdx]=useState(+(localStorage.getItem('lj-scene')||0));
+  const [nerd,setNerd]=useState(localStorage.getItem('lj-nerd')==='1');
   const L=STRINGS[lang];
   const prompt=PROMPTS[lang]||PROMPTS.en;
   useEffect(()=>{localStorage.setItem('lj-lang',lang);},[lang]);
   useEffect(()=>{localStorage.setItem('lj-scene',String(idx));},[idx]);
+  useEffect(()=>{
+    localStorage.setItem('lj-nerd',nerd?'1':'0');
+    document.body.classList.toggle('nerd-off',!nerd);
+  },[nerd]);
   useEffect(()=>{
     const h=(e)=>{
       if(window.__sceneKeyHandler&&window.__sceneKeyHandler(e.key)) return;
@@ -25,6 +30,8 @@ function StepperApp(){
           style={{marginLeft:'auto',padding:'5px 14px',fontSize:13,textDecoration:'none',display:'inline-block'}}>⌂ {L.home}</a>
         <button className="wb-btn" style={{padding:'5px 14px',fontSize:13}}
           onClick={()=>setLang(l=>l==='en'?'zh':'en')} data-testid="lang-toggle">{L.langBtn}</button>
+        <button className="wb-btn" style={{padding:'5px 14px',fontSize:13,opacity:nerd?1:.6}}
+          onClick={()=>setNerd(n=>!n)} data-testid="nerd-toggle">{nerd?L.nerdOn:L.nerdOff}</button>
       </header>
       <nav style={{display:'flex',gap:0,alignItems:'center',padding:'8px 26px 14px',flexWrap:'wrap'}} data-testid="rail">
         {L.stops.map((s,i)=>(
@@ -36,6 +43,10 @@ function StepperApp(){
             {i<L.stops.length-1&&<span style={{margin:'0 3px',color:'var(--faint)'}}>—</span>}
           </React.Fragment>))}
       </nav>
+      <div data-testid="quest" style={{padding:'0 26px 12px'}}>
+        <div className="hand" style={{fontSize:23,color:RUST,marginBottom:5}}>{L.quest(prompt.label)}</div>
+        <StepChips steps={L.journeySteps} idx={idx}/>
+      </div>
       <main style={{flex:1,padding:'4px 26px'}}>
         <Scene L={L} lang={lang} prompt={prompt} goto={(n)=>setIdx(n)}/>
       </main>

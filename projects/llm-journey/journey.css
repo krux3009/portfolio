@@ -28,6 +28,8 @@ input[type=range]{accent-color:var(--rust);width:100%}
 .nerd-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--faint);
   border:1.5px dashed rgba(43,43,43,.35);border-radius:10px;padding:2px 10px;margin:0 0 10px}
 .drawer-scroll{overflow-x:auto;padding-bottom:10px}
+/* paper-terms toggle (header 📄 button, default off): hides every jargon layer */
+.nerd-off .nerd-tag,.nerd-off .nerd-aside{display:none}
 @keyframes stampIn{0%{transform:scale(2.2) rotate(-14deg);opacity:0}
   60%{transform:scale(.92) rotate(2deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 @keyframes popIn{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}

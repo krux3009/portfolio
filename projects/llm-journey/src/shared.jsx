@@ -21,14 +21,19 @@ const STRINGS = {
 en:{
   appTitle:'Journey of a Token', appSub:'how an AI like ChatGPT reads your sentence and writes back — seen from inside',
   langBtn:'中文', next:'Next →', back:'← Back', restart:'Restart journey',
+  nerdOn:'📄 terms: on', nerdOff:'📄 terms: off',
   stops:['Gate','Pieces','Meaning','Order','Meeting','Workshop','Conveyor','THE LOOP','Decoder'],
-  s0Title:'Meet your sentence. Become a word.',
-  s0Lead:'The AI behind every chatbot is a factory that does exactly one job: guess the next word-piece. To see how, you will ride through it as one of the words. Here is the sentence you will ride with:',
+  quest:(label)=>`🎯 Mission: guess what comes after “${label} ___”`,
+  journeySteps:['chop','find meaning','check order','consult','recall','32 laps','score & draw'],
+  s0Title:'What actually happens when ChatGPT replies?',
+  s0Lead:'The whole secret fits in one sentence: it guesses the next word. Guess one, glue it on, guess again — until the reply is done. On this ride you follow one sentence into the factory and watch a guess happen, as one of the words yourself:',
+  s0Preview:'Seven stations ahead — each one teaches the factory one more thing:',
   s0Hero:(w)=>`You are “${w}”. For the rest of this tour, that yellow highlight is you.`,
   s0Note:'Everything you will see is the real machinery — the same factory inside ChatGPT, Claude, or Llama. The numbers come from a real open model (Llama 3 8B).',
   s1Title:'Station 1 · The front door — the chopping machine',
   s1Nerd:'in the papers: “tokenizer”',
-  s1Why:'What this station adds: it turns writing into catalogue numbers — the only thing the machinery can read. Without it, the factory could not even open your sentence.',
+  s1Why:'To fill the blank, the factory first has to turn writing into catalogue numbers — the only thing it can read. Without this step, the sentence cannot even enter.',
+  s1Take:(n)=>`✓ The factory now holds ${n} numbered tickets. But tickets are just numbers — next station trades them for meaning.`,
   s1Lead:'The factory cannot read letters. A chopping machine splits your sentence into pieces and hands each piece a number — its place in a fixed catalogue of 128,256 pieces.',
   s1Chop:'✂ Chop!', s1Undo:'↺ Put it back',
   s1Tickets:'every piece collects a numbered catalogue ticket',
@@ -37,7 +42,7 @@ en:{
   s1Aside:'This is why these AIs once miscounted the R’s in “strawberry” — the factory sees catalogue numbers, never letters.',
   s2Title:'Station 2 · The meaning desk',
   s2Nerd:'in the papers: “embedding”',
-  s2Why:'What this station adds: numbers become meaning — on this map, “near” means “similar”. Without it, a ticket is just a number; the factory would never know a cat is more like a dog than like Paris.',
+  s2Why:'To fill the blank, the factory needs to know what each number means. Without it, it would never know a cat is more like a dog than like Paris.',
   s2Lead:(w)=>`Your number is traded for an arrow that points at your meaning. Words that mean similar things live in the same neighbourhood of the map. You, “${w}”, get the spot the factory learned from billions of sentences.`,
   s2Hover:'Hover the dots — neighbours share meaning.',
   s2Map:'the meaning map',
@@ -45,13 +50,15 @@ en:{
   s2Real:'Drawn flat here. In the real factory your arrow is a list of 4,096 numbers.',
   s3Title:'Station 3 · The order stamp',
   s3Nerd:'in the papers: “positional encoding (RoPE)”',
-  s3Why:'What this station adds: word order. “Dog bites man” and “man bites dog” are made of the same pieces — only the seat stamps tell them apart.',
+  s3Why:'To fill the blank, the factory must know who comes before whom. Without it, “dog bites man” and “man bites dog” are the same bag of pieces.',
+  s3Take:'✓ Same word, different stamp — from now on the factory can tell “cat sits on mat” from “mat sits on cat”.',
   s3Lead:'Same word, different seat in the sentence → a different stamp. The stamp twists your arrow by an angle that depends on your seat number, so the factory can later feel which word came first and how far apart two words sit.',
   s3SeatRow:'watch the same word change seats:',
   s3Drag:'Drag your seat position:', s3Pos:(p)=>`seat ${p}`, s3Ghost:'arrow before the twist',
   s4Title:'Station 4 · The meeting room',
   s4Nerd:'in the papers: “attention” — Query · Key · Value',
-  s4Why:'What this station adds: the only place words exchange information. Without it, every word is an island — “the” would never find out a cat is doing the sitting.',
+  s4Why:'To fill the blank, “the” has to find out who is doing what before it. Without this station, every word is an island.',
+  s4TakeMore:'These percentages are the recipe for the cup in part 2 — and ultimately decide whose voice counts when the exit scores the candidates.',
   s4Lead:(last,hero)=>`The only place where words talk to each other. The last word “${last}” must guess what comes next — so it holds up a question card, and every earlier word holds up a name-tag. Click each earlier word to compare its name-tag with the question.`,
   s4YouGeneric:(hero,last)=>`You, “${hero}”, match the question best — your note of information is handed to “${last}”.`,
   s4YouAsk:(winner,last)=>`This time you, “${last}”, are the one asking. “${winner}” matches your question best — its note of information flows into you.`,
@@ -65,7 +72,7 @@ en:{
   s4ClickPrompt:'… click the words above',
   s5Title:'Station 5 · The private workshop — the factory’s memory',
   s5Nerd:'in the papers: “feed-forward network (FFN)”',
-  s5Why:'What this station adds: knowledge of the world. The meeting room only moves clues around — this is where facts actually live. Without it, replies sound like language but know nothing.',
+  s5Why:'To fill the blank, clues are not enough — the factory needs common sense: cats usually sit on mats. All of it lives in this station.',
   s5Lead:'After the meeting room, each word is processed alone. This station holds everything the factory ever learned about the world — and it is the reason the final guess is smart instead of mush.',
   s5B1Head:'1 · Clues, no knowledge',
   s5B1:'The meeting room only MOVED information between words — nothing new entered the factory. You now carry clues like these, but the factory still knows nothing about the world:',
@@ -84,7 +91,8 @@ en:{
   home:'Home',
   s6Title:'Station 6 · The conveyor belt',
   s6Nerd:'in the papers: “residual stream” · “RMSNorm”',
-  s6Why:'What this station adds: depth. Each lap adds one small correction; 32 laps take you from spelling to story. Without the repeats, every guess would stay shallow.',
+  s6Why:'To fill the blank smartly, the last two stations repeat 32 times, each lap deepening the understanding. Without the repeats, every guess stays shallow.',
+  s6Take:'✓ 32 laps done — your arrow has soaked up the whole sentence and is ready for scoring at the exit.',
   s6Lead:'You repeat meeting-room → workshop 32 times. The golden rule: every station only ADDS a small correction onto your arrow — nothing is ever erased. Between stations, a gauge re-standardises your arrow’s length so the additions never blow up.',
   s6Scrub:'Scrub through the 32 blocks:', s6Block:(n)=>`block ${n} / 32`,
   s6Notes:(n)=>`${n} margin notes accumulated`,
@@ -92,7 +100,7 @@ en:{
   s6Gauge:'length gauge', s6GaugeSub:'length → standard ✓',
   s7Title:'Final station · THE LOOP',
   s7Nerd:'in the papers: “next-token prediction” · “logits” · “sampling”',
-  s7Why:'What this station adds: the writing itself. Every station so far only reads; the loop is what writes — one full factory run per new piece. Without it, the best reading in the world would never become a reply.',
+  s7Why:'Here the blank actually gets filled: score every candidate, draw one, glue it on, and run the whole factory again. That is the entire secret of how AI “writes”.',
   s7Lead:'At the exit, the last word’s finished arrow is scored against all 128,256 catalogue pieces, and the scores become chances of being picked. One piece is drawn — and here is the secret of every chatbot: the new piece is glued onto the sentence and THE WHOLE FACTORY RUNS AGAIN. One full trip per word-piece, until a special “I’m done” piece is drawn.',
   s7Honest:'Honesty note: these chances are hand-designed for teaching. A real model computes them fresh from ~8 billion learned numbers.',
   s7Temp:'Temperature (how daring the draw is)', s7TempLo:'careful', s7TempHi:'wild',
@@ -103,8 +111,10 @@ en:{
   s7Wheel:'the draw wheel — bigger slice, bigger chance',
   s7Cut:'dropped by top-p',
   s7Pipe:['chop','look up meaning','32 blocks','score','draw'],
-  s8Title:'Exit gift · the jargon decoder',
-  s8Lead:'You rode the whole factory without the jargon — here are the official names. Every line of a real model card names a part you just visited. (Numbers: Llama 3 8B.) Click a row to revisit its station.',
+  s8Title:'The exit · take the whole machine with you',
+  s8Lead:'You rode the whole factory. Here is the entire machine in one breath:',
+  s8Recap:'AI writes by guessing the next word, again and again. Before every guess:',
+  s8DecoderIntro:'For paper-readers: the official names. Every line of a real model card names a part you just visited. (Numbers: Llama 3 8B.) Click a row to revisit its station.',
   s8Close:'That’s the whole machine: one loop, run once per word-piece. Now open any model card — you’ll recognise every part.',
   s8Cols:['config term','factory part','what it means'],
   footer:'Made by hand by Li Xuan · more at kruxqlyz.com',
@@ -112,14 +122,19 @@ en:{
 zh:{
   appTitle:'一个 Token 的旅程', appSub:'从词的视角，看 ChatGPT 这类 AI 如何读懂句子并回复',
   langBtn:'EN', next:'下一站 →', back:'← 上一站', restart:'重新开始',
+  nerdOn:'📄 术语：开', nerdOff:'📄 术语：关',
   stops:['大门','切片','语义','顺序','会议室','车间','传送带','循环','解码器'],
-  s0Title:'认识你的句子，变成其中一个词。',
-  s0Lead:'聊天机器人背后的 AI 是一座工厂，只做一件事：猜下一个词片。为了看清原理，你将化身句中的一个词亲自走一遍。这就是你要乘坐的句子：',
+  quest:(label)=>`🎯 任务：猜出「${label} ___」的下一个词`,
+  journeySteps:['切片','找含义','看顺序','互相参考','调取记忆','反复32圈','打分抽签'],
+  s0Title:'ChatGPT 回你话的时候，到底发生了什么？',
+  s0Lead:'整个秘密只有一句话：它在猜下一个词。猜一个，拼上去，再猜下一个——直到说完。这趟旅程，我们跟着一句话走进工厂，亲眼看一次「猜」是怎么发生的。你将化身句中的一个词：',
+  s0Preview:'前方 7 站，每站帮工厂多知道一件事：',
   s0Hero:(w)=>`你是「${w}」。接下来整趟旅程，黄色高亮就是你。`,
   s0Note:'你将看到的都是真实的机器——ChatGPT、Claude、Llama 内部同样的工厂。数字来自真实开源模型 Llama 3 8B。',
   s1Title:'第一站 · 工厂大门——切片机',
   s1Nerd:'论文里叫：分词器 tokenizer',
-  s1Why:'这一站的贡献：把文字变成目录编号——机器唯一读得懂的东西。没有它，工厂连你的句子都打不开。',
+  s1Why:'为了填上这个空，工厂先得把句子换成自己读得懂的目录编号。没有这一步，句子根本进不了厂。',
+  s1Take:(n)=>`✓ 工厂拿到了 ${n} 张号码票。但票只是号码——下一站去换含义。`,
   s1Lead:'工厂读不懂字母。一台切片机把句子切成词片，每片领到一个编号——它在一本固定目录（共 128,256 片）里的位置。',
   s1Chop:'✂ 切！', s1Undo:'↺ 拼回去',
   s1Tickets:'每片领到一张目录号码票',
@@ -128,7 +143,7 @@ zh:{
   s1Aside:'这就是这类 AI 曾数错 strawberry 里有几个 R 的原因——工厂只看目录编号，从不看字母。',
   s2Title:'第二站 · 语义服务台',
   s2Nerd:'论文里叫：词嵌入 embedding',
-  s2Why:'这一站的贡献：编号变成含义——在这张地图上，「相近」就是「相似」。没有它，编号只是号码，工厂永远不知道猫更像狗、而不像巴黎。',
+  s2Why:'为了填上这个空，工厂得知道每个编号是什么意思。没有它，永远不知道「小猫」更像「小狗」、而不像「巴黎」。',
   s2Lead:(w)=>`你的编号被换成「语义地图」上的一个位置。意思相近的词，住在地图上同一个街区。你「${w}」的位置，是工厂从几十亿个句子里学来的。`,
   s2Hover:'悬停圆点——相邻的词意思相近。',
   s2Map:'语义地图',
@@ -136,13 +151,15 @@ zh:{
   s2Real:'这里画成了平面。真实工厂里，你的位置是一串 4,096 个数字。',
   s3Title:'第三站 · 顺序印章',
   s3Nerd:'论文里叫：位置编码 RoPE',
-  s3Why:'这一站的贡献：词序。「狗咬人」和「人咬狗」用的是同样的词片——全靠座位印章分出谁先谁后。',
+  s3Why:'为了填上这个空，工厂得分清谁先谁后。没有它，「狗咬人」和「人咬狗」只是同一堆词片。',
+  s3Take:'✓ 同一个词，章不一样——工厂从此分得清「猫坐在垫上」和「垫坐在猫上」。',
   s3Lead:'同一个词，坐在句子的不同位置 → 盖不同的章。印章按你的座位号把箭头转一个角度，让工厂之后能感觉到谁先谁后、隔了多远。',
   s3SeatRow:'看同一个词换座位：',
   s3Drag:'拖动你的座位位置：', s3Pos:(p)=>`座位 ${p}`, s3Ghost:'旋转前的箭头',
   s4Title:'第四站 · 会议室',
   s4Nerd:'论文里叫：注意力 attention——Query · Key · Value',
-  s4Why:'这一站的贡献：词与词唯一交换信息的地方。没有它，每个词都是孤岛——「在」永远不知道是谁坐在哪里。',
+  s4Why:'为了填上这个空，「在」得打听清楚前面是谁在做什么。没有这一站，每个词都是孤岛。',
+  s4TakeMore:'这些百分比就是下一幕杯子里的配方——最终决定出口打分时谁说了算。',
   s4Lead:(last,hero)=>`词与词唯一能交流的地方。最后一个词「${last}」要猜接下来是什么——于是它举起一张提问卡，每个更早的词举起自己的名牌。点击每个早先的词，看它的名牌和提问卡有多匹配。`,
   s4YouGeneric:(hero,last)=>`你「${hero}」和提问最匹配——你的信息便条被递给了「${last}」。`,
   s4YouAsk:(winner,last)=>`这一次提问的是你「${last}」。「${winner}」和你的提问最匹配——它的信息便条流进了你这里。`,
@@ -156,7 +173,7 @@ zh:{
   s4ClickPrompt:'…点击上方的词',
   s5Title:'第五站 · 私人车间——工厂的记忆',
   s5Nerd:'论文里叫：前馈网络 FFN',
-  s5Why:'这一站的贡献：关于世界的知识。会议室只负责搬运线索，事实真正住在这里。没有它，回复听着像话，其实什么都不知道。',
+  s5Why:'为了填上这个空，光有线索不够，还得有常识——猫通常坐在垫子上。常识全存在这一站。',
   s5Lead:'离开会议室后，每个词独自接受加工。这一站存放着工厂学到的关于世界的一切——也是最终猜测「聪明」而非「糊状」的原因。',
   s5B1Head:'1 · 有线索，没知识',
   s5B1:'会议室只是在词与词之间搬运信息——工厂里没有进来任何新东西。你现在带着这些线索，但工厂对世界仍一无所知：',
@@ -175,7 +192,8 @@ zh:{
   home:'主页',
   s6Title:'第六站 · 传送带',
   s6Nerd:'论文里叫：残差流 residual stream · RMSNorm',
-  s6Why:'这一站的贡献：深度。每一圈只加一笔小修正，32 圈下来，从拼写一路读到剧情。没有这些重复，所有猜测都停在表面。',
+  s6Why:'为了把空填得聪明，前两站要反复 32 圈，理解一层层加深。没有这些重复，猜测永远停在表面。',
+  s6Take:'✓ 32 圈走完，箭头吸饱了整句话的理解——可以去出口打分了。',
   s6Lead:'「会议室 → 车间」你要重复 32 次。黄金法则：每一站只往你的箭头上「加」一笔小修正——什么都不会被擦掉。站与站之间有一个校准仪，把箭头长度调回标准，防止越加越大。',
   s6Scrub:'拖动浏览 32 个厂块：', s6Block:(n)=>`第 ${n} / 32 块`,
   s6Notes:(n)=>`已累积 ${n} 条页边批注`,
@@ -183,7 +201,7 @@ zh:{
   s6Gauge:'长度校准仪', s6GaugeSub:'长度 → 标准 ✓',
   s7Title:'终点站 · 循环',
   s7Nerd:'论文里叫：下一词预测 · logits · 抽样 sampling',
-  s7Why:'这一站的贡献：真正的「写」。前面每一站都只是在读，循环才是在写——整座工厂跑一遍，只换来一个新词片。没有它，读得再懂也变不成回复。',
+  s7Why:'空在这里被真正填上：给每个候选词打分、抽签，拼回句尾，整厂重跑。这就是 AI「写字」的全部秘密。',
   s7Lead:'在出口，最后一个词的成品箭头与目录里全部 128,256 个词片逐一打分，分数变成各片的中签机会。抽出一片——接着是所有聊天机器人的秘密：新词片粘回句尾，整座工厂重新跑一遍。每个词片跑一整趟，直到抽到表示「说完了」的特殊词片。',
   s7Honest:'诚实声明：这里的机会是为教学手工设计的。真实模型由约 80 亿个学到的数字现场计算。',
   s7Temp:'温度（抽签有多大胆）', s7TempLo:'谨慎', s7TempHi:'狂野',
@@ -194,8 +212,10 @@ zh:{
   s7Wheel:'抽签转盘——扇区越大，机会越大',
   s7Cut:'被 top-p 舍弃',
   s7Pipe:['切片','查语义','32 厂块','打分','抽签'],
-  s8Title:'出口礼物 · 术语解码器',
-  s8Lead:'整趟旅程没用术语——现在送你官方名字。真实模型卡的每一行配置，都对应你刚经过的一个工厂部件（数字：Llama 3 8B）。点击行可回到对应站点。',
+  s8Title:'出口 · 把整台机器带走',
+  s8Lead:'整趟工厂你都走完了。一口气说完整台机器：',
+  s8Recap:'AI 写一句话＝一次次猜下一个词。每次猜之前：',
+  s8DecoderIntro:'给读论文的人：官方名字对照表。真实模型卡的每一行配置，都对应你刚经过的一个工厂部件（数字：Llama 3 8B）。点击行可回到对应站点。',
   s8Close:'整台机器就是：一个循环，每个词片跑一次。现在去打开任何模型卡——每个部件你都认识。',
   s8Cols:['配置项','工厂部件','含义'],
   footer:'立瑄手作 · 更多见 kruxqlyz.com',
@@ -304,7 +324,7 @@ function ArrowSvg({angle=0,len=110,color=RUST,ghost=false,notes=0,w=260,h=200}){
       {ticks}
     </svg>);
 }
-function SceneFrame({title,lead,children,aside,nerd,why}){
+function SceneFrame({title,lead,children,aside,asideNerd,nerd,why}){
   return (
     <div style={{maxWidth:880,margin:'0 auto',padding:'8px 8px 24px'}}>
       <h2 className="hand" style={{fontSize:38,margin:'4px 0 6px',lineHeight:1.1}}>{title}</h2>
@@ -315,6 +335,23 @@ function SceneFrame({title,lead,children,aside,nerd,why}){
       {children}
       {aside && <div style={{marginTop:18,padding:'12px 16px',border:`2px dashed ${RUST}`,
         borderRadius:12,background:'#FFF7F2',fontSize:14.5,lineHeight:1.5}}>✏️ {aside}</div>}
+      {asideNerd && <div className="nerd-aside" style={{marginTop:18,padding:'12px 16px',border:`2px dashed ${RUST}`,
+        borderRadius:12,background:'#FFF7F2',fontSize:14.5,lineHeight:1.5}}>✏️ {asideNerd}</div>}
+    </div>);
+}
+// Step chips — the always-visible main thread. idx = current scene (0..8):
+// chip k maps to station k+1; everything is ✓ at the decoder (idx 8).
+function StepChips({steps,idx}){
+  return (
+    <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+      {steps.map((s,k)=>{
+        const done=idx===8||k+1<idx, now=idx<8&&k+1===idx;
+        return <span key={k} style={{fontSize:11.5,fontWeight:800,whiteSpace:'nowrap',
+          border:`1.5px solid ${now?RUST:done?GREEN:'rgba(43,43,43,.3)'}`,
+          color:now?'#fff':done?GREEN:'var(--faint)',
+          background:now?RUST:'transparent',
+          borderRadius:12,padding:'2px 9px'}}>{done?'✓ ':now?'● ':''}{s}</span>;
+      })}
     </div>);
 }
 function SentenceRow({prompt,heroOn=true,maskFrom=null,onTok=null,active=[],gen=[]}){
@@ -343,6 +380,10 @@ function Scene0({L,lang,prompt}){
       <div style={{marginTop:22}}>
         <SentenceRow prompt={prompt}/>
         <p className="hand" style={{fontSize:26,color:RUST,margin:'6px 0 0'}}>{L.s0Hero(prompt.tokens[prompt.hero])}</p>
+      </div>
+      <div style={{marginTop:18}}>
+        <div style={{fontSize:14,fontWeight:800,marginBottom:6}}>{L.s0Preview}</div>
+        <StepChips steps={L.journeySteps} idx={0}/>
       </div>
     </SceneFrame>);
 }
@@ -400,6 +441,8 @@ function Scene1({L,prompt}){
       </div>
       <button className="wb-btn rust" data-testid="chop" style={{marginTop:14}}
         onClick={()=>setChopSel(c=>!c)}>{chopSel?L.s1Undo:L.s1Chop}</button>
+      {ticketsOn&&<div className="pop-anim" style={{marginTop:12,color:GREEN,fontWeight:800,
+        fontSize:14.5,maxWidth:600}}>{L.s1Take(prompt.tokens.length)}</div>}
       <div style={{marginTop:20,fontSize:15}}>
         {L.s1Sub}{' '}
         {L.s1SubEx.map((p,i)=>(
@@ -464,6 +507,8 @@ function Scene2({L,lang,prompt}){
 
 function Scene3({L,prompt}){
   const [pos,setPos]=useState(prompt.hero+1);
+  const [touched,setTouched]=useState(false);
+  useEffect(()=>{setPos(prompt.hero+1);setTouched(false);},[prompt.id]);
   const p=pos;
   const heroWord=prompt.tokens[prompt.hero];
   return (
@@ -500,8 +545,11 @@ function Scene3({L,prompt}){
       </div>
       <div style={{maxWidth:420,marginTop:18}}>
         <div style={{fontSize:14,fontWeight:800,marginBottom:4}}>{L.s3Drag}</div>
-        <input type="range" min="1" max="8" value={pos} onChange={e=>setPos(+e.target.value)}/>
+        <input type="range" min="1" max="8" value={pos}
+          onChange={e=>{setPos(+e.target.value);setTouched(true);}}/>
       </div>
+      {touched&&<div className="pop-anim" style={{marginTop:12,color:GREEN,fontWeight:800,
+        fontSize:14.5,maxWidth:600}}>{L.s3Take}</div>}
     </SceneFrame>);
 }
 
@@ -642,7 +690,7 @@ function Scene4({L,prompt,lang}){
   const allIn=revealed.length===scores.length;
   const heads=[L.s4B1Head,L.s4B2Head];
   return (
-    <SceneFrame title={L.s4Title} lead={L.s4Lead(last,hero)} aside={beat===1?L.s4KV:null} nerd={L.s4Nerd} why={L.s4Why}>
+    <SceneFrame title={L.s4Title} lead={L.s4Lead(last,hero)} asideNerd={beat===1?L.s4KV:null} nerd={L.s4Nerd} why={L.s4Why}>
       <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:12,flexWrap:'wrap'}}>
         {heads.map((h,i)=>(
           <button key={i} onClick={()=>setBeatSel(i)}
@@ -657,11 +705,14 @@ function Scene4({L,prompt,lang}){
             <AttnArcs L={L} prompt={prompt} revealed={revealed}
               onReveal={(i)=>setRevealed(r=>r.includes(i)?r:[...r,i])}/>
             <div style={{margin:'6px 4px 10px',fontSize:14.5,minHeight:40,maxWidth:540}}>
-              {allIn? <span className="pop-anim" style={{color:GREEN,fontWeight:800}}>✓ {(()=>{
-                        const winner=prompt.tokens[scores.reduce((a,b)=>b.s>a.s?b:a).i];
-                        if(prompt.hero===prompt.reader) return L.s4YouAsk(winner,last);
-                        return winner===hero?L.s4YouGeneric(hero,last):L.s4OtherWins(winner,last);
-                      })()}</span>
+              {allIn? <span className="pop-anim">
+                        <span style={{color:GREEN,fontWeight:800}}>✓ {(()=>{
+                          const winner=prompt.tokens[scores.reduce((a,b)=>b.s>a.s?b:a).i];
+                          if(prompt.hero===prompt.reader) return L.s4YouAsk(winner,last);
+                          return winner===hero?L.s4YouGeneric(hero,last):L.s4OtherWins(winner,last);
+                        })()}</span>{' '}
+                        <span style={{fontWeight:600}}>{L.s4TakeMore}</span>
+                      </span>
                     : <span style={{color:'var(--faint)'}}>{L.s4ClickPrompt}</span>}
             </div>
           </div>
@@ -720,7 +771,7 @@ function Scene5({L,prompt,lang}){
   };
   return (
     <SceneFrame title={L.s5Title} lead={L.s5Lead} nerd={L.s5Nerd} why={L.s5Why}
-      aside={beat===1?L.s5Rome:beat===2?L.s5Bridge:null}>
+      aside={beat===1?L.s5Rome:null} asideNerd={beat===2?L.s5Bridge:null}>
       <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:14,flexWrap:'wrap'}}>
         {heads.map((h,i)=>(
           <button key={i} onClick={()=>setBeatSel(i)}
@@ -834,6 +885,8 @@ function Scene6({L,prompt}){
         <div style={{textAlign:'center',fontSize:13,fontWeight:800,marginTop:4}}>
           {L.s6Block(n)} · <span style={{color:GREEN}}>{L.s6Notes(n)}</span></div>
       </div>
+      {n===32&&<div className="pop-anim" style={{marginTop:12,color:GREEN,fontWeight:800,
+        fontSize:14.5,maxWidth:600}}>{L.s6Take}</div>}
       <div style={{display:'flex',gap:24,alignItems:'center',flexWrap:'wrap',marginTop:16}}>
         <div style={{flex:'1 1 300px',maxWidth:460}}>
           <div style={{fontSize:14,fontWeight:800,marginBottom:4}}>{L.s6Scrub}</div>
@@ -995,9 +1048,19 @@ const DECODER_ROWS=[
   {term:'rms_norm_eps = 1e-5',scene:6,en:['length gauge (RMSNorm)','keeps arrow length stable'],zh:['长度校准仪（RMSNorm）','保持箭头长度稳定']},
   {term:'temperature / top_p',scene:7,en:['the dice at the exit','how daring the draw is & tail cutoff'],zh:['出口处的骰子','抽签胆量与长尾截断']},
 ];
-function Scene8({L,lang,goto}){
+function Scene8({L,lang,prompt,goto}){
   return (
     <SceneFrame title={L.s8Title} lead={L.s8Lead}>
+      {/* plain-language recap first — the loop in one breath, echoing the Station-0 preview */}
+      <div className="wb-card" style={{padding:'18px 22px',maxWidth:680,marginBottom:26}}>
+        <p className="hand" style={{fontSize:30,margin:'0 0 12px',lineHeight:1.25}}>{L.s8Recap}</p>
+        <StepChips steps={L.journeySteps} idx={8}/>
+        <div style={{marginTop:14}}>
+          <SentenceRow prompt={prompt} heroOn={false} gen={[prompt.start[0].t]}/>
+        </div>
+      </div>
+      {/* the official-name table, demoted below the recap */}
+      <p style={{fontSize:15,maxWidth:760,margin:'0 0 12px'}}>📄 {L.s8DecoderIntro}</p>
       <div className="wb-card table-scroll" style={{overflowX:'auto'}}>
         <table style={{borderCollapse:'collapse',width:'100%',fontSize:14,minWidth:560}}>
           <thead><tr style={{background:'#F1EDE3'}}>
