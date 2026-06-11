@@ -1,7 +1,7 @@
 /*
   Journey of a Token — interactive explainer. SHARED block (single source).
-  Edit THIS file (plus stepper.jsx / scrolly.jsx), then run ./build.sh —
-  the compiled dist/*.js is what the HTML pages load. Commit dist/ output.
+  Edit THIS file (plus stepper.jsx), then run ./build.sh —
+  the compiled dist/*.js is what the HTML page loads. Commit dist/ output.
 
   ASSUMPTIONS:
   - Probabilities & attention scores are HAND-CRAFTED for teaching (banner shown in loop scene).
@@ -349,11 +349,11 @@ function Scene0({L,lang,prompt}){
 
 // The chopping machine: one continuous sentence ribbon → blade sweeps →
 // pieces drift apart → each collects a numbered catalogue ticket.
-function Scene1({L,prompt,progress}){
+function Scene1({L,prompt}){
   const [chopSel,setChopSel]=useState(false);
   useEffect(()=>{setChopSel(false);},[prompt.id]);
-  // t: 0 = intact ribbon, 1 = fully chopped (stepper animates via CSS, scrolly scrubs)
-  const t=progress==null?(chopSel?1:0):Math.max(0,Math.min(1,(progress-0.1)/0.55));
+  // t: 0 = intact ribbon, 1 = fully chopped (CSS transitions animate the sweep)
+  const t=chopSel?1:0;
   const ticketsOn=t>0.8;
   const widths=prompt.tokens.map(tk=>tokBoxW(tk));
   const xs=[]; let x=12;
@@ -398,9 +398,8 @@ function Scene1({L,prompt,progress}){
         <div style={{fontSize:12.5,color:'var(--faint)',margin:'2px 2px 6px',minHeight:18}}>
           {ticketsOn?'🎟 '+L.s1Tickets:''}</div>
       </div>
-      {progress==null&&(
-        <button className="wb-btn rust" data-testid="chop" style={{marginTop:14}}
-          onClick={()=>setChopSel(c=>!c)}>{chopSel?L.s1Undo:L.s1Chop}</button>)}
+      <button className="wb-btn rust" data-testid="chop" style={{marginTop:14}}
+        onClick={()=>setChopSel(c=>!c)}>{chopSel?L.s1Undo:L.s1Chop}</button>
       <div style={{marginTop:20,fontSize:15}}>
         {L.s1Sub}{' '}
         {L.s1SubEx.map((p,i)=>(
@@ -463,9 +462,9 @@ function Scene2({L,lang,prompt}){
     </SceneFrame>);
 }
 
-function Scene3({L,prompt,progress}){
+function Scene3({L,prompt}){
   const [pos,setPos]=useState(prompt.hero+1);
-  const p=progress==null?pos:1+Math.round(progress*7);
+  const p=pos;
   const heroWord=prompt.tokens[prompt.hero];
   return (
     <SceneFrame title={L.s3Title} lead={L.s3Lead} nerd={L.s3Nerd} why={L.s3Why}>
@@ -499,10 +498,10 @@ function Scene3({L,prompt,progress}){
           <div style={{textAlign:'center',fontSize:13,fontWeight:800,color:RUST,marginTop:-26}}>{L.s3Pos(p)} · +{p*18}°</div>
         </div>
       </div>
-      {progress==null&&<div style={{maxWidth:420,marginTop:18}}>
+      <div style={{maxWidth:420,marginTop:18}}>
         <div style={{fontSize:14,fontWeight:800,marginBottom:4}}>{L.s3Drag}</div>
         <input type="range" min="1" max="8" value={pos} onChange={e=>setPos(+e.target.value)}/>
-      </div>}
+      </div>
     </SceneFrame>);
 }
 
@@ -623,22 +622,20 @@ function AttnCup({L,prompt,lang}){
     </div>);
 }
 
-function Scene4({L,prompt,lang,progress}){
+function Scene4({L,prompt,lang}){
   const [revealed,setRevealed]=useState([]);
-  const [beatSel,setBeatSel]=useState(0);
+  const [beat,setBeatSel]=useState(0);
   useEffect(()=>{setRevealed([]);setBeatSel(0);},[prompt.id]);
-  const beat=progress==null?beatSel:(progress<0.5?0:1);
-  // stepper: ←/→ move between beats first, then fall through to scene navigation
+  // ←/→ move between beats first, then fall through to scene navigation
   const beatRef=useRef(beat); beatRef.current=beat;
   useEffect(()=>{
-    if(progress!=null) return;
     window.__sceneKeyHandler=(key)=>{
       if(key==='ArrowRight'&&beatRef.current<1){setBeatSel(1);return true;}
       if(key==='ArrowLeft'&&beatRef.current>0){setBeatSel(0);return true;}
       return false;
     };
     return ()=>{window.__sceneKeyHandler=null;};
-  },[progress]);
+  },[]);
   const last=prompt.tokens[prompt.reader];
   const hero=prompt.tokens[prompt.hero];
   const scores=prompt.att;
@@ -648,8 +645,8 @@ function Scene4({L,prompt,lang,progress}){
     <SceneFrame title={L.s4Title} lead={L.s4Lead(last,hero)} aside={beat===1?L.s4KV:null} nerd={L.s4Nerd} why={L.s4Why}>
       <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:12,flexWrap:'wrap'}}>
         {heads.map((h,i)=>(
-          <button key={i} onClick={progress==null?()=>setBeatSel(i):undefined}
-            style={{cursor:progress==null?'pointer':'default',border:`2px solid ${INK}`,borderRadius:16,
+          <button key={i} onClick={()=>setBeatSel(i)}
+            style={{cursor:'pointer',border:`2px solid ${INK}`,borderRadius:16,
               padding:'3px 12px',fontSize:12.5,fontWeight:800,fontFamily:'Nunito,sans-serif',
               background:i===beat?RUST:i<beat?'#E6F0E9':'#fff',color:i===beat?'#fff':INK}}>{h}</button>))}
       </div>
@@ -676,31 +673,28 @@ function Scene4({L,prompt,lang,progress}){
             <AttnCup L={L} prompt={prompt} lang={lang}/>
           </div>
         </div>)}
-      {progress==null&&(
-        <div style={{display:'flex',gap:10,marginTop:16}}>
-          <button className="wb-btn" disabled={beat===0} onClick={()=>setBeatSel(0)}>{L.s5Prev}</button>
-          <button className="wb-btn primary" disabled={beat===1} onClick={()=>setBeatSel(1)}
-            data-testid="attn-next">{L.s5Next}</button>
-        </div>)}
+      <div style={{display:'flex',gap:10,marginTop:16}}>
+        <button className="wb-btn" disabled={beat===0} onClick={()=>setBeatSel(0)}>{L.s5Prev}</button>
+        <button className="wb-btn primary" disabled={beat===1} onClick={()=>setBeatSel(1)}
+          data-testid="attn-next">{L.s5Next}</button>
+      </div>
     </SceneFrame>);
 }
 
-function Scene5({L,prompt,lang,progress}){
-  const [beatSel,setBeatSel]=useState(0);
+function Scene5({L,prompt,lang}){
+  const [beat,setBeatSel]=useState(0);
   const [ffnOn,setFfnOn]=useState(true);
   useEffect(()=>{setBeatSel(0);setFfnOn(true);},[prompt.id]);
-  const beat=progress==null?beatSel:Math.min(2,Math.floor(progress*3.2));
   // route ←/→ to beats first; only unconsumed presses fall through to scene navigation
   const beatRef=useRef(beat); beatRef.current=beat;
   useEffect(()=>{
-    if(progress!=null) return;
     window.__sceneKeyHandler=(key)=>{
       if(key==='ArrowRight'&&beatRef.current<2){setBeatSel(b=>Math.min(2,b+1));return true;}
       if(key==='ArrowLeft'&&beatRef.current>0){setBeatSel(b=>Math.max(0,b-1));return true;}
       return false;
     };
     return ()=>{window.__sceneKeyHandler=null;};
-  },[progress]);
+  },[]);
   const F=prompt.ffn;
   const after=prompt.start.slice(0,5);
   const heads=[L.s5B1Head,L.s5B2Head,L.s5B3Head];
@@ -729,8 +723,8 @@ function Scene5({L,prompt,lang,progress}){
       aside={beat===1?L.s5Rome:beat===2?L.s5Bridge:null}>
       <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:14,flexWrap:'wrap'}}>
         {heads.map((h,i)=>(
-          <button key={i} onClick={progress==null?()=>setBeatSel(i):undefined}
-            style={{cursor:progress==null?'pointer':'default',border:`2px solid ${INK}`,borderRadius:16,
+          <button key={i} onClick={()=>setBeatSel(i)}
+            style={{cursor:'pointer',border:`2px solid ${INK}`,borderRadius:16,
               padding:'3px 12px',fontSize:12.5,fontWeight:800,fontFamily:'Nunito,sans-serif',
               background:i===beat?RUST:i<beat?'#E6F0E9':'#fff',color:i===beat?'#fff':INK}}>{h}</button>))}
       </div>
@@ -784,20 +778,19 @@ function Scene5({L,prompt,lang,progress}){
               note={ffnOn?L.s5SharpNote:''} testid="panel-with"/>
           </div>
         </div>)}
-      {progress==null&&(
-        <div style={{display:'flex',gap:10,marginTop:18}}>
-          <button className="wb-btn" disabled={beat===0} onClick={()=>setBeatSel(b=>b-1)}>{L.s5Prev}</button>
-          <button className="wb-btn primary" disabled={beat===2} onClick={()=>setBeatSel(b=>b+1)}
-            data-testid="ffn-next">{L.s5Next}</button>
-        </div>)}
+      <div style={{display:'flex',gap:10,marginTop:18}}>
+        <button className="wb-btn" disabled={beat===0} onClick={()=>setBeatSel(b=>b-1)}>{L.s5Prev}</button>
+        <button className="wb-btn primary" disabled={beat===2} onClick={()=>setBeatSel(b=>b+1)}
+          data-testid="ffn-next">{L.s5Next}</button>
+      </div>
     </SceneFrame>);
 }
 
 // The conveyor belt: the word card rides past repeating meeting→workshop
 // stations; every block sticks one more margin note onto the card.
-function Scene6({L,prompt,progress}){
+function Scene6({L,prompt}){
   const [layer,setLayer]=useState(1);
-  const n=progress==null?layer:1+Math.round(progress*31);
+  const n=layer;
   const heroWord=prompt.tokens[prompt.hero];
   const W=560, BELTY=140;
   const cardX=26+(n-1)/31*(W-150);
@@ -842,10 +835,10 @@ function Scene6({L,prompt,progress}){
           {L.s6Block(n)} · <span style={{color:GREEN}}>{L.s6Notes(n)}</span></div>
       </div>
       <div style={{display:'flex',gap:24,alignItems:'center',flexWrap:'wrap',marginTop:16}}>
-        {progress==null&&<div style={{flex:'1 1 300px',maxWidth:460}}>
+        <div style={{flex:'1 1 300px',maxWidth:460}}>
           <div style={{fontSize:14,fontWeight:800,marginBottom:4}}>{L.s6Scrub}</div>
           <input type="range" min="1" max="32" value={layer} onChange={e=>setLayer(+e.target.value)}/>
-        </div>}
+        </div>
         <div className="wb-card" style={{padding:'12px 16px',width:170}}>
           <div className="hand" style={{fontSize:22,marginBottom:4}}>{L.s6Gauge}</div>
           <div style={{height:10,border:`1.5px solid ${INK}`,borderRadius:5,overflow:'hidden'}}>

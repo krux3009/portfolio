@@ -1,4 +1,4 @@
-/* Stepper shell — guided tour. Loads after shared.jsx. */
+/* Stepper shell — the guided tour (served as index.html). Loads after shared.jsx. */
 function StepperApp(){
   const [lang,setLang]=useState(localStorage.getItem('lj-lang')||'en');
   const [idx,setIdx]=useState(+(localStorage.getItem('lj-scene')||0));
@@ -21,7 +21,7 @@ function StepperApp(){
       <header style={{display:'flex',alignItems:'baseline',gap:16,padding:'18px 26px 6px',flexWrap:'wrap'}}>
         <h1 className="hand" style={{fontSize:34,margin:0}}>{L.appTitle}</h1>
         <span style={{fontSize:13.5,color:'var(--faint)'}}>{L.appSub}</span>
-        <a className="wb-btn" href="index.html" data-testid="home"
+        <a className="wb-btn" href="/projects/" data-testid="home"
           style={{marginLeft:'auto',padding:'5px 14px',fontSize:13,textDecoration:'none',display:'inline-block'}}>⌂ {L.home}</a>
         <button className="wb-btn" style={{padding:'5px 14px',fontSize:13}}
           onClick={()=>setLang(l=>l==='en'?'zh':'en')} data-testid="lang-toggle">{L.langBtn}</button>
@@ -37,8 +37,7 @@ function StepperApp(){
           </React.Fragment>))}
       </nav>
       <main style={{flex:1,padding:'4px 26px'}}>
-        <Scene L={L} lang={lang} prompt={prompt}
-          progress={null} goto={(n)=>setIdx(n)}/>
+        <Scene L={L} lang={lang} prompt={prompt} goto={(n)=>setIdx(n)}/>
       </main>
       <footer style={{display:'flex',gap:12,alignItems:'center',padding:'14px 26px 26px',flexWrap:'wrap'}}>
         <button className="wb-btn" onClick={()=>setIdx(i=>Math.max(i-1,0))}

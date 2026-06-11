@@ -1,7 +1,7 @@
 /*
   Journey of a Token — interactive explainer. SHARED block (single source).
-  Edit THIS file (plus stepper.jsx / scrolly.jsx), then run ./build.sh —
-  the compiled dist/*.js is what the HTML pages load. Commit dist/ output.
+  Edit THIS file (plus stepper.jsx), then run ./build.sh —
+  the compiled dist/*.js is what the HTML page loads. Commit dist/ output.
 
   ASSUMPTIONS:
   - Probabilities & attention scores are HAND-CRAFTED for teaching (banner shown in loop scene).
@@ -927,15 +927,14 @@ function Scene0({
 // pieces drift apart → each collects a numbered catalogue ticket.
 function Scene1({
   L,
-  prompt,
-  progress
+  prompt
 }) {
   const [chopSel, setChopSel] = useState(false);
   useEffect(() => {
     setChopSel(false);
   }, [prompt.id]);
-  // t: 0 = intact ribbon, 1 = fully chopped (stepper animates via CSS, scrolly scrubs)
-  const t = progress == null ? chopSel ? 1 : 0 : Math.max(0, Math.min(1, (progress - 0.1) / 0.55));
+  // t: 0 = intact ribbon, 1 = fully chopped (CSS transitions animate the sweep)
+  const t = chopSel ? 1 : 0;
   const ticketsOn = t > 0.8;
   const widths = prompt.tokens.map(tk => tokBoxW(tk));
   const xs = [];
@@ -1056,7 +1055,7 @@ function Scene1({
       margin: '2px 2px 6px',
       minHeight: 18
     }
-  }, ticketsOn ? '🎟 ' + L.s1Tickets : '')), progress == null && /*#__PURE__*/React.createElement("button", {
+  }, ticketsOn ? '🎟 ' + L.s1Tickets : '')), /*#__PURE__*/React.createElement("button", {
     className: "wb-btn rust",
     "data-testid": "chop",
     style: {
@@ -1339,11 +1338,10 @@ function Scene2({
 }
 function Scene3({
   L,
-  prompt,
-  progress
+  prompt
 }) {
   const [pos, setPos] = useState(prompt.hero + 1);
-  const p = progress == null ? pos : 1 + Math.round(progress * 7);
+  const p = pos;
   const heroWord = prompt.tokens[prompt.hero];
   return /*#__PURE__*/React.createElement(SceneFrame, {
     title: L.s3Title,
@@ -1443,7 +1441,7 @@ function Scene3({
       color: RUST,
       marginTop: -26
     }
-  }, L.s3Pos(p), " \xB7 +", p * 18, "\xB0"))), progress == null && /*#__PURE__*/React.createElement("div", {
+  }, L.s3Pos(p), " \xB7 +", p * 18, "\xB0"))), /*#__PURE__*/React.createElement("div", {
     style: {
       maxWidth: 420,
       marginTop: 18
@@ -1691,21 +1689,18 @@ function AttnCup({
 function Scene4({
   L,
   prompt,
-  lang,
-  progress
+  lang
 }) {
   const [revealed, setRevealed] = useState([]);
-  const [beatSel, setBeatSel] = useState(0);
+  const [beat, setBeatSel] = useState(0);
   useEffect(() => {
     setRevealed([]);
     setBeatSel(0);
   }, [prompt.id]);
-  const beat = progress == null ? beatSel : progress < 0.5 ? 0 : 1;
-  // stepper: ←/→ move between beats first, then fall through to scene navigation
+  // ←/→ move between beats first, then fall through to scene navigation
   const beatRef = useRef(beat);
   beatRef.current = beat;
   useEffect(() => {
-    if (progress != null) return;
     window.__sceneKeyHandler = key => {
       if (key === 'ArrowRight' && beatRef.current < 1) {
         setBeatSel(1);
@@ -1720,7 +1715,7 @@ function Scene4({
     return () => {
       window.__sceneKeyHandler = null;
     };
-  }, [progress]);
+  }, []);
   const last = prompt.tokens[prompt.reader];
   const hero = prompt.tokens[prompt.hero];
   const scores = prompt.att;
@@ -1742,9 +1737,9 @@ function Scene4({
     }
   }, heads.map((h, i) => /*#__PURE__*/React.createElement("button", {
     key: i,
-    onClick: progress == null ? () => setBeatSel(i) : undefined,
+    onClick: () => setBeatSel(i),
     style: {
-      cursor: progress == null ? 'pointer' : 'default',
+      cursor: 'pointer',
       border: `2px solid ${INK}`,
       borderRadius: 16,
       padding: '3px 12px',
@@ -1814,7 +1809,7 @@ function Scene4({
     L: L,
     prompt: prompt,
     lang: lang
-  }))), progress == null && /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: 10,
@@ -1834,21 +1829,18 @@ function Scene4({
 function Scene5({
   L,
   prompt,
-  lang,
-  progress
+  lang
 }) {
-  const [beatSel, setBeatSel] = useState(0);
+  const [beat, setBeatSel] = useState(0);
   const [ffnOn, setFfnOn] = useState(true);
   useEffect(() => {
     setBeatSel(0);
     setFfnOn(true);
   }, [prompt.id]);
-  const beat = progress == null ? beatSel : Math.min(2, Math.floor(progress * 3.2));
   // route ←/→ to beats first; only unconsumed presses fall through to scene navigation
   const beatRef = useRef(beat);
   beatRef.current = beat;
   useEffect(() => {
-    if (progress != null) return;
     window.__sceneKeyHandler = key => {
       if (key === 'ArrowRight' && beatRef.current < 2) {
         setBeatSel(b => Math.min(2, b + 1));
@@ -1863,7 +1855,7 @@ function Scene5({
     return () => {
       window.__sceneKeyHandler = null;
     };
-  }, [progress]);
+  }, []);
   const F = prompt.ffn;
   const after = prompt.start.slice(0, 5);
   const heads = [L.s5B1Head, L.s5B2Head, L.s5B3Head];
@@ -1957,9 +1949,9 @@ function Scene5({
     }
   }, heads.map((h, i) => /*#__PURE__*/React.createElement("button", {
     key: i,
-    onClick: progress == null ? () => setBeatSel(i) : undefined,
+    onClick: () => setBeatSel(i),
     style: {
-      cursor: progress == null ? 'pointer' : 'default',
+      cursor: 'pointer',
       border: `2px solid ${INK}`,
       borderRadius: 16,
       padding: '3px 12px',
@@ -2120,7 +2112,7 @@ function Scene5({
     active: ffnOn,
     note: ffnOn ? L.s5SharpNote : '',
     testid: "panel-with"
-  }))), progress == null && /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: 10,
@@ -2142,11 +2134,10 @@ function Scene5({
 // stations; every block sticks one more margin note onto the card.
 function Scene6({
   L,
-  prompt,
-  progress
+  prompt
 }) {
   const [layer, setLayer] = useState(1);
-  const n = progress == null ? layer : 1 + Math.round(progress * 31);
+  const n = layer;
   const heroWord = prompt.tokens[prompt.hero];
   const W = 560,
     BELTY = 140;
@@ -2290,7 +2281,7 @@ function Scene6({
       flexWrap: 'wrap',
       marginTop: 16
     }
-  }, progress == null && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       flex: '1 1 300px',
       maxWidth: 460

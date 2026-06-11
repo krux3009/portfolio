@@ -1,4 +1,4 @@
-/* Stepper shell — guided tour. Loads after shared.jsx. */
+/* Stepper shell — the guided tour (served as index.html). Loads after shared.jsx. */
 function StepperApp() {
   const [lang, setLang] = useState(localStorage.getItem('lj-lang') || 'en');
   const [idx, setIdx] = useState(+(localStorage.getItem('lj-scene') || 0));
@@ -47,7 +47,7 @@ function StepperApp() {
     }
   }, L.appSub), /*#__PURE__*/React.createElement("a", {
     className: "wb-btn",
-    href: "index.html",
+    href: "/projects/",
     "data-testid": "home",
     style: {
       marginLeft: 'auto',
@@ -102,7 +102,6 @@ function StepperApp() {
     L: L,
     lang: lang,
     prompt: prompt,
-    progress: null,
     goto: n => setIdx(n)
   })), /*#__PURE__*/React.createElement("footer", {
     style: {

@@ -1,10 +1,7 @@
-/* Journey of a Token — shared styles for stepper.html + scrolly.html.
-   --hdr drives the scrolly fixed-header offset (spacer + sticky top) so the
-   mobile media query can grow the header without breaking the pinning. */
+/* Journey of a Token — styles for index.html (the guided tour). */
 :root{
   --paper:#FAF8F3; --ink:#2B2B2B; --blue:#2563EB; --rust:#C04A1A;
   --green:#1E7A4D; --hl:#F5D547; --faint:rgba(43,43,43,.45);
-  --hdr:64px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);
@@ -46,17 +43,5 @@ input[type=range]{accent-color:var(--rust);width:100%}
 
 /* ---- mobile ---- */
 @media (max-width:640px){
-  :root{--hdr:94px}
-  /* scrolly fixed header: title row + scrollable rail row */
-  .lj-header{flex-wrap:wrap;gap:8px;padding:8px 12px}
-  .lj-header h1{font-size:22px !important}
-  /* !important: the rail carries an inline flexWrap:'wrap' for desktop */
-  .lj-rail{order:3;width:100%;flex-wrap:nowrap !important;overflow-x:auto;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
-  .lj-rail::-webkit-scrollbar{display:none}
   h2.hand{font-size:30px !important}
-  /* tall pinned scenes: start at the top and let the pinned box scroll internally
-     instead of clipping both ends (inline style centers it on desktop) */
-  .lj-sticky{align-items:flex-start !important;overflow-y:auto;
-    max-height:calc(100vh - var(--hdr))}
 }
