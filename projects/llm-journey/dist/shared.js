@@ -41,6 +41,7 @@ const STRINGS = {
     s0Note: 'Everything you will see is the real machinery — the same factory inside ChatGPT, Claude, or Llama. The numbers come from a real open model (Llama 3 8B).',
     s1Title: 'Station 1 · The front door — the chopping machine',
     s1Nerd: 'in the papers: “tokenizer”',
+    s1Why: 'What this station adds: it turns writing into catalogue numbers — the only thing the machinery can read. Without it, the factory could not even open your sentence.',
     s1Lead: 'The factory cannot read letters. A chopping machine splits your sentence into pieces and hands each piece a number — its place in a fixed catalogue of 128,256 pieces.',
     s1Chop: '✂ Chop!',
     s1Undo: '↺ Put it back',
@@ -56,6 +57,7 @@ const STRINGS = {
     s1Aside: 'This is why these AIs once miscounted the R’s in “strawberry” — the factory sees catalogue numbers, never letters.',
     s2Title: 'Station 2 · The meaning desk',
     s2Nerd: 'in the papers: “embedding”',
+    s2Why: 'What this station adds: numbers become meaning — on this map, “near” means “similar”. Without it, a ticket is just a number; the factory would never know a cat is more like a dog than like Paris.',
     s2Lead: w => `Your number is traded for an arrow that points at your meaning. Words that mean similar things live in the same neighbourhood of the map. You, “${w}”, get the spot the factory learned from billions of sentences.`,
     s2Hover: 'Hover the dots — neighbours share meaning.',
     s2Map: 'the meaning map',
@@ -63,6 +65,7 @@ const STRINGS = {
     s2Real: 'Drawn flat here. In the real factory your arrow is a list of 4,096 numbers.',
     s3Title: 'Station 3 · The order stamp',
     s3Nerd: 'in the papers: “positional encoding (RoPE)”',
+    s3Why: 'What this station adds: word order. “Dog bites man” and “man bites dog” are made of the same pieces — only the seat stamps tell them apart.',
     s3Lead: 'Same word, different seat in the sentence → a different stamp. The stamp twists your arrow by an angle that depends on your seat number, so the factory can later feel which word came first and how far apart two words sit.',
     s3SeatRow: 'watch the same word change seats:',
     s3Drag: 'Drag your seat position:',
@@ -70,6 +73,7 @@ const STRINGS = {
     s3Ghost: 'arrow before the twist',
     s4Title: 'Station 4 · The meeting room',
     s4Nerd: 'in the papers: “attention” — Query · Key · Value',
+    s4Why: 'What this station adds: the only place words exchange information. Without it, every word is an island — “the” would never find out a cat is doing the sitting.',
     s4Lead: (last, hero) => `The only place where words talk to each other. The last word “${last}” must guess what comes next — so it holds up a question card, and every earlier word holds up a name-tag. Click each earlier word to compare its name-tag with the question.`,
     s4YouGeneric: (hero, last) => `You, “${hero}”, match the question best — your note of information is handed to “${last}”.`,
     s4YouAsk: (winner, last) => `This time you, “${last}”, are the one asking. “${winner}” matches your question best — its note of information flows into you.`,
@@ -83,6 +87,7 @@ const STRINGS = {
     s4ClickPrompt: '… click the words above',
     s5Title: 'Station 5 · The private workshop — the factory’s memory',
     s5Nerd: 'in the papers: “feed-forward network (FFN)”',
+    s5Why: 'What this station adds: knowledge of the world. The meeting room only moves clues around — this is where facts actually live. Without it, replies sound like language but know nothing.',
     s5Lead: 'After the meeting room, each word is processed alone. This station holds everything the factory ever learned about the world — and it is the reason the final guess is smart instead of mush.',
     s5B1Head: '1 · Clues, no knowledge',
     s5B1: 'The meeting room only MOVED information between words — nothing new entered the factory. You now carry clues like these, but the factory still knows nothing about the world:',
@@ -104,6 +109,7 @@ const STRINGS = {
     home: 'Home',
     s6Title: 'Station 6 · The conveyor belt',
     s6Nerd: 'in the papers: “residual stream” · “RMSNorm”',
+    s6Why: 'What this station adds: depth. Each lap adds one small correction; 32 laps take you from spelling to story. Without the repeats, every guess would stay shallow.',
     s6Lead: 'You repeat meeting-room → workshop 32 times. The golden rule: every station only ADDS a small correction onto your arrow — nothing is ever erased. Between stations, a gauge re-standardises your arrow’s length so the additions never blow up.',
     s6Scrub: 'Scrub through the 32 blocks:',
     s6Block: n => `block ${n} / 32`,
@@ -114,6 +120,7 @@ const STRINGS = {
     s6GaugeSub: 'length → standard ✓',
     s7Title: 'Final station · THE LOOP',
     s7Nerd: 'in the papers: “next-token prediction” · “logits” · “sampling”',
+    s7Why: 'What this station adds: the writing itself. Every station so far only reads; the loop is what writes — one full factory run per new piece. Without it, the best reading in the world would never become a reply.',
     s7Lead: 'At the exit, the last word’s finished arrow is scored against all 128,256 catalogue pieces, and the scores become chances of being picked. One piece is drawn — and here is the secret of every chatbot: the new piece is glued onto the sentence and THE WHOLE FACTORY RUNS AGAIN. One full trip per word-piece, until a special “I’m done” piece is drawn.',
     s7Honest: 'Honesty note: these chances are hand-designed for teaching. A real model computes them fresh from ~8 billion learned numbers.',
     s7Temp: 'Temperature (how daring the draw is)',
@@ -150,6 +157,7 @@ const STRINGS = {
     s0Note: '你将看到的都是真实的机器——ChatGPT、Claude、Llama 内部同样的工厂。数字来自真实开源模型 Llama 3 8B。',
     s1Title: '第一站 · 工厂大门——切片机',
     s1Nerd: '论文里叫：分词器 tokenizer',
+    s1Why: '这一站的贡献：把文字变成目录编号——机器唯一读得懂的东西。没有它，工厂连你的句子都打不开。',
     s1Lead: '工厂读不懂字母。一台切片机把句子切成词片，每片领到一个编号——它在一本固定目录（共 128,256 片）里的位置。',
     s1Chop: '✂ 切！',
     s1Undo: '↺ 拼回去',
@@ -168,13 +176,15 @@ const STRINGS = {
     s1Aside: '这就是这类 AI 曾数错 strawberry 里有几个 R 的原因——工厂只看目录编号，从不看字母。',
     s2Title: '第二站 · 语义服务台',
     s2Nerd: '论文里叫：词嵌入 embedding',
-    s2Lead: w => `你的编号被换成「语义地图」上的一个位置。意思相近的词，住在地图上同一个街区。你（「${w}」）的位置，是工厂从几十亿个句子里学来的。`,
+    s2Why: '这一站的贡献：编号变成含义——在这张地图上，「相近」就是「相似」。没有它，编号只是号码，工厂永远不知道猫更像狗、而不像巴黎。',
+    s2Lead: w => `你的编号被换成「语义地图」上的一个位置。意思相近的词，住在地图上同一个街区。你「${w}」的位置，是工厂从几十亿个句子里学来的。`,
     s2Hover: '悬停圆点——相邻的词意思相近。',
     s2Map: '语义地图',
     s2Groups: ['王室', '地名', '宠物', '故事词'],
     s2Real: '这里画成了平面。真实工厂里，你的位置是一串 4,096 个数字。',
     s3Title: '第三站 · 顺序印章',
     s3Nerd: '论文里叫：位置编码 RoPE',
+    s3Why: '这一站的贡献：词序。「狗咬人」和「人咬狗」用的是同样的词片——全靠座位印章分出谁先谁后。',
     s3Lead: '同一个词，坐在句子的不同位置 → 盖不同的章。印章按你的座位号把箭头转一个角度，让工厂之后能感觉到谁先谁后、隔了多远。',
     s3SeatRow: '看同一个词换座位：',
     s3Drag: '拖动你的座位位置：',
@@ -182,9 +192,10 @@ const STRINGS = {
     s3Ghost: '旋转前的箭头',
     s4Title: '第四站 · 会议室',
     s4Nerd: '论文里叫：注意力 attention——Query · Key · Value',
+    s4Why: '这一站的贡献：词与词唯一交换信息的地方。没有它，每个词都是孤岛——「在」永远不知道是谁坐在哪里。',
     s4Lead: (last, hero) => `词与词唯一能交流的地方。最后一个词「${last}」要猜接下来是什么——于是它举起一张提问卡，每个更早的词举起自己的名牌。点击每个早先的词，看它的名牌和提问卡有多匹配。`,
-    s4YouGeneric: (hero, last) => `你（「${hero}」）和提问最匹配——你的信息便条被递给了「${last}」。`,
-    s4YouAsk: (winner, last) => `这一次提问的是你（「${last}」）。「${winner}」和你的提问最匹配——它的信息便条流进了你这里。`,
+    s4YouGeneric: (hero, last) => `你「${hero}」和提问最匹配——你的信息便条被递给了「${last}」。`,
+    s4YouAsk: (winner, last) => `这一次提问的是你「${last}」。「${winner}」和你的提问最匹配——它的信息便条流进了你这里。`,
     s4OtherWins: (winner, last) => `「${winner}」和提问最匹配——它的信息便条被递给了「${last}」。`,
     s4Mask: '读者之后的词被盖住——禁止偷看未来',
     s4B1Head: '1 · 谁在和谁说话',
@@ -195,6 +206,7 @@ const STRINGS = {
     s4ClickPrompt: '…点击上方的词',
     s5Title: '第五站 · 私人车间——工厂的记忆',
     s5Nerd: '论文里叫：前馈网络 FFN',
+    s5Why: '这一站的贡献：关于世界的知识。会议室只负责搬运线索，事实真正住在这里。没有它，回复听着像话，其实什么都不知道。',
     s5Lead: '离开会议室后，每个词独自接受加工。这一站存放着工厂学到的关于世界的一切——也是最终猜测「聪明」而非「糊状」的原因。',
     s5B1Head: '1 · 有线索，没知识',
     s5B1: '会议室只是在词与词之间搬运信息——工厂里没有进来任何新东西。你现在带着这些线索，但工厂对世界仍一无所知：',
@@ -216,6 +228,7 @@ const STRINGS = {
     home: '主页',
     s6Title: '第六站 · 传送带',
     s6Nerd: '论文里叫：残差流 residual stream · RMSNorm',
+    s6Why: '这一站的贡献：深度。每一圈只加一笔小修正，32 圈下来，从拼写一路读到剧情。没有这些重复，所有猜测都停在表面。',
     s6Lead: '「会议室 → 车间」你要重复 32 次。黄金法则：每一站只往你的箭头上「加」一笔小修正——什么都不会被擦掉。站与站之间有一个校准仪，把箭头长度调回标准，防止越加越大。',
     s6Scrub: '拖动浏览 32 个厂块：',
     s6Block: n => `第 ${n} / 32 块`,
@@ -226,6 +239,7 @@ const STRINGS = {
     s6GaugeSub: '长度 → 标准 ✓',
     s7Title: '终点站 · 循环',
     s7Nerd: '论文里叫：下一词预测 · logits · 抽样 sampling',
+    s7Why: '这一站的贡献：真正的「写」。前面每一站都只是在读，循环才是在写——整座工厂跑一遍，只换来一个新词片。没有它，读得再懂也变不成回复。',
     s7Lead: '在出口，最后一个词的成品箭头与目录里全部 128,256 个词片逐一打分，分数变成各片的中签机会。抽出一片——接着是所有聊天机器人的秘密：新词片粘回句尾，整座工厂重新跑一遍。每个词片跑一整趟，直到抽到表示「说完了」的特殊词片。',
     s7Honest: '诚实声明：这里的机会是为教学手工设计的。真实模型由约 80 亿个学到的数字现场计算。',
     s7Temp: '温度（抽签有多大胆）',
@@ -794,7 +808,8 @@ function SceneFrame({
   lead,
   children,
   aside,
-  nerd
+  nerd,
+  why
 }) {
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -811,7 +826,18 @@ function SceneFrame({
     }
   }, title), nerd && /*#__PURE__*/React.createElement("div", {
     className: "nerd-tag"
-  }, "\uD83D\uDCC4 ", nerd), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDCC4 ", nerd), why && /*#__PURE__*/React.createElement("div", {
+    style: {
+      margin: '10px 0 12px',
+      padding: '9px 14px',
+      borderLeft: `4px solid ${GREEN}`,
+      background: '#F0F6F1',
+      borderRadius: '0 10px 10px 0',
+      fontSize: 14.5,
+      lineHeight: 1.5,
+      maxWidth: 760
+    }
+  }, "\u2699\uFE0F ", why), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 16.5,
       lineHeight: 1.55,
@@ -929,7 +955,8 @@ function Scene1({
     title: L.s1Title,
     lead: L.s1Lead,
     aside: L.s1Aside,
-    nerd: L.s1Nerd
+    nerd: L.s1Nerd,
+    why: L.s1Why
   }, /*#__PURE__*/React.createElement("div", {
     className: "wb-card",
     style: {
@@ -1119,15 +1146,17 @@ const MEANING_DOTS = {
     y: 160,
     c: 3
   }],
-  zh: [{
+  zh: [
+  // CJK labels are wider — dots sit further from the ellipse edges than in en
+  {
     w: '国王',
     x: 36,
     y: 44,
     c: 0
   }, {
     w: '王后',
-    x: 78,
-    y: 36,
+    x: 70,
+    y: 32,
     c: 0
   }, {
     w: '王子',
@@ -1141,7 +1170,7 @@ const MEANING_DOTS = {
     c: 1
   }, {
     w: '法国',
-    x: 232,
+    x: 222,
     y: 62,
     c: 1
   }, {
@@ -1156,7 +1185,7 @@ const MEANING_DOTS = {
     c: 2
   }, {
     w: '小狗',
-    x: 138,
+    x: 130,
     y: 158,
     c: 2
   }, {
@@ -1171,7 +1200,7 @@ const MEANING_DOTS = {
     c: 3
   }, {
     w: '从前',
-    x: 252,
+    x: 244,
     y: 152,
     c: 3
   }, {
@@ -1196,7 +1225,8 @@ function Scene2({
     title: L.s2Title,
     lead: L.s2Lead(heroWord),
     aside: L.s2Real,
-    nerd: L.s2Nerd
+    nerd: L.s2Nerd,
+    why: L.s2Why
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
@@ -1295,12 +1325,15 @@ function Scene2({
       strokeDasharray: "4 3",
       className: "pop-anim"
     }), /*#__PURE__*/React.createElement("text", {
-      x: d.x + 9,
+      x: d.x + (isHero ? 17 : 9),
       y: d.y + 4,
       fontSize: "12.5",
       fontWeight: isHero ? 800 : 600,
       fill: isHero ? heroColor : INK,
-      opacity: dim ? 0.18 : 1
+      opacity: dim ? 0.18 : 1,
+      stroke: "#fff",
+      strokeWidth: "3",
+      paintOrder: "stroke"
     }, d.w));
   }))));
 }
@@ -1315,7 +1348,8 @@ function Scene3({
   return /*#__PURE__*/React.createElement(SceneFrame, {
     title: L.s3Title,
     lead: L.s3Lead,
-    nerd: L.s3Nerd
+    nerd: L.s3Nerd,
+    why: L.s3Why
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
@@ -1696,7 +1730,8 @@ function Scene4({
     title: L.s4Title,
     lead: L.s4Lead(last, hero),
     aside: beat === 1 ? L.s4KV : null,
-    nerd: L.s4Nerd
+    nerd: L.s4Nerd,
+    why: L.s4Why
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -1910,6 +1945,7 @@ function Scene5({
     title: L.s5Title,
     lead: L.s5Lead,
     nerd: L.s5Nerd,
+    why: L.s5Why,
     aside: beat === 1 ? L.s5Rome : beat === 2 ? L.s5Bridge : null
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -2120,7 +2156,8 @@ function Scene6({
   return /*#__PURE__*/React.createElement(SceneFrame, {
     title: L.s6Title,
     lead: L.s6Lead,
-    nerd: L.s6Nerd
+    nerd: L.s6Nerd,
+    why: L.s6Why
   }, /*#__PURE__*/React.createElement("div", {
     className: "wb-card",
     style: {
@@ -2397,7 +2434,8 @@ function Scene7({
   return /*#__PURE__*/React.createElement(SceneFrame, {
     title: L.s7Title,
     lead: L.s7Lead,
-    nerd: L.s7Nerd
+    nerd: L.s7Nerd,
+    why: L.s7Why
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 12.5,
