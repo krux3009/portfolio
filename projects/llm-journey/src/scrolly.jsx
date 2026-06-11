@@ -27,11 +27,9 @@ function useScrollProgress(count){
 }
 function ScrollyApp(){
   const [lang,setLang]=useState(localStorage.getItem('lj-lang')||'en');
-  const [promptId,setPromptId]=useState(localStorage.getItem('lj-prompt')||'cat');
   const L=STRINGS[lang];
-  const prompt=PROMPTS.find(p=>p.id===promptId)||PROMPTS[0];
+  const prompt=PROMPTS[lang]||PROMPTS.en;
   useEffect(()=>{localStorage.setItem('lj-lang',lang);},[lang]);
-  useEffect(()=>{localStorage.setItem('lj-prompt',promptId);},[promptId]);
   const [refs,{active,progress}]=useScrollProgress(SCENES.length);
   // scenes that consume scroll progress; the rest stay self-interactive
   const SCROLL_DRIVEN=[1,3,5,6];
@@ -62,7 +60,7 @@ function ScrollyApp(){
             display:'flex',alignItems:'center',
             opacity:i===active||Math.abs(i-active)<=1?1:.35,transition:'opacity .4s'}}>
             <div style={{width:'100%',padding:'10px 22px'}}>
-              <Scene L={L} lang={lang} prompt={prompt} setPromptId={setPromptId}
+              <Scene L={L} lang={lang} prompt={prompt}
                 progress={SCROLL_DRIVEN.includes(i)?progress[i]:null}
                 goto={(n)=>{const el=refs.current[n]; if(el) window.scrollTo({top:el.offsetTop,behavior:'smooth'});}}/>
             </div>

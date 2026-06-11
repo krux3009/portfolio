@@ -1,12 +1,10 @@
 /* Stepper shell — guided tour. Loads after shared.jsx. */
 function StepperApp(){
   const [lang,setLang]=useState(localStorage.getItem('lj-lang')||'en');
-  const [promptId,setPromptId]=useState(localStorage.getItem('lj-prompt')||'cat');
   const [idx,setIdx]=useState(+(localStorage.getItem('lj-scene')||0));
   const L=STRINGS[lang];
-  const prompt=PROMPTS.find(p=>p.id===promptId)||PROMPTS[0];
+  const prompt=PROMPTS[lang]||PROMPTS.en;
   useEffect(()=>{localStorage.setItem('lj-lang',lang);},[lang]);
-  useEffect(()=>{localStorage.setItem('lj-prompt',promptId);},[promptId]);
   useEffect(()=>{localStorage.setItem('lj-scene',String(idx));},[idx]);
   useEffect(()=>{
     const h=(e)=>{
@@ -39,7 +37,7 @@ function StepperApp(){
           </React.Fragment>))}
       </nav>
       <main style={{flex:1,padding:'4px 26px'}}>
-        <Scene L={L} lang={lang} prompt={prompt} setPromptId={setPromptId}
+        <Scene L={L} lang={lang} prompt={prompt}
           progress={null} goto={(n)=>setIdx(n)}/>
       </main>
       <footer style={{display:'flex',gap:12,alignItems:'center',padding:'14px 26px 26px',flexWrap:'wrap'}}>

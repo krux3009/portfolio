@@ -39,15 +39,11 @@ function useScrollProgress(count) {
 }
 function ScrollyApp() {
   const [lang, setLang] = useState(localStorage.getItem('lj-lang') || 'en');
-  const [promptId, setPromptId] = useState(localStorage.getItem('lj-prompt') || 'cat');
   const L = STRINGS[lang];
-  const prompt = PROMPTS.find(p => p.id === promptId) || PROMPTS[0];
+  const prompt = PROMPTS[lang] || PROMPTS.en;
   useEffect(() => {
     localStorage.setItem('lj-lang', lang);
   }, [lang]);
-  useEffect(() => {
-    localStorage.setItem('lj-prompt', promptId);
-  }, [promptId]);
   const [refs, {
     active,
     progress
@@ -147,7 +143,6 @@ function ScrollyApp() {
     L: L,
     lang: lang,
     prompt: prompt,
-    setPromptId: setPromptId,
     progress: SCROLL_DRIVEN.includes(i) ? progress[i] : null,
     goto: n => {
       const el = refs.current[n];

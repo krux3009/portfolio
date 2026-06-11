@@ -1,16 +1,12 @@
 /* Stepper shell — guided tour. Loads after shared.jsx. */
 function StepperApp() {
   const [lang, setLang] = useState(localStorage.getItem('lj-lang') || 'en');
-  const [promptId, setPromptId] = useState(localStorage.getItem('lj-prompt') || 'cat');
   const [idx, setIdx] = useState(+(localStorage.getItem('lj-scene') || 0));
   const L = STRINGS[lang];
-  const prompt = PROMPTS.find(p => p.id === promptId) || PROMPTS[0];
+  const prompt = PROMPTS[lang] || PROMPTS.en;
   useEffect(() => {
     localStorage.setItem('lj-lang', lang);
   }, [lang]);
-  useEffect(() => {
-    localStorage.setItem('lj-prompt', promptId);
-  }, [promptId]);
   useEffect(() => {
     localStorage.setItem('lj-scene', String(idx));
   }, [idx]);
@@ -106,7 +102,6 @@ function StepperApp() {
     L: L,
     lang: lang,
     prompt: prompt,
-    setPromptId: setPromptId,
     progress: null,
     goto: n => setIdx(n)
   })), /*#__PURE__*/React.createElement("footer", {

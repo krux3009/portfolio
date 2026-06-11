@@ -9,6 +9,8 @@
   - Real-model numbers (4096 / 14336 / 32 layers / 128256 vocab) from Llama 3 8B config, as of 2026-06-10.
   - Copy rule: metaphor first, official terms live in the per-station “📄 in the papers” tag
     and in the Station-8 decoder. Body text must read clean for a non-technical adult.
+  - One example sentence per language: the zh tour rides a Chinese sentence end-to-end,
+    so PROMPTS is keyed by lang and the meaning map / chop demo fork on lang too.
 */
 const {useState, useEffect, useRef, useMemo} = React;
 
@@ -20,8 +22,8 @@ en:{
   appTitle:'Journey of a Token', appSub:'how an AI like ChatGPT reads your sentence and writes back — seen from inside',
   langBtn:'中文', next:'Next →', back:'← Back', restart:'Restart journey',
   stops:['Gate','Pieces','Meaning','Order','Meeting','Workshop','Conveyor','THE LOOP','Decoder'],
-  s0Title:'Pick a sentence. Become a word.',
-  s0Lead:'The AI behind every chatbot is a factory that does exactly one job: guess the next word-piece. To see how, you will ride through it as one of the words. Choose your sentence:',
+  s0Title:'Meet your sentence. Become a word.',
+  s0Lead:'The AI behind every chatbot is a factory that does exactly one job: guess the next word-piece. To see how, you will ride through it as one of the words. Here is the sentence you will ride with:',
   s0Hero:(w)=>`You are “${w}”. For the rest of this tour, that yellow highlight is you.`,
   s0Note:'Everything you will see is the real machinery — the same factory inside ChatGPT, Claude, or Llama. The numbers come from a real open model (Llama 3 8B).',
   s1Title:'Station 1 · The front door — the chopping machine',
@@ -30,6 +32,7 @@ en:{
   s1Chop:'✂ Chop!', s1Undo:'↺ Put it back',
   s1Tickets:'every piece collects a numbered catalogue ticket',
   s1Sub:'Rare words get chopped into smaller pieces:',
+  s1SubEx:[{t:'token',id:'#5963'},{t:'ization',id:'#2065'}],
   s1Aside:'This is why these AIs once miscounted the R’s in “strawberry” — the factory sees catalogue numbers, never letters.',
   s2Title:'Station 2 · The meaning desk',
   s2Nerd:'in the papers: “embedding”',
@@ -103,8 +106,8 @@ zh:{
   appTitle:'一个 Token 的旅程', appSub:'从词的视角，看 ChatGPT 这类 AI 如何读懂句子并回复',
   langBtn:'EN', next:'下一站 →', back:'← 上一站', restart:'重新开始',
   stops:['大门','切片','语义','顺序','会议室','车间','传送带','循环','解码器'],
-  s0Title:'选一个句子，变成其中一个词。',
-  s0Lead:'聊天机器人背后的 AI 是一座工厂，只做一件事：猜下一个词片。为了看清原理，你将化身句中的一个词亲自走一遍。选择你的句子：',
+  s0Title:'认识你的句子，变成其中一个词。',
+  s0Lead:'聊天机器人背后的 AI 是一座工厂，只做一件事：猜下一个词片。为了看清原理，你将化身句中的一个词亲自走一遍。这就是你要乘坐的句子：',
   s0Hero:(w)=>`你是「${w}」。接下来整趟旅程，黄色高亮就是你。`,
   s0Note:'你将看到的都是真实的机器——ChatGPT、Claude、Llama 内部同样的工厂。数字来自真实开源模型 Llama 3 8B。',
   s1Title:'第一站 · 工厂大门——切片机',
@@ -113,6 +116,7 @@ zh:{
   s1Chop:'✂ 切！', s1Undo:'↺ 拼回去',
   s1Tickets:'每片领到一张目录号码票',
   s1Sub:'生僻词会被切成更小的片：',
+  s1SubEx:[{t:'螺',id:'#79301'},{t:'蛳',id:'#127844'},{t:'粉',id:'#41937'}],
   s1Aside:'这就是这类 AI 曾数错 strawberry 里有几个 R 的原因——工厂只看目录编号，从不看字母。',
   s2Title:'第二站 · 语义服务台',
   s2Nerd:'论文里叫：词嵌入 embedding',
@@ -184,8 +188,9 @@ zh:{
 }};
 
 // ---------- toy LM data ----------
-const PROMPTS=[
- {id:'cat', label:'The cat sat on the',
+// One example sentence per language — the tour rides the same sentence end-to-end.
+const PROMPTS={
+ en:{id:'cat', label:'The cat sat on the',
   tokens:['The','cat','sat','on','the'], ids:[791,4937,7731,389,279],
   hero:1, reader:4,
   att:[{i:0,s:0.9},{i:1,s:3.6},{i:2,s:2.1},{i:3,s:1.2}],
@@ -221,84 +226,31 @@ const PROMPTS=[
     fell:[{t:'asleep',p:1}], asleep:[{t:'.',p:1}],
     stretched:[{t:'out',p:.6},{t:'.',p:.4}], out:[{t:'.',p:1}],
   }},
- {id:'paris', label:'Paris is the capital of',
-  tokens:['Paris','is','the','capital','of'], ids:[60704,374,279,6864,315],
+ zh:{id:'cat-zh', label:'小猫安静地坐在',
+  tokens:['小猫','安静','地','坐','在'], ids:[57221,103654,9554,55308,18655],
   hero:0, reader:4,
-  att:[{i:0,s:4.1},{i:1,s:0.7},{i:2,s:0.5},{i:3,s:2.6}],
+  att:[{i:0,s:3.6},{i:1,s:1.2},{i:2,s:0.7},{i:3,s:2.4}],
   ffn:{
-    clues:{en:['“capital of ___” → a country fits','subject: Paris','tone: encyclopedia sentence'],
-           zh:['「capital of ___」→ 该填一个国家','主语：Paris（巴黎）','语气：百科句式']},
+    clues:{en:['“sat on ___” → a place is coming','subject nearby: 小猫 (kitten)','scene: something being sat on'],
+           zh:['「坐在 ___」→ 后面要来一个地点','附近的主语：小猫','场景：有东西被坐着']},
     drawers:[
-      {l:'capital of France ↔ Paris',a:'+ France — the fact!',lz:'法国首都 ↔ 巴黎',az:'+ France——事实本体！',match:true},
-      {l:'geography & place names',a:'+ country words',lz:'地理与地名',az:'+ 国家词汇',match:true},
-      {l:'encyclopedia tone',a:'+ formal endings',lz:'百科语气',az:'+ 正式收尾',match:true},
-      {l:'cats sit on things',a:'(stays shut)',lz:'猫爱坐在东西上',az:'（没动静）',match:false},
-      {l:'storybook openings',a:'(stays shut)',lz:'童话开场白',az:'（没动静）',match:false}],
-    before:[{t:'France',p:.15},{t:'Europe',p:.13},{t:'London',p:.12},{t:'pizza',p:.10},{t:'the',p:.09}]},
-  start:[{t:'France',p:.91},{t:'the',p:.04},{t:'a',p:.02},{t:'Europe',p:.02},{t:'romance',p:.01}],
-  bigram:{
-    France:[{t:'.',p:.8},{t:',',p:.15},{t:'and',p:.05}],
-    ',':[{t:'and',p:.6},{t:'home',p:.4}],
-    and:[{t:'its',p:.55},{t:'the',p:.45}],
-    its:[{t:'culture',p:1}], culture:[{t:'.',p:1}],
-    the:[{t:'French',p:.6},{t:'country',p:.4}],
-    French:[{t:'Republic',p:.8},{t:'nation',p:.2}],
-    Republic:[{t:'.',p:1}], nation:[{t:'.',p:1}], country:[{t:'.',p:1}],
-    a:[{t:'European',p:.6},{t:'beautiful',p:.4}],
-    European:[{t:'country',p:.7},{t:'capital',p:.3}],
-    beautiful:[{t:'city',p:1}], city:[{t:'.',p:1}], capital:[{t:'.',p:1}],
-    Europe:[{t:'.',p:.7},{t:',',p:.3}], romance:[{t:'.',p:1}],
-    home:[{t:'of',p:.6},{t:'to',p:.4}],
-    of:[{t:'fashion',p:.5},{t:'art',p:.5}], to:[{t:'fashion',p:.5},{t:'art',p:.5}],
-    fashion:[{t:'.',p:1}], art:[{t:'.',p:1}],
-  }},
- {id:'story', label:'Once upon a time',
-  tokens:['Once','upon','a','time'], ids:[12805,5304,264,892],
-  hero:3, reader:3,
-  att:[{i:0,s:2.8},{i:1,s:2.2},{i:2,s:1.4}],
-  ffn:{
-    clues:{en:['“once upon a ___” pattern','tone: a story is starting','next: who / where'],
-           zh:['「once upon a ___」句式','语气：故事要开始了','接下来：谁 / 在哪']},
-    drawers:[
-      {l:'storybook openings',a:'+ “, there was…”',lz:'童话开场白',az:'+ 「, there was…」',match:true},
-      {l:'fairy-tale cast',a:'+ princess, dragon, robot',lz:'童话角色库',az:'+ 公主、龙、机器人',match:true},
-      {l:'narrative voice',a:'+ gentle pacing',lz:'叙事语态',az:'+ 舒缓节奏',match:true},
+      {l:'cats sit on things',a:'+ mat, sofa, windowsill',lz:'猫爱坐在东西上',az:'+ 垫子、沙发、窗台',match:true},
+      {l:'“在” wants a place',a:'+ expect a place-word',lz:'「在」后面接地点',az:'+ 预期一个地点词',match:true},
+      {l:'cozy household scenes',a:'+ home objects',lz:'温馨居家场景',az:'+ 家居物品',match:true},
       {l:'capital cities',a:'(stays shut)',lz:'各国首都',az:'（没动静）',match:false},
-      {l:'cats sit on things',a:'(stays shut)',lz:'猫爱坐在东西上',az:'（没动静）',match:false}],
-    before:[{t:',',p:.13},{t:'there',p:.12},{t:'machine',p:.11},{t:'the',p:.10},{t:'blue',p:.09}]},
-  start:[{t:',',p:.38},{t:'there',p:.30},{t:'in',p:.18},{t:'a',p:.08},{t:'long',p:.06}],
+      {l:'storybook openings',a:'(stays shut)',lz:'童话开场白',az:'（没动静）',match:false}],
+    before:[{t:'垫子',p:.12},{t:'蓝色',p:.11},{t:'沙发',p:.11},{t:'跑步',p:.10},{t:'巴黎',p:.09}]},
+  start:[{t:'垫子',p:.58},{t:'沙发',p:.15},{t:'地板',p:.10},{t:'键盘',p:.08},{t:'窗台',p:.05},{t:'月亮',p:.04}],
   bigram:{
-    ',':[{t:'there',p:.55},{t:'in',p:.3},{t:'a',p:.15}],
-    there:[{t:'was',p:.6},{t:'lived',p:.4}],
-    was:[{t:'a',p:.7},{t:'an',p:.3}],
-    lived:[{t:'a',p:.8},{t:'an',p:.2}],
-    a:[{t:'princess',p:.3},{t:'dragon',p:.25},{t:'tiny',p:.25},{t:'robot',p:.2}],
-    an:[{t:'old',p:.6},{t:'inventor',p:.4}],
-    in:[{t:'a',p:.7},{t:'the',p:.3}],
-    the:[{t:'mountains',p:.5},{t:'forest',p:.5}],
-    princess:[{t:'who',p:.5},{t:'.',p:.3},{t:'and',p:.2}],
-    dragon:[{t:'who',p:.5},{t:'.',p:.3},{t:'and',p:.2}],
-    tiny:[{t:'robot',p:.6},{t:'village',p:.4}],
-    robot:[{t:'who',p:.5},{t:'.',p:.5}],
-    village:[{t:'.',p:.6},{t:'by',p:.4}],
-    who:[{t:'loved',p:.6},{t:'dreamed',p:.4}],
-    loved:[{t:'to',p:.6},{t:'the',p:.4}],
-    dreamed:[{t:'of',p:1}],
-    of:[{t:'flying',p:.6},{t:'the',p:.4}],
-    to:[{t:'sing',p:.5},{t:'explore',p:.5}],
-    sing:[{t:'.',p:1}], explore:[{t:'.',p:1}], flying:[{t:'.',p:1}],
-    old:[{t:'inventor',p:.7},{t:'wizard',p:.3}],
-    inventor:[{t:'who',p:.6},{t:'.',p:.4}],
-    wizard:[{t:'who',p:.6},{t:'.',p:.4}],
-    and:[{t:'everyone',p:.6},{t:'the',p:.4}],
-    everyone:[{t:'loved',p:1}],
-    long:[{t:'ago',p:.9},{t:',',p:.1}],
-    ago:[{t:',',p:.6},{t:'.',p:.4}],
-    mountains:[{t:'.',p:.6},{t:',',p:.4}],
-    forest:[{t:',',p:.5},{t:'.',p:.5}],
-    by:[{t:'the',p:1}],
+    '垫子':[{t:'上',p:1}], '沙发':[{t:'上',p:1}], '地板':[{t:'上',p:1}],
+    '键盘':[{t:'上',p:1}], '窗台':[{t:'上',p:1}], '月亮':[{t:'上',p:1}],
+    '上':[{t:'，',p:.55},{t:'。',p:.45}],
+    '，':[{t:'打着',p:.4},{t:'望着',p:.35},{t:'等着',p:.25}],
+    '打着':[{t:'呼噜',p:1}], '呼噜':[{t:'。',p:1}],
+    '望着':[{t:'窗外',p:.6},{t:'小鸟',p:.4}], '窗外':[{t:'。',p:1}], '小鸟':[{t:'。',p:1}],
+    '等着':[{t:'晚饭',p:.6},{t:'主人',p:.4}], '晚饭':[{t:'。',p:1}], '主人':[{t:'。',p:1}],
   }},
-];
+};
 
 // ---------- toy LM math ----------
 function applyTemperature(cands,T){
@@ -366,16 +318,11 @@ function SentenceRow({prompt,heroOn=true,maskFrom=null,onTok=null,active=[],gen=
 }
 
 // ---------- scenes ----------
-function Scene0({L,prompt,setPromptId}){
+function Scene0({L,lang,prompt}){
   return (
     <SceneFrame title={L.s0Title} lead={L.s0Lead} aside={L.s0Note}>
-      <div style={{display:'flex',gap:14,flexWrap:'wrap'}}>
-        {PROMPTS.map(p=>(
-          <div key={p.id} className="wb-card" onClick={()=>setPromptId(p.id)}
-            style={{padding:'16px 20px',cursor:'pointer',flex:'1 1 220px',
-              outline:p.id===prompt.id?`4px solid ${BLUE}`:'none'}}>
-            <div className="hand" style={{fontSize:26}}>“{p.label} …”</div>
-          </div>))}
+      <div className="wb-card" style={{padding:'16px 20px',width:'fit-content',maxWidth:'100%'}}>
+        <div className="hand" style={{fontSize:26}}>{lang==='zh'?'「'+prompt.label+' ……」':'“'+prompt.label+' …”'}</div>
       </div>
       <div style={{marginTop:22}}>
         <SentenceRow prompt={prompt}/>
@@ -440,24 +387,34 @@ function Scene1({L,prompt,progress}){
           onClick={()=>setChopSel(c=>!c)}>{chopSel?L.s1Undo:L.s1Chop}</button>)}
       <div style={{marginTop:20,fontSize:15}}>
         {L.s1Sub}{' '}
-        <span className="tok">token<span style={{display:'block',fontSize:11,color:BLUE}}>#5963</span></span>
-        <span style={{fontWeight:800}}>+</span>
-        <span className="tok">ization<span style={{display:'block',fontSize:11,color:BLUE}}>#2065</span></span>
+        {L.s1SubEx.map((p,i)=>(
+          <React.Fragment key={i}>
+            {i>0&&<span style={{fontWeight:800}}>+</span>}
+            <span className="tok">{p.t}<span style={{display:'block',fontSize:11,color:BLUE}}>{p.id}</span></span>
+          </React.Fragment>))}
       </div>
     </SceneFrame>);
 }
 
-const MEANING_DOTS=[
+const MEANING_DOTS={
+en:[
   {w:'king',x:36,y:44,c:0},{w:'queen',x:78,y:36,c:0},{w:'prince',x:50,y:72,c:0},
   {w:'Paris',x:186,y:40,c:1},{w:'France',x:232,y:62,c:1},{w:'London',x:178,y:68,c:1},
   {w:'cat',x:88,y:142,c:2},{w:'dog',x:138,y:158,c:2},{w:'kitten',x:78,y:168,c:2},
   {w:'time',x:212,y:132,c:3},{w:'once',x:252,y:152,c:3},{w:'story',x:202,y:160,c:3},
-];
+],
+zh:[
+  {w:'国王',x:36,y:44,c:0},{w:'王后',x:78,y:36,c:0},{w:'王子',x:50,y:72,c:0},
+  {w:'巴黎',x:186,y:40,c:1},{w:'法国',x:232,y:62,c:1},{w:'伦敦',x:178,y:68,c:1},
+  {w:'小猫',x:88,y:142,c:2},{w:'小狗',x:138,y:158,c:2},{w:'猫咪',x:78,y:168,c:2},
+  {w:'时间',x:212,y:132,c:3},{w:'从前',x:252,y:152,c:3},{w:'故事',x:202,y:160,c:3},
+]};
 const DOT_COLORS=[BLUE,GREEN,RUST,'#8B5CF6'];
-function Scene2({L,prompt}){
+function Scene2({L,lang,prompt}){
   const [hov,setHov]=useState(null);
+  const dots=MEANING_DOTS[lang]||MEANING_DOTS.en;
   const heroWord=prompt.tokens[prompt.hero];
-  const heroDot=MEANING_DOTS.find(d=>d.w.toLowerCase()===heroWord.toLowerCase())||MEANING_DOTS[6];
+  const heroDot=dots.find(d=>d.w.toLowerCase()===heroWord.toLowerCase())||dots[6];
   const heroColor=DOT_COLORS[heroDot.c];
   return (
     <SceneFrame title={L.s2Title} lead={L.s2Lead(heroWord)} aside={L.s2Real} nerd={L.s2Nerd}>
@@ -469,14 +426,14 @@ function Scene2({L,prompt}){
           {/* neighbourhoods: same-meaning words live together */}
           {[{cx:64,cy:54,rx:52,ry:36},{cx:206,cy:54,rx:56,ry:34},
             {cx:110,cy:154,rx:56,ry:32},{cx:230,cy:146,rx:54,ry:32}].map((e,c)=>(
-            <g key={c} opacity={hov!==null&&MEANING_DOTS[hov].c!==c?0.25:1} style={{transition:'opacity .25s'}}>
+            <g key={c} opacity={hov!==null&&dots[hov].c!==c?0.25:1} style={{transition:'opacity .25s'}}>
               <ellipse cx={e.cx} cy={e.cy} rx={e.rx} ry={e.ry} fill={DOT_COLORS[c]} fillOpacity=".07"
                 stroke={DOT_COLORS[c]} strokeWidth="1.5" strokeDasharray="5 4" strokeOpacity=".5"/>
               <text x={e.cx} y={e.cy-e.ry-4} textAnchor="middle" fontSize="11.5" fontWeight="800"
                 fill={DOT_COLORS[c]} fontFamily="Nunito,sans-serif">{L.s2Groups[c]}</text>
             </g>))}
-          {MEANING_DOTS.map((d,i)=>{
-            const isHero=d===heroDot, dim=hov!==null&&MEANING_DOTS[hov].c!==d.c&&!isHero;
+          {dots.map((d,i)=>{
+            const isHero=d===heroDot, dim=hov!==null&&dots[hov].c!==d.c&&!isHero;
             return (<g key={i} onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)} style={{cursor:'pointer'}}>
               <circle cx={d.x} cy={d.y} r={isHero?8:6} fill={DOT_COLORS[d.c]} opacity={dim?0.18:1}/>
               {isHero&&<circle cx={d.x} cy={d.y} r="13" fill="none" stroke={heroColor} strokeWidth="2"
@@ -533,7 +490,12 @@ function Scene3({L,prompt,progress}){
 }
 
 const MIX_COLORS=[BLUE,GREEN,'#8B5CF6','#C7791B','#0E7490','#BE185D'];
-function tokBoxW(t){return t.length*10.5+26;}
+function tokBoxW(t){ // CJK glyphs render ~1.7× wider than latin at the same size
+  let u=0;
+  for(const ch of t) u+=/[　-〿一-鿿＀-￯]/.test(ch)?1.7:1;
+  return u*10.5+26;
+}
+function dispTok(t){return t==='.'?'⟨.⟩':t==='。'?'⟨。⟩':t;}
 
 // Beat 1 of the meeting room: arc diagram — who talks to whom.
 function AttnArcs({L,prompt,revealed,onReveal}){
@@ -734,7 +696,7 @@ function Scene5({L,prompt,lang,progress}){
         <div style={{fontSize:13,fontWeight:800,marginBottom:6}}>{title}</div>
         {dist.map((c,i)=>(
           <div key={c.t} style={{display:'flex',alignItems:'center',gap:7,margin:'3px 0'}}>
-            <span style={{width:74,fontWeight:700,fontFamily:'monospace',fontSize:13}}>{c.t==='.'?'⟨.⟩':c.t}</span>
+            <span style={{width:74,fontWeight:700,fontFamily:'monospace',fontSize:13}}>{dispTok(c.t)}</span>
             <div style={{flex:1,height:14,border:`1.5px solid ${INK}`,borderRadius:5,overflow:'hidden'}}>
               <div className="barfill" style={{width:(c.p/m*100)+'%',height:'100%',
                 background:i===0?RUST:BLUE,opacity:i===0?1:.6}}/>
@@ -888,7 +850,7 @@ function Scene7({L,prompt}){
   const [flash,setFlash]=useState(0);
   const [rot,setRot]=useState(0);
   const [spin,setSpin]=useState(false);
-  const done=gen.length>0&&gen[gen.length-1]==='.';
+  const done=gen.length>0&&(gen[gen.length-1]==='.'||gen[gen.length-1]==='。');
   const raw=nextCandidates(prompt,gen);
   const reweighted=useMemo(()=>{
     const c=applyTemperature(raw,temp).sort((a,b)=>b.q-a.q);
@@ -958,7 +920,7 @@ function Scene7({L,prompt}){
                       return <text key={s.t} x={p.x} y={p.y} textAnchor="middle" fontSize="13.5"
                         fontWeight="800" fill="#fff" stroke="rgba(0,0,0,.25)" strokeWidth="2"
                         paintOrder="stroke" fontFamily="Nunito,sans-serif"
-                        transform={`rotate(${a} ${p.x} ${p.y})`}>{s.t==='.'?'⟨.⟩':s.t}</text>;
+                        transform={`rotate(${a} ${p.x} ${p.y})`}>{dispTok(s.t)}</text>;
                     })}
                   </g>
                   <circle cx={CX} cy={CY} r="13" fill="#fff" stroke={INK} strokeWidth="2.5"/>
@@ -969,11 +931,11 @@ function Scene7({L,prompt}){
                     <div key={s.t} style={{display:'flex',alignItems:'center',gap:7,margin:'3px 0',fontSize:13.5}}>
                       <span style={{width:12,height:12,borderRadius:3,background:s.color,
                         border:`1.5px solid ${INK}`,flex:'0 0 12px'}}/>
-                      <span style={{fontWeight:700,fontFamily:'monospace'}}>{s.t==='.'?'⟨.⟩':s.t}</span>
+                      <span style={{fontWeight:700,fontFamily:'monospace'}}>{dispTok(s.t)}</span>
                       <span style={{marginLeft:'auto',fontWeight:800}}>{(s.q/keptSum*100).toFixed(0)}%</span>
                     </div>))}
                   {dropped.length>0&&<div style={{marginTop:8,fontSize:11.5,color:'var(--faint)'}}>
-                    🚫 {L.s7Cut}: {dropped.map(c=>c.t==='.'?'⟨.⟩':c.t).join(' · ')}</div>}
+                    🚫 {L.s7Cut}: {dropped.map(c=>dispTok(c.t)).join(' · ')}</div>}
                 </div>
               </div>}
           <div style={{display:'flex',gap:10,marginTop:14,flexWrap:'wrap'}}>
