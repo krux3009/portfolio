@@ -8,6 +8,8 @@
 //   link         (string)  ABSOLUTE path from site root, e.g. "/projects/llm-journey/".
 //                          Use null for projects that aren't public yet.
 //   status       (string, optional)  "ongoing" shows a work-in-progress pill
+//   image        (string, optional)  root-absolute screenshot shown at the top
+//                          of the card (decorative — info repeated in the text)
 //
 // Add new projects to the TOP of the array so the newest shows first.
 
@@ -20,6 +22,7 @@ const PROJECTS = [
     tags: ["REACT", "FASTAPI", "LIVE DATA"],
     year: "2026",
     link: "https://pitchside-green.vercel.app",
+    image: "/assets/pitchside-bilingual.webp",
   },
   {
     title: "Journey of a Token",

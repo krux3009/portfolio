@@ -224,6 +224,14 @@ nav .links a { margin-left: 0; }
   transition: transform .1s, box-shadow .1s;
 }
 .card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(43, 43, 43, .16); }
+.card .thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
 .card .tags { margin-bottom: 13px; }
 .tag-pill {
   display: inline-block;

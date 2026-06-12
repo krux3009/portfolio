@@ -20,6 +20,9 @@ function renderProjects() {
       .join("");
     const ongoing = p.status === "ongoing";
     const inner =
+      (p.image
+        ? '<img class="thumb" src="' + p.image + '" alt="" loading="lazy">'
+        : "") +
       '<span class="tags">' + pills + "</span>" +
       "<h3>" + title + '<span class="year">' + p.year +
       (ongoing ? " · ongoing" : "") + "</span></h3>" +
