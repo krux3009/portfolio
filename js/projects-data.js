@@ -13,6 +13,15 @@
 
 const PROJECTS = [
   {
+    title: "Pitchside",
+    titleZh: "Pitchside 世界杯预测站",
+    description: "Live World Cup 2026 analytics — Elo + Poisson match predictions, a 10,000-run Monte Carlo champion simulation, and a methodology page showing every formula. Updates itself daily while the tournament runs.",
+    descriptionZh: "2026 世界杯实时数据站——Elo + 泊松模型预测每场胜负，一万次蒙特卡洛模拟夺冠概率，方法论页公开全部公式。世界杯期间每天自动更新。",
+    tags: ["REACT", "FASTAPI", "LIVE DATA"],
+    year: "2026",
+    link: "https://pitchside-green.vercel.app",
+  },
+  {
     title: "Journey of a Token",
     titleZh: "一个 Token 的旅程",
     description: "How an LLM reads your sentence and writes back — an interactive explainer you can step through or scroll like a factory tour.",

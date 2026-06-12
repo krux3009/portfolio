@@ -27,8 +27,10 @@ function renderProjects() {
       (p.link
         ? '<span class="go">' + I18N.t("cardGo") + "</span>"
         : '<span class="go wip">' + I18N.t("cardWip") + "</span>");
+    const external = p.link && p.link.indexOf("http") === 0;
     return p.link
-      ? '<a class="card" href="' + p.link + '">' + inner + "</a>"
+      ? '<a class="card" href="' + p.link + '"' +
+        (external ? ' target="_blank" rel="noopener"' : "") + ">" + inner + "</a>"
       : '<div class="card nolink">' + inner + "</div>";
   }).join("");
 
