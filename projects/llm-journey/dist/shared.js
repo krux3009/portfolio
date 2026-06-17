@@ -44,6 +44,8 @@ const STRINGS = {
     s0Preview: 'Seven stations ahead — each one teaches the factory one more thing:',
     s0Hero: w => `You are “${w}”. For the rest of this tour, that yellow highlight is you.`,
     s0Note: 'Everything you will see is the real machinery — the same factory inside ChatGPT, Claude, or Llama. The numbers come from a real open model (Llama 3 8B).',
+    s0WatchTitle: 'New here? Watch the whole journey first.',
+    s0Watch: 'A ~2-minute silent film runs the entire factory end-to-end. Watch it once for the big picture, then click through the stations below to explore any stop in your own time.',
     s1Title: 'Station 1 · The front door — the chopping machine',
     s1Nerd: 'in the papers: “tokenizer”',
     s1Why: 'To fill the blank, the factory first has to turn writing into catalogue numbers — the only thing it can read. Without this step, the sentence cannot even enter.',
@@ -171,6 +173,8 @@ const STRINGS = {
     s0Preview: '前方 7 站，每站帮工厂多知道一件事：',
     s0Hero: w => `你是「${w}」。接下来整趟旅程，黄色高亮就是你。`,
     s0Note: '你将看到的都是真实的机器——ChatGPT、Claude、Llama 内部同样的工厂。数字来自真实开源模型 Llama 3 8B。',
+    s0WatchTitle: '第一次来？先看完整段旅程。',
+    s0Watch: '一段约 2 分钟的无声短片，把整座工厂从头到尾跑一遍。先看一遍抓住全局，再点下面的各站，按自己的节奏逐站探索。',
     s1Title: '第一站 · 工厂大门——切片机',
     s1Nerd: '论文里叫：分词器 tokenizer',
     s1Why: '为了填上这个空，工厂先得把句子换成自己读得懂的目录编号。没有这一步，句子根本进不了厂。',
@@ -960,6 +964,42 @@ function Scene0({
     lead: L.s0Lead,
     aside: L.s0Note
   }, /*#__PURE__*/React.createElement("div", {
+    className: "wb-card",
+    style: {
+      padding: 12,
+      marginBottom: 24,
+      maxWidth: 760
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hand",
+    style: {
+      fontSize: 24,
+      color: RUST,
+      margin: '2px 4px 8px'
+    }
+  }, "\uD83C\uDFAC ", L.s0WatchTitle), /*#__PURE__*/React.createElement("video", {
+    key: lang,
+    controls: true,
+    playsInline: true,
+    preload: "none",
+    poster: `/projects/llm-journey/media/poster-${lang}.png`,
+    style: {
+      width: '100%',
+      borderRadius: 8,
+      display: 'block',
+      border: `2px solid ${INK}`
+    }
+  }, /*#__PURE__*/React.createElement("source", {
+    src: `/projects/llm-journey/media/journey-${lang}.mp4`,
+    type: "video/mp4"
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13.5,
+      lineHeight: 1.5,
+      color: 'var(--faint)',
+      margin: '8px 4px 2px'
+    }
+  }, L.s0Watch)), /*#__PURE__*/React.createElement("div", {
     className: "wb-card",
     style: {
       padding: '16px 20px',
