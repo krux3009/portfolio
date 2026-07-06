@@ -65,3 +65,5 @@ Only if git deploy is broken:
 - All filenames lowercase kebab-case (Linux server is case-sensitive; macOS isn't — mismatches 404 in production only).
 - Links and asset paths are **root-absolute** (`/css/styles.css`, `/projects/llm-journey/`) — they work identically on the local preview server and in production, but break under `file://` (preview via the server, always).
 - `variants/` (if present) = temporary design explorations, never deployed.
+
+<!-- deploy-probe 2026-07-07 -->
