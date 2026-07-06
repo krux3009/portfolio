@@ -1,133 +1,25 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Li Xuan — Portfolio</title>
-<meta name="description" content="Li Xuan — Information Systems student at SMU building interactive side projects. Portfolio and project showcase.">
-<meta property="og:title" content="Li Xuan — Portfolio">
-<meta property="og:description" content="I turn “how does that work?” into things you can click. Side projects from my studies and career.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://kruxqlyz.com/">
-<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-
-<nav>
-  <a class="logo" href="/">Li Xuan<span class="dot">.</span></a>
-  <span class="right">
-    <span class="links">
-      <a href="/" data-i18n="navHome" aria-current="page">Home</a>
-      <a href="/projects/" data-i18n="navProjects">Projects</a>
-      <a href="/resume.html" data-i18n="navResume">Resume</a>
-      <details class="dd">
-        <summary data-i18n="navContact">Contact</summary>
-        <div class="dd-menu">
-          <a href="mailto:tanlixuan2005@gmail.com" data-i18n="contactEmail">Email</a>
-          <a href="https://github.com/krux3009" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://www.linkedin.com/in/li-xuan-tan-7a4929229" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </details>
-    </span>
-    <button id="langBtn">中文</button>
-  </span>
-</nav>
-
-<header class="hero hero-2col">
-  <div class="hero-text">
-    <span class="kicker rise r1" data-i18n="kicker">SMU IS · AI PRODUCT OPS @ STEPFUN</span>
-    <h1 class="rise r2" data-i18n-html="heroH1">Hi, I’m Li Xuan —<br>I turn “how does that work?”<br>into <span class="hl">things you can click</span>.</h1>
-    <p class="tag rise r3" data-i18n="heroTag">IS student @ SMU · AI product ops intern @ StepFun.
-       I build interactive explainers and tools that satisfy my own curiosity first — maybe yours too.</p>
-    <a class="btn rise r4" href="/projects/" data-i18n="heroCta">See my projects →</a>
-  </div>
-  <div class="hero-visual rise r3" aria-hidden="true">
-    <!-- polaroid: replace the placeholder div with <img src="/assets/me.jpg" alt=""> when photo exists -->
-    <figure class="polaroid">
-      <span class="tape"></span>
-      <div class="photo-slot">
-        <svg viewBox="0 0 80 80" class="photo-doodle">
-          <circle cx="40" cy="30" r="13" fill="none" stroke="currentColor" stroke-width="2.5"/>
-          <path d="M16 70 Q 40 44 64 70" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M33 27 q 3 -4 6 0 M42 27 q 3 -4 6 0" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M34 35 q 6 5 12 0" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <figcaption data-i18n="photoCap">me.jpg — coming soon</figcaption>
-    </figure>
-    <svg class="doodle d-arrow float-a" viewBox="0 0 120 90">
-      <path d="M8 12 C 50 6, 88 24, 102 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-      <path d="M88 56 L 103 66 L 107 49" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <svg class="doodle d-star s1 float-b" viewBox="0 0 40 40">
-      <path d="M20 4 L23 16 L36 20 L23 24 L20 36 L17 24 L4 20 L17 16 Z" fill="currentColor"/>
-    </svg>
-    <svg class="doodle d-star s2 float-c" viewBox="0 0 40 40">
-      <path d="M20 4 L23 16 L36 20 L23 24 L20 36 L17 24 L4 20 L17 16 Z" fill="currentColor"/>
-    </svg>
-    <svg class="doodle d-shuttle float-b" id="shuttle" viewBox="0 0 64 64">
-      <circle cx="22" cy="44" r="9" fill="currentColor"/>
-      <path d="M28 36 L52 8 M28 38 L56 16 M30 40 L58 26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-      <path d="M27 33 L46 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-    </svg>
-  </div>
-</header>
-
-<div class="squiggle" aria-hidden="true">
-  <svg viewBox="0 0 700 14" preserveAspectRatio="none">
-    <path d="M0 7 Q 17.5 0, 35 7 T 70 7 T 105 7 T 140 7 T 175 7 T 210 7 T 245 7 T 280 7 T 315 7 T 350 7 T 385 7 T 420 7 T 455 7 T 490 7 T 525 7 T 560 7 T 595 7 T 630 7 T 665 7 T 700 7"/>
-  </svg>
-</div>
-
-<!-- Landing = personal intro, NOT the resume. -->
-<h2 class="label reveal" data-i18n="introLabel">Who I am</h2>
-<div class="intro">
-  <p class="reveal" data-i18n="introP1">Born and raised in Singapore, I grew up on sports — my dad got me into badminton first,
-     and years of serious training left me with a love-hate bond with the game; football came later.
-     Video games only arrived in my teens, and they amazed me twice over: how are these worlds even built,
-     and how do they pull together people from completely different walks of life?
-     Chasing those two questions led me to Information Systems at SMU.</p>
-  <p class="reveal" data-i18n="introP2">These days my weekends are still mostly on a badminton court,
-     or in voice chat squadding up with good friends. I want to get better at sharing what I learn —
-     and to make sure I don't fall behind in this AI era. This site is that platform.</p>
-</div>
-
-<h2 class="label reveal" data-i18n="hobbiesLabel">Hobbies &amp; interests</h2>
-<div class="hobby-grid">
-  <a class="hobby reveal" href="/hobbies/badminton.html">
-    <svg class="hobby-icon" viewBox="0 0 64 64" aria-hidden="true">
-      <circle cx="22" cy="44" r="9" fill="var(--rust)"/>
-      <path d="M28 36 L52 8 M28 38 L56 16 M30 40 L58 26 M27 33 L46 10" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
-    </svg>
-    <h3 data-i18n="hobby1Title">Badminton</h3>
-    <p data-i18n="hobby1Desc">Smashes on weekends. Still chasing the perfect cross-court drop shot.</p>
-    <span class="go" data-i18n="hobbyGo">See the journey →</span>
-  </a>
-  <a class="hobby reveal" href="/hobbies/games.html">
-    <svg class="hobby-icon" viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="6" y="20" width="52" height="26" rx="13" fill="none" stroke="var(--ink)" stroke-width="3"/>
-      <path d="M18 28 v10 M13 33 h10" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="44" cy="29" r="3" fill="var(--green)"/>
-      <circle cx="50" cy="37" r="3" fill="var(--blue)"/>
-    </svg>
-    <h3 data-i18n="hobby2Title">Video games</h3>
-    <p data-i18n="hobby2Desc">Strategy and story-driven worlds. Will absolutely lose track of time.</p>
-    <span class="go" data-i18n="hobbyGo">See the journey →</span>
-  </a>
-</div>
-
-<footer>
-  <div class="inner">
-    <span>© 2026 Li Xuan</span>
-    <span data-i18n-html="footBuilt">Built by hand<span class="heart"> ♥</span> no framework, no build step · auto-deployed from <a href="https://github.com/krux3009/portfolio" style="color:inherit">GitHub</a></span>
-  </div>
-</footer>
-
-<script src="/js/i18n.js"></script>
-<script src="/js/decor.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Li Xuan — things you can click</title>
+    <meta name="description" content="Li Xuan builds interactive explainers and tools. Three projects you can play with, in English and 中文." />
+    <meta property="og:title" content="Li Xuan — things you can click" />
+    <meta property="og:description" content="Interactive projects from an Information Systems student who keeps asking how things work." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kruxqlyz.com/" />
+    <meta name="theme-color" content="#211d18" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:wght@400;500;700&family=Noto+Serif+SC:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

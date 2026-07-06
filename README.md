@@ -1,67 +1,44 @@
-# portfolio/ — Personal Portfolio Site
+# kruxqlyz.com — Li Xuan's portfolio
 
-Li Xuan's personal portfolio. **This folder is a 1:1 mirror of Hostinger `public_html`** — what's here is exactly what gets deployed. Live at the personal domain (Hostinger shared hosting).
+Single-page, bilingual (EN/中文) portfolio. React + Vite + TypeScript + Tailwind v4 + motion, deployed on Vercel.
+
+Design language: "lamplit desk." Warm dark ground, three project hues (ember / field / signal) inherited from the old sketchbook site, Young Serif + Karla type, quiet choreographed motion. Strategy and tokens live in `PRODUCT.md` and `DESIGN.md`.
+
+## Develop
+
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # tsc + vite build → dist/
+npm run preview    # serve the production build
+```
+
+## Deploy
+
+Push to `main` → Vercel builds and deploys. Framework preset: Vite (auto-detected). Preview deployments per branch/PR.
+
+One-time setup after the rebuild merges:
+
+1. vercel.com → Add New Project → import `krux3009/portfolio`, keep defaults (Vite, `npm run build`, `dist`).
+2. Project → Settings → Domains → add `kruxqlyz.com` (+ `www`), follow the DNS instructions in Hostinger's DNS zone editor (A record → 76.76.21.21, CNAME `www` → cname.vercel-dns.com).
+3. hPanel → remove the old GitHub auto-deploy hook so Hostinger stops publishing `main` into `public_html`.
 
 ## Layout
 
 ```
-index.html              landing page (hero + personal intro + hobbies — NOT the resume)
-projects/index.html     projects tab (card grid)
-resume.html             resume tab (stub until resume is done)
-css/styles.css          all styles; design tokens as CSS custom properties
-js/i18n.js              EN/中文 dictionary + system-language detection — ALL page copy lives here
-js/projects-data.js     project card data array (bilingual fields) — EDIT THIS to add a new project
-js/main.js              renders project cards from the array
-assets/                 favicon, photos, thumbnails
-projects/               one subfolder per showcased project (kebab-case names)
-  llm-journey/          "Journey of a Token" interactive LLM explainer
+index.html                  Vite entry (fonts, meta)
+src/
+  main.tsx                  bootstrap + console easter egg
+  App.tsx                   page assembly
+  i18n.tsx                  language context (localStorage → system → en)
+  copy.ts                   ALL user-visible text, both languages
+  styles.css                Tailwind v4 import + design tokens (@theme)
+  components/               masthead, hero, exhibit shell, about, contact, footer
+  components/demos/         one bespoke interactive demo per project
+public/
+  assets/                   favicon, images
+  projects/llm-journey/     self-contained sub-project, served verbatim at its URL
+vercel.json                 redirects for retired routes (/resume.html, /hobbies/*)
 ```
 
-Editing page text: change BOTH `en:` and `zh:` entries in `js/i18n.js` (the HTML only holds English fallbacks for no-JS visitors). Contact links live in each page's nav dropdown.
-
-## Adding a new project
-
-1. Drop the project's static files into `projects/<kebab-name>/` (lowercase, no spaces — server filesystem is case-sensitive).
-2. Append one object to the array in `js/projects-data.js`.
-3. Re-deploy (below).
-
-## Preview locally
-
-```bash
-cd "$HOME/Me Vault/portfolio" && python3 -m http.server 8000
-```
-
-Open http://localhost:8000. Always preview via the server, not `file://`.
-
-## Deploy (git auto-deploy — primary)
-
-This repo is connected to Hostinger via GitHub App (hPanel → Advanced → Git).
-**Every push to `main` goes live at kruxqlyz.com in ~10 seconds.**
-
-```bash
-cd "$HOME/Me Vault/portfolio"
-git add -A && git commit -m "describe the change" && git push
-```
-
-Then hard-refresh the live site (Cmd+Shift+R). Still stale → hPanel → Cache Manager → purge.
-Deploy history / manual redeploy: hPanel → Advanced → Git → Deployments.
-
-Repos: [krux3009/portfolio](https://github.com/krux3009/portfolio) (canonical, live site serves this) ·
-[krux3009/llm-journey](https://github.com/krux3009/llm-journey) (standalone showcase mirror — sync manually after editing llm-journey here).
-
-## Deploy fallback (zip via File Manager)
-
-Only if git deploy is broken:
-
-1. Zip the **contents** of this folder (not the folder itself):
-   ```bash
-   cd "$HOME/Me Vault/portfolio" && zip -r ../portfolio-deploy.zip . -x "*.DS_Store" -x ".git/*"
-   ```
-2. hPanel → Files → File Manager → `public_html` → upload zip → Extract here → delete zip.
-3. Verify files sit directly in `public_html`, not in a nested subfolder.
-
-## Conventions
-
-- All filenames lowercase kebab-case (Linux server is case-sensitive; macOS isn't — mismatches 404 in production only).
-- Links and asset paths are **root-absolute** (`/css/styles.css`, `/projects/llm-journey/`) — they work identically on the local preview server and in production, but break under `file://` (preview via the server, always).
-- `variants/` (if present) = temporary design explorations, never deployed.
+`public/projects/llm-journey/` keeps its own build step (`build.sh`, Babel) and is mirrored to [krux3009/llm-journey](https://github.com/krux3009/llm-journey); sync manually after editing.

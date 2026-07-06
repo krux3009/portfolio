@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  /* ground */
+  --color-night: oklch(0.185 0.012 55);
+  --color-night-soft: oklch(0.225 0.014 55);
+  --color-night-line: oklch(0.32 0.016 55);
+
+  /* text */
+  --color-cream: oklch(0.93 0.02 85);
+  --color-cream-dim: oklch(0.74 0.02 80);
+
+  /* project hues: the old site's rust / green / blue, recast as lamplight */
+  --color-ember: oklch(0.68 0.15 45);
+  --color-field: oklch(0.72 0.14 150);
+  --color-signal: oklch(0.74 0.12 245);
+
+  --font-display: "Young Serif", "Noto Serif SC", "Songti SC", serif;
+  --font-body: "Karla", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-night);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: oklch(0.68 0.15 45 / 0.35);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

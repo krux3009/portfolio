@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/resume.html", "destination": "/", "permanent": true },
+    { "source": "/hobbies/:page*", "destination": "/#about", "permanent": true },
+    { "source": "/projects", "destination": "/#work", "permanent": false },
+    { "source": "/projects/", "destination": "/#work", "permanent": false }
+  ]
+}
