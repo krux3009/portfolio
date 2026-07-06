@@ -1,2 +1,5 @@
 .DS_Store
 .build-cache/
+node_modules/
+dist/
+.vercel/

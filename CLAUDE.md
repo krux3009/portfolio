@@ -4,60 +4,37 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Li Xuan's personal portfolio — a static site with **no framework, no build step, no dependencies, no tests**. Vanilla HTML/CSS/JS. This repo is a 1:1 mirror of Hostinger `public_html`; everything here is exactly what gets served at kruxqlyz.com.
+Li Xuan's personal portfolio at kruxqlyz.com. Single-page React app: Vite + TypeScript + Tailwind v4 + motion (Framer Motion), deployed on Vercel (push to `main` → live; branches get preview URLs). Rebuilt 2026-07 from a vanilla-JS static site; the old site lives in git history before the `redesign` merge.
+
+Read `PRODUCT.md` (strategy, audience, anti-references) and `DESIGN.md` (tokens, type, motion rules) before design work. The short version: warm dark "lamplit desk" aesthetic, projects as interactive exhibits, quietly playful, precise motion. NOT: generic dev-portfolio tropes, terminal/hacker mono-everything, cold slate dark mode.
 
 ## Commands
 
 ```bash
-# Preview locally (always via server, never file:// — root-absolute paths break otherwise)
-python3 -m http.server 8000        # then open http://localhost:8000
-
-# Deploy = push to main. Hostinger GitHub auto-deploy goes live in ~10s.
-git add -A && git commit -m "..." && git push
+npm run dev        # dev server, http://localhost:5173
+npm run build      # tsc -b && vite build → dist/
+npm run preview    # serve dist/ (needed to test public/ passthrough + redirects)
 ```
 
-After deploy, hard-refresh (Cmd+Shift+R). Still stale → hPanel → Cache Manager → purge. Fallback zip-deploy procedure is in README.md.
+No test suite. Success criterion is the rendered page: verify changes in the browser in BOTH languages — every render path forks on language.
 
 ## Architecture
 
-**i18n is the backbone.** `js/i18n.js` holds the full EN/中文 dictionary in one IIFE (`I18N`). Pages mark translatable elements with `data-i18n="key"` (text) or `data-i18n-html="key"` (markup). The HTML carries English-only fallbacks for no-JS visitors; **all real copy lives in i18n.js — edit BOTH `en:` and `zh:` entries**. Language detection: localStorage → system language → English. Toggling fires a `langchange` event on `document`; render scripts listen and re-render.
+- **`src/copy.ts` is the single source of all user-visible text.** Every string is a `Bi` (`{ en, zh }`). 中文 is written for the reader, not translated word-for-word. A new string without both languages is a bug.
+- **`src/i18n.tsx`**: `LangProvider` + `useLang()`. Detection: localStorage `lang` → system language → en. `t(bi)` picks the current language; toggling re-renders everything.
+- **`src/styles.css`**: Tailwind v4 (`@import "tailwindcss"` + `@theme`). Design tokens are the `--color-*` / `--font-*` vars there; use token classes (`bg-night`, `text-cream`, `text-ember`, …), never raw hex.
+- **Exhibits** (`components/Exhibit.tsx`): each project is a full-width section owning one hue (ember / field / signal), a cursor spotlight, and a bespoke demo from `components/demos/`. Layouts alternate via `flip`; do not collapse them into a uniform card grid.
+- **Motion**: `motion` is the only animation library — no GSAP. Every animated component must branch on `useReducedMotion()` and collapse to static states. Nothing loops forever except inside a demo while it is on screen and reduced-motion is off.
+- **React Bits adaptations** (ClickSpark, Magnet, spotlight, AnimatedNumber) are owned in-repo; edit them directly, don't try to "update" from upstream.
 
-**Data-driven pages.** Content lives in data arrays; tiny render scripts turn them into DOM, re-rendering on `langchange`:
+## public/projects/llm-journey/ — do not modernize
 
-- `js/projects-data.js` (`PROJECTS` array, bilingual fields) → `js/main.js` renders cards into `#project-grid` on `/projects/`. Newest project goes at the TOP of the array.
-- `js/hobbies-data.js` (`HOBBY_TIMELINES`) → `js/timeline.js` renders scroll-driven timelines. A hobby page selects its dataset via `<body data-hobby="badminton|games">`; the center line grows with scroll progress, milestones reveal via IntersectionObserver.
-- `js/decor.js` — landing-page reveal-on-scroll + easter eggs (shuttlecock click, console message).
-
-**Showcased projects are self-contained.** Each lives in `projects/<kebab-name>/` with its own CSS and its own i18n — they do NOT load the site's `css/styles.css` or `js/i18n.js`. Only the shared color tokens (`--paper/--ink/--blue/--rust/--green`) are duplicated to match the site's sketchbook look.
-
-**llm-journey has a local build step** (the one exception to "no build"): source of truth is `projects/llm-journey/src/*.jsx` (shared.jsx = i18n + toy LM + scenes; stepper.jsx = the guided-tour shell, served as the project's index.html — stepper.html/scrolly.html are redirect stubs for old links). After editing src/, run `projects/llm-journey/build.sh` (Babel via npx, cached in gitignored `.build-cache/`) and commit the compiled `dist/*.js` — the server has no build pipeline; dist/ is what the HTML loads. Never edit dist/ or the page HTML's script tags by hand. Copy rule for this project: metaphor-first body text; official terms live behind the header 📄 terms toggle (default OFF — tags + jargon asides hidden via the body `nerd-off` class) and in the Station-8 decoder table.
-
-**Styling.** All site styles in `css/styles.css`; design tokens are CSS custom properties at the top (`:root`). Fonts: Caveat (headings) + Nunito (body) from Google Fonts.
-
-**Caching.** `.htaccess` sets CSS/JS to `no-cache, must-revalidate` (deploys reach visitors immediately) and images/fonts to 30-day cache. Keep this in mind before adding fingerprinting/versioning — it's intentionally not needed.
-
-## Adding a new project
-
-1. Drop static files into `projects/<kebab-name>/` (self-contained, inline styles).
-2. Append one object to the TOP of the array in `js/projects-data.js` (use `link: null` + `status: "ongoing"` if not public yet; `link` is a root-absolute path like `/projects/llm-journey/`).
-3. Push to deploy.
-
-`projects/llm-journey/` is also mirrored to the standalone repo [krux3009/llm-journey](https://github.com/krux3009/llm-journey) — sync manually after editing it here.
-
-## Working style
-
-Adapted from [andrej-karpathy-skills CLAUDE.md](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md) — biases toward caution over speed; use judgment on trivial tasks.
-
-1. **Think before coding.** State assumptions; if multiple interpretations exist, present them — don't pick silently. If a simpler approach exists, say so and push back.
-2. **Simplicity first.** Minimum code that solves the problem. No speculative abstractions, configurability, or error handling for impossible scenarios — this site is intentionally ~300 lines of JS total; keep it that way.
-3. **Surgical changes.** Touch only what the request requires. Match existing style (ES5, string-concat templates) even if you'd write it differently. Don't "improve" adjacent code; mention unrelated dead code instead of deleting it. Remove only orphans YOUR change created.
-4. **Goal-driven execution.** No test suite here — success criterion is the rendered page. Verify changes in the local preview server (both EN and 中文, since every render path forks on language) before calling work done.
+Self-contained sub-project served verbatim at `/projects/llm-journey/`. It keeps its own i18n, CSS, and build step: edit `src/*.jsx`, run `build.sh`, commit `dist/*.js`. Never edit its `dist/` or HTML script tags by hand. Copy rule there: metaphor-first, official terms behind the 📄 toggle. Mirrored manually to the standalone repo [krux3009/llm-journey](https://github.com/krux3009/llm-journey).
 
 ## Conventions
 
-- **Filenames lowercase kebab-case.** The Linux server is case-sensitive; macOS isn't — a case mismatch 404s in production only.
-- **Paths are root-absolute** (`/css/styles.css`, `/projects/llm-journey/`) across all pages and data files. (README.md says "relative" — that's stale; follow the code.)
-- Bilingual content everywhere: any new user-visible string needs both EN and 中文 (`*Zh` fields in data files, `en:`/`zh:` keys in i18n.js).
-- `[PLACEHOLDER]`-marked text in `js/hobbies-data.js` is intentional stub copy awaiting the real story — don't invent content for it.
-- `variants/` (if present) = temporary design explorations, never deployed.
-- Keep the no-framework character: ES5-style vanilla JS (IIFEs, `function` declarations, string-concat templates), no npm, no bundler.
+- Filenames lowercase kebab-case (Linux server + macOS case mismatch 404s only in production).
+- Root-absolute paths for public assets (`/assets/...`, `/projects/llm-journey/`).
+- Retired URLs (`/resume.html`, `/hobbies/*`, `/projects/`) redirect via `vercel.json`; keep them working.
+- Keep the dependency count where it is (react, react-dom, motion). New deps need a reason a few lines of code can't cover.
+- No em dashes in copy, either language. Bans in DESIGN.md apply (no glitch/scramble text, no card grids for projects, mono in trace amounts only).
